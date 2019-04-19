@@ -121,8 +121,11 @@ go test -v access_token_test.go
 目前api极不稳定, 快速迭代中 .....
 
 ## Notes
+### 目前无法通过api创建应用和删除群聊会话, 因为tx没有提供这样的api
 
-如果快速找到corpid, corp_secret, agent_id ?
+参考 `go test -v agent_test.go chat_test.go`
+
+### 如果快速找到corpid, corp_secret, agent_id ?
 
 corp_id: 管理后台-> 我的企业 -> 企业ID（在最底部)  
 corp_secret和agent_id去自己创建的应用详情页面找，(管理后台-> 应用与小程序 -> 点击应用进详情，能看到AgentId 和 secret)
