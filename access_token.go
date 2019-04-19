@@ -7,17 +7,17 @@ import (
 )
 
 // getAccessToken 获取 access token
-func (c *App) getAccessToken() (respAccessToken, error) {
+func (c *App) getAccessToken() (RespAccessToken, error) {
 	req := reqAccessToken{
 		CorpID:     c.CorpID,
 		CorpSecret: c.CorpSecret,
 	}
 
-	var resp respAccessToken
+	var resp RespAccessToken
 	err := c.executeQyapiGet("/cgi-bin/gettoken", req, &resp, false)
 	if err != nil {
 		// TODO: error_chain
-		return respAccessToken{}, err
+		return RespAccessToken{}, err
 	}
 
 	return resp, nil

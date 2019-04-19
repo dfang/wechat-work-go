@@ -22,6 +22,7 @@ func (x reqAccessToken) IntoURLValues() url.Values {
 	}
 }
 
+// RespCommon Comman Response Struct
 type RespCommon struct {
 	ErrCode int64  `json:"errcode"`
 	ErrMsg  string `json:"errmsg"`
@@ -38,15 +39,15 @@ func (x *RespCommon) IsOK() bool {
 	return x.ErrCode == 0
 }
 
-type respAccessToken struct {
+type RespAccessToken struct {
 	RespCommon
 
 	AccessToken   string `json:"access_token"`
 	ExpiresInSecs int64  `json:"expires_in"`
 }
 
-// reqMessage 消息发送请求
-type reqMessage struct {
+// ReqMessage 消息发送请求
+type ReqMessage struct {
 	ToUser  []string
 	ToParty []string
 	ToTag   []string
@@ -59,8 +60,8 @@ type reqMessage struct {
 
 // IntoBody 转换为请求体的 []byte 类型
 //
-// impl bodyer for reqMessage
-func (x reqMessage) IntoBody() ([]byte, error) {
+// impl bodyer for ReqMessage
+func (x ReqMessage) IntoBody() ([]byte, error) {
 	// fuck
 	safeInt := 0
 	if x.IsSafe {
@@ -195,7 +196,7 @@ type ReqAgentSet struct {
 
 // IntoBody 转换为请求体的 []byte 类型
 //
-// impl bodyer for reqMessage
+// impl bodyer for ReqAgentSet
 func (x ReqAgentSet) IntoBody() ([]byte, error) {
 	result, err := json.Marshal(x)
 	if err != nil {
@@ -219,4 +220,77 @@ type ReqMenuCreate struct {
 			SubButton []interface{} `json:"sub_button"`
 		} `json:"sub_button,omitempty"`
 	} `json:"button"`
+}
+
+// ReqAppChatCreate 创建群聊会话请求
+type ReqAppChatCreate struct {
+	Name     string   `json:"name"`
+	Owner    string   `json:"owner"`
+	Userlist []string `json:"userlist"`
+	Chatid   string   `json:"chatid"`
+}
+
+// IntoBody 转换为请求体的 []byte 类型
+//
+// impl bodyer for ReqAppChatCreate
+func (x ReqAppChatCreate) IntoBody() ([]byte, error) {
+	result, err := json.Marshal(x)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// RespAppChatCreate 创建群聊会话响应
+type RespAppChatCreate struct {
+	RespCommon
+	CHATID string `json:"chatid"`
+}
+
+// ReqAppChatUpdate 修改群聊会话请求
+type ReqAppChatUpdate struct {
+	Chatid      string   `json:"chatid"`
+	Name        string   `json:"name,omitempty"`
+	Owner       string   `json:"owner,omitempty"`
+	AddUserList []string `json:"add_user_list,omitempty"`
+	DelUserList []string `json:"del_user_list,omitempty"`
+}
+
+// IntoBody 转换为请求体的 []byte 类型
+//
+// impl bodyer for ReqAppChatUpdate
+func (x ReqAppChatUpdate) IntoBody() ([]byte, error) {
+	result, err := json.Marshal(x)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// ReqAppChatGet 查询应用请求
+type ReqAppChatGet struct {
+	ChatID      string
+	AccessToken string `json:"access_token"`
+}
+
+// IntoURLValues 转换为 url.Values 类型
+//
+// impl urlValuer for ReqAppChatGet
+func (x ReqAppChatGet) IntoURLValues() url.Values {
+	return url.Values{
+		"chatid":       {x.ChatID},
+		"access_token": {x.AccessToken},
+	}
+}
+
+// RespAppChatGet 获取群聊会话响应
+type RespAppChatGet struct {
+	RespCommon
+
+	ChatInfo struct {
+		Chatid   string   `json:"chatid"`
+		Name     string   `json:"name"`
+		Owner    string   `json:"owner"`
+		Userlist []string `json:"userlist"`
+	} `json:"chat_info"`
 }

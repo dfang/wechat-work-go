@@ -59,7 +59,7 @@ func (c *App) sendMessage(
 		apiPath = apichatSendEndpoint
 	}
 
-	req := reqMessage{
+	req := ReqMessage{
 		ToUser:  recipient.UserIDs,
 		ToParty: recipient.PartyIDs,
 		ToTag:   recipient.TagIDs,

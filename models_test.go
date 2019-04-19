@@ -69,9 +69,9 @@ func TestRespCommon(t *testing.T) {
 }
 
 func TestReqMessage(t *testing.T) {
-	c.Convey("构造 reqMessage", t, func() {
+	c.Convey("构造 ReqMessage", t, func() {
 		content := map[string]interface{}{"content": "test"}
-		a := reqMessage{
+		a := ReqMessage{
 			AgentID: 233,
 			MsgType: "text",
 			Content: content,
