@@ -2,6 +2,8 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/dfang/wechat-work-go)](https://goreportcard.com/report/github.com/dfang/wechat-work-go)
 [![GoDoc](http://godoc.org/github.com/dfang/wechat-work-go?status.svg)](http://godoc.org/github.com/dfang/wechat-work-go)
+[![Travis](https://travis-ci.com/dfang/wechat-work-go.svg?branch=refactor)](https://travis-ci.com/dfang/wechat-work-go)
+
 
 ```go
 import (
@@ -9,7 +11,7 @@ import (
 )
 ```
 
-## Features
+## Features (Refactoring ......)
 
 * [x] access token 刷新
 * [ ] 通讯录管理
@@ -70,7 +72,7 @@ import (
 <details>
 <summary>应用管理 API</summary>
 
-* [ ] 获取应用
+* [✔] 获取应用
 * [ ] 设置应用
 * [ ] 自定义菜单
     - [ ] 创建菜单
@@ -119,29 +121,3 @@ go test -v access_token_test.go
 直接从[Commits](https://github.com/xen0n/go-workwx/tree/5dbb164de258486669bbd9637d19e07124444d60)开始fork，获取access_token直接照搬的, 做了一些重构，添加了一些测试。感谢[xen0n](https://github.com/xen0n)。
 
 目前api极不稳定, 快速迭代中 .....
-
-## Notes
-### 目前无法通过api创建应用和删除群聊会话, 因为tx没有提供这样的api
-
-参考 `go test -v agent_test.go chat_test.go`
-
-### 如果快速找到corpid, corp_secret, agent_id ?
-
-corp_id: 管理后台-> 我的企业 -> 企业ID（在最底部)  
-corp_secret和agent_id去自己创建的应用详情页面找，(管理后台-> 应用与小程序 -> 点击应用进详情，能看到AgentId 和 secret)
-
-
-以下信息从企业客服聊天得知:  
-    
->    secret就是等于corpsecret，目前企业微信整体来说有3个地方是有secret，分别是应用、外部联系人、管理工具-通讯录同步助手
-    参考文档：https://work.weixin.qq.com/api/doc#10013
-
->    只有api创建的才有chatid, 其他途径是没有办法去获取的 https://work.weixin.qq.com/api/doc#13288
-
-总结:   
-    
->    所以corp_secret 其实不应该叫corp_secret, 叫app_secret 或 agent_secret 比较合适。
-
-## License
-
-* [MIT](./LICENSE)

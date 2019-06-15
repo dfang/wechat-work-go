@@ -2,6 +2,8 @@ package WechatWork
 
 import (
 	"errors"
+
+	"github.com/dfang/wechat-work-go/models"
 )
 
 const messageSendEndpoint = "/cgi-bin/message/send"
@@ -59,7 +61,7 @@ func (c *App) sendMessage(
 		apiPath = apichatSendEndpoint
 	}
 
-	req := ReqMessage{
+	req := models.ReqMessage{
 		ToUser:  recipient.UserIDs,
 		ToParty: recipient.PartyIDs,
 		ToTag:   recipient.TagIDs,
@@ -70,7 +72,7 @@ func (c *App) sendMessage(
 		IsSafe:  isSafe,
 	}
 
-	var resp respMessageSend
+	var resp models.RespMessageSend
 	err := c.executeQyapiJSONPost(apiPath, req, &resp, true)
 	if err != nil {
 		// TODO: error_chain

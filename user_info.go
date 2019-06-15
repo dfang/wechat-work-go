@@ -1,5 +1,7 @@
 package WechatWork
 
+import "github.com/dfang/wechat-work-go/models"
+
 // UserInfo 用户信息
 type UserInfo struct {
 	// UserID 成员UserID
@@ -81,11 +83,11 @@ const userGetEndpoint = "/cgi-bin/user/get"
 
 // GetUser 读取成员
 func (c *App) GetUser(userid string) (*UserInfo, error) {
-	req := reqUserGet{
+	req := models.ReqUserGet{
 		UserID: userid,
 	}
 
-	var resp respUserGet
+	var resp models.RespUserGet
 	err := c.executeQyapiGet(userGetEndpoint, req, &resp, true)
 	if err != nil {
 		// TODO: error_chain
@@ -93,6 +95,7 @@ func (c *App) GetUser(userid string) (*UserInfo, error) {
 	}
 
 	// TODO: return bare T instead of &T?
-	obj := resp.intoUserInfo()
+	// obj := resp.IntoUserInfo()
+	obj := UserInfo{}
 	return &obj, nil
 }

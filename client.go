@@ -7,6 +7,8 @@ import (
 	"net/url"
 	"sync"
 	"time"
+
+	"github.com/go-resty/resty"
 )
 
 // WechatWork 企业微信客户端
@@ -59,6 +61,53 @@ func (c *WechatWork) WithApp(corpSecret string, agentID int64) *App {
 		AccessToken: "",
 		lastRefresh: time.Time{},
 	}
+}
+
+// Get Get 请求
+func (c *App) Get(path string, req urlValuer, respObj interface{}, withAccessToken bool) error {
+	// url := c.composeQyapiURLWithToken(path, req, withAccessToken)
+	// urlStr := url.String()
+
+	client := resty.New()
+	client.SetDebug(true)
+	client.SetHostURL("https://qyapi.weixin.qq.com")
+
+	values := url.Values{}
+	if valuer, ok := req.(urlValuer); ok {
+		values = valuer.IntoURLValues()
+	}
+
+	// c.SpawnAccessTokenRefresher()
+	// values.Add("access_token", c.AccessToken)
+
+	if withAccessToken {
+		c.SyncAccessToken()
+		// c.SpawnAccessTokenRefresher()
+
+		if c.AccessToken != "" {
+			values.Add("access_token", c.AccessToken)
+		}
+
+		// fmt.Println(c.AccessToken)
+	}
+
+	url := path + "?" + values.Encode()
+
+	// fmt.Println(url)
+
+	resp, err := client.R().Get(url)
+	if err != nil {
+		// panic("err when requesting api request to qyapi.weixin.qq.com")
+		panic(err)
+	}
+	// defer resp.Close()
+
+	decoder := json.NewDecoder(bytes.NewReader(resp.Body()))
+	err = decoder.Decode(&respObj)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 //
@@ -115,6 +164,8 @@ func (c *App) executeQyapiGet(path string, req urlValuer, respObj interface{}, w
 
 	// fmt.Println(url)
 	// fmt.Println(urlStr)
+
+	// resp, err := resty.R().Get("http://httpbin.org/get")
 
 	resp, err := c.opts.HTTP.Get(urlStr)
 	if err != nil {

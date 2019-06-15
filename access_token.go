@@ -1,26 +1,32 @@
 package WechatWork
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/cenkalti/backoff"
+	"github.com/dfang/wechat-work-go/models"
+	"gopkg.in/resty.v1"
 )
 
 // getAccessToken 获取 access token
-func (c *App) getAccessToken() (RespAccessToken, error) {
-	req := reqAccessToken{
-		CorpID:     c.CorpID,
-		CorpSecret: c.CorpSecret,
-	}
-
-	var resp RespAccessToken
-	err := c.executeQyapiGet("/cgi-bin/gettoken", req, &resp, false)
+// https://work.weixin.qq.com/api/doc#90000/90135/91039
+func (c *App) getAccessToken() (models.RespAccessToken, error) {
+	apiPath := "/cgi-bin/gettoken"
+	resty.SetHostURL("https://qyapi.weixin.qq.com")
+	resty.SetQueryParam("corpid", c.CorpID)
+	resty.SetQueryParam("corpsecret", c.CorpSecret)
+	// resty.SetDebug(true)
+	resp, err := resty.R().Get(apiPath)
 	if err != nil {
-		// TODO: error_chain
-		return RespAccessToken{}, err
+		return models.RespAccessToken{}, err
 	}
-
-	return resp, nil
+	var data models.RespAccessToken
+	err = json.Unmarshal(resp.Body(), &data)
+	if err != nil {
+		return models.RespAccessToken{}, err
+	}
+	return data, nil
 }
 
 // SyncAccessToken 同步该客户端实例的 access token

@@ -1,13 +1,15 @@
 package WechatWork
 
+import "github.com/dfang/wechat-work-go/models"
+
 // CreateAppChat 创建群聊会话
-func (c *App) CreateAppChat(req ReqAppChatCreate) (RespAppChatCreate, error) {
+func (c *App) CreateAppChat(req models.ReqAppChatCreate) (models.RespAppChatCreate, error) {
 	// /cgi-bin/appchat/create?access_token=ACCESS_TOKEN
 	apiPath := "/cgi-bin/appchat/create"
-	var resp RespAppChatCreate
+	var resp models.RespAppChatCreate
 	err := c.executeQyapiJSONPost(apiPath, req, &resp, true)
 	if err != nil {
-		return RespAppChatCreate{}, err
+		return models.RespAppChatCreate{}, err
 	}
 
 	return resp, nil
@@ -15,13 +17,13 @@ func (c *App) CreateAppChat(req ReqAppChatCreate) (RespAppChatCreate, error) {
 }
 
 // UpdateAppChat 修改群聊会话
-func (c *App) UpdateAppChat(req ReqAppChatUpdate) (RespCommon, error) {
+func (c *App) UpdateAppChat(req models.ReqAppChatUpdate) (models.RespCommon, error) {
 	// /cgi-bin/appchat/update?access_token=ACCESS_TOKEN
 	apiPath := "/cgi-bin/appchat/update"
-	var resp RespCommon
+	var resp models.RespCommon
 	err := c.executeQyapiJSONPost(apiPath, req, &resp, true)
 	if err != nil {
-		return RespCommon{}, err
+		return models.RespCommon{}, err
 	}
 
 	return resp, nil
@@ -29,34 +31,34 @@ func (c *App) UpdateAppChat(req ReqAppChatUpdate) (RespCommon, error) {
 }
 
 // GetAppChat 获取群聊会话
-func (c *App) GetAppChat(chatid string) (RespAppChatGet, error) {
+func (c *App) GetAppChat(chatid string) (models.RespAppChatGet, error) {
 	// /cgi-bin/appchat/get?access_token=ACCESS_TOKEN&chatid=CHATID
 	apiPath := "/cgi-bin/appchat/get"
 
-	req := ReqAppChatGet{
+	req := models.ReqAppChatGet{
 		AccessToken: c.AccessToken,
 		ChatID:      chatid,
 	}
-	var resp RespAppChatGet
+	var resp models.RespAppChatGet
 	err := c.executeQyapiGet(apiPath, req, &resp, true)
 
 	if err != nil {
-		return RespAppChatGet{}, err
+		return models.RespAppChatGet{}, err
 	}
 
 	return resp, nil
 }
 
 // SendAppChat 发送群聊会话(应用推送消息)
-func (c *App) SendAppChat(appchat bodyer) (RespCommon, error) {
+func (c *App) SendAppChat(appchat bodyer) (models.RespCommon, error) {
 	// /cgi-bin/appchat/send?access_token=ACCESS_TOKEN
 	apiPath := "/cgi-bin/appchat/send"
 	// req := sendable
-	var resp RespCommon
+	var resp models.RespCommon
 	err := c.executeQyapiJSONPost(apiPath, appchat, &resp, true)
 	if err != nil {
 		// TODO: error_chain
-		return RespCommon{}, err
+		return models.RespCommon{}, err
 	}
 	return resp, nil
 }
