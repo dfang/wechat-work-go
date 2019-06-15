@@ -1,0 +1,6 @@
+language: go
+
+go:
+- refactor
+
+script: go test -v ./...
