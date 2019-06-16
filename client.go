@@ -1,4 +1,5 @@
 // Package wechatwork 企业微信api的封装
+//
 // https://work.weixin.qq.com/api/doc#90000/90003/90556
 package wechatwork
 
@@ -23,8 +24,9 @@ type WechatWork struct {
 type App struct {
 	*WechatWork
 
-	// CorpSecret 应用的凭证密钥，必填
+	// CorpSecret 应用的凭证密钥，其实应该叫AgentSecret更好，必填
 	CorpSecret string
+
 	// AgentID 应用 ID，必填
 	AgentID int64
 
@@ -40,17 +42,17 @@ type App struct {
 	ExpiresIn int64 `json:"expires_in"`
 }
 
-// New 构造一个 WechatWork 客户端对象，需要提供企业 ID
+// New 构造一个 WechatWork 对象，需要提供企业 ID
 func New(corpID string) *WechatWork {
 	return &WechatWork{
 		CorpID: corpID,
 	}
 }
 
-// WithApp 构造本企业下某自建 app 的客户端
-func (c *WechatWork) WithApp(corpSecret string, agentID int64) *App {
+// WithApp 构造本企业下某自建 app 的对象
+func (app *WechatWork) WithApp(corpSecret string, agentID int64) *App {
 	return &App{
-		WechatWork: c,
+		WechatWork: app,
 
 		CorpSecret: corpSecret,
 		AgentID:    agentID,
@@ -74,7 +76,7 @@ func (c *App) NewRestyClient() *resty.Client {
 func (c *App) NewRequest(path string, qs urlValuer, withAccessToken bool) *resty.Request {
 	client := resty.New()
 	client.SetDebug(true)
-	// client.SetLogger(os.Stdout)
+	client.SetLogger(os.Stdout)
 	client.SetHostURL("https://qyapi.weixin.qq.com")
 
 	values := url.Values{}
@@ -101,7 +103,7 @@ func (c *App) NewRequest(path string, qs urlValuer, withAccessToken bool) *resty
 	return req
 }
 
-// Get  Get 请求的api调用
+// Get 一切get请求的api调用可使用此方法
 func (c *App) Get(path string, qs urlValuer, respObj interface{}, withAccessToken bool) error {
 	client := resty.New()
 	// client.SetDebug(true)
@@ -111,9 +113,6 @@ func (c *App) Get(path string, qs urlValuer, respObj interface{}, withAccessToke
 	if valuer, ok := qs.(urlValuer); ok {
 		values = valuer.IntoURLValues()
 	}
-
-	// c.SpawnAccessTokenRefresher()
-	// values.Add("access_token", c.AccessToken)
 
 	if withAccessToken {
 		c.SyncAccessToken()
@@ -136,7 +135,9 @@ func (c *App) Get(path string, qs urlValuer, respObj interface{}, withAccessToke
 	return nil
 }
 
-// Post Post 请求的api调用
+// Post 一切Post请求的api调用使用此方法
+//
+// 企业微信中，删除操作一般都是GET请求，更新操作、批量删除成员是POST请求，没有PUT、PATCH、DELETE
 func (c *App) Post(path string, qs urlValuer, body bodyer, respObj interface{}, withAccessToken bool) (interface{}, error) {
 	// url := c.composeQyapiURLWithToken(path, req, withAccessToken)
 	// urlStr := url.String()

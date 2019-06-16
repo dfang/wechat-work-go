@@ -40,20 +40,4 @@ var _ = Describe("Client", func() {
 			Expect(u.Query().Get("access_token")).NotTo(Equal(""))
 		})
 	})
-
 })
-
-// var _ = Describe("Articles", func() {
-// 	It("returns a list of articles", func() {
-// 		fixture := `{"status":{"message": "Your message", "code": 200}}`
-// 		responder := httpmock.NewStringResponder(200, fixture)
-// 		fakeUrl := "https://api.mybiz.com/articles.json"
-// 		httpmock.RegisterResponder("GET", fakeUrl, responder)
-
-// 		// fetch the article into struct
-// 		articleObject := &models.Article{}
-// 		_, err := resty.R().SetResult(articleObject).Get(fakeUrl)
-
-// 		// do stuff with the article object ...
-// 	})
-// })
