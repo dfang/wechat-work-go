@@ -1,6 +1,10 @@
 module github.com/dfang/wechat-work-go
 
 require (
-	github.com/cenkalti/backoff v2.1.1+incompatible
-	github.com/smartystreets/goconvey v0.0.0-20190306220146-200a235640ff
+	github.com/jarcoal/httpmock v1.0.4
+	github.com/joho/godotenv v1.3.0
+	github.com/onsi/ginkgo v1.8.0
+	github.com/onsi/gomega v1.5.0
+	github.com/smartystreets/goconvey v0.0.0-20190330032615-68dc04aab96a
+	gopkg.in/resty.v1 v1.12.0
 )
