@@ -2,7 +2,6 @@ package wechatwork
 
 import (
 	"fmt"
-	"log"
 	"sync"
 	"time"
 
@@ -22,11 +21,11 @@ func (app *App) getAccessToken() (models.RespAccessToken, error) {
 	var data models.RespAccessToken
 	resp, err := resty.R().SetResult(&data).Get(apiPath)
 	if err != nil {
-		log.Println("err when request gettoken api")
-		fmt.Println(err)
-		fmt.Println(resp.Status())
-		fmt.Println(resp.StatusCode())
-		fmt.Printf("%+v\n", data)
+		// log.Println("err when request gettoken api")
+		// fmt.Println(err)
+		// fmt.Println(resp.Status())
+		// fmt.Println(resp.StatusCode())
+		// fmt.Printf("%+v\n", data)
 		return models.RespAccessToken{}, err
 	}
 
@@ -44,10 +43,10 @@ func (app *App) getAccessToken() (models.RespAccessToken, error) {
 		panic("请检查CorpSecret 参数")
 	}
 
-	fmt.Println("get token ......")
-	fmt.Println(resp.Status())
+	// fmt.Println("get token ......")
+	// fmt.Println(resp.Status())
 	fmt.Println(resp.StatusCode())
-	fmt.Printf("%+v\n", data)
+	// fmt.Printf("%+v\n", data)
 
 	// 全局错误码 https://work.weixin.qq.com/api/doc#90000/90139/90313
 	// -1 表示系统繁忙
@@ -85,9 +84,9 @@ func (app *App) AccessTokenRefresher(o *sync.Once) {
 		for {
 			select {
 			case <-ticker.C:
-				fmt.Println(".........tock .....")
-				fmt.Println("access_token", app.AccessToken)
-				fmt.Println("expires_in", app.ExpiresIn)
+				// fmt.Println(".........tock .....")
+				// fmt.Println("access_token", app.AccessToken)
+				// fmt.Println("expires_in", app.ExpiresIn)
 				if app.ExpiresIn <= 7140 {
 					fmt.Println("expires_in 剩余时间不多，重新获取access_token")
 					// 如果ExpiresIn < 10 分钟那就重新发起请求获取

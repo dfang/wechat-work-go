@@ -37,7 +37,7 @@ type App struct {
 	// refreshTokenResponseChan chan refreshTokenResult // chan {token, err}
 
 	// Token     string `json:"access_token"`
-	ExpiresIn int64 `json:"expires_in"`
+	ExpiresIn int `json:"expires_in"`
 }
 
 // New 构造一个 WechatWork 对象，需要提供企业 ID

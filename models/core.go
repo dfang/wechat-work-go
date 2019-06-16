@@ -40,5 +40,5 @@ type RespAccessToken struct {
 	RespCommon
 
 	AccessToken   string `json:"access_token"`
-	ExpiresInSecs int64  `json:"expires_in"`
+	ExpiresInSecs int    `json:"expires_in"`
 }

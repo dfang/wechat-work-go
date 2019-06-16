@@ -1,67 +1,43 @@
 package wechatwork_test
 
 import (
-	"fmt"
-
-	wechatwork "github.com/dfang/wechat-work-go"
-	"github.com/dfang/wechat-work-go/models"
-	"github.com/jarcoal/httpmock"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"gopkg.in/resty.v1"
 )
 
 var _ = Describe("Access Token", func() {
 	BeforeEach(func() {
 		// httpmock.ActivateNonDefault(resty.DefaultClient.GetClient())
-		httpmock.ActivateNonDefault(wechatwork.NewDefaultRestyClient().GetClient())
 	})
 
-	It("should retry when wxqy returns system is busy", func() {
-		fixture := `{"errcode": -1, "errmsg": "system is busy"}`
-		responder := httpmock.NewStringResponder(200, fixture)
-		fakeUrl := "https://api.mybiz.com/articles.json"
-		httpmock.RegisterResponder("GET", fakeUrl, responder)
-		// app.SyncAccessToken()
-		var data models.RespAccessToken
-		resp, err := resty.R().SetResult(&data).Get(fakeUrl)
-		if err != nil {
-			fmt.Println(err)
-		}
+	Context("Access Token", func() {
 
-		fmt.Printf("%+v\n", data)
-		fmt.Println(string(resp.Body()))
-		fmt.Println(data.AccessToken)
-		fmt.Println(data.ExpiresInSecs)
-		fmt.Println(data.ErrCode)
-		fmt.Println(data.ErrMsg)
-		// Expect(resp.Status()).To(Equal(200))
-		// TODO: Mock here
-		// return -1
-	})
+		It("shoule panic when either corpid or corpsecret not correct, and both not correct", func() {
+			// app.SpawnAccessTokenRefresher()
+			// TODO: don't know how to test yet
+			// JUST pass a wrong corpid or corpsecret, or both wrong ones
+			// and try to request access_token
+			// for now, there is a bug for wxqy, if both corpid and corpsecret are not correct
+			// getToken returns nothing
+			Expect(true).To(Equal(true))
+		})
 
-	It("should get access token", func() {
-		fmt.Println("token", app.AccessToken)
-		fmt.Println("expires_in", app.ExpiresIn)
+		It("should retry when wxqy server returns system is busy", func() {
+			// TODO: Mock here
+		})
 
-		app.SpawnAccessTokenRefresher()
+		It("should get access token, 运行了SpawnAccessTokenRefresher后, app.AccessToken应该不为空", func() {
+			Expect(app.AccessToken).To(Equal(""))
+			Expect(app.ExpiresIn).To(Equal(0))
 
-		// time.Sleep(time.Second * 600)
-		// app.SyncAccessToken()
-		fmt.Println("###asdfasdf")
-		fmt.Println(app.AccessToken)
-		Expect(app.AccessToken).NotTo(BeNil())
-	})
+			app.SyncAccessToken()
+			// app.SpawnAccessTokenRefresher()
+			// time.Sleep(time.Second * 5)
 
-	It("运行了SyncAccessToken后, app.AccessToken应该不为空", func() {
-		fmt.Println("token", app.AccessToken)
-		fmt.Println("expires_in", app.ExpiresIn)
+			Expect(app.AccessToken).NotTo(BeNil())
+			Expect(app.AccessToken).NotTo(Equal(""))
+		})
 
-		// app.SyncAccessToken()
-		app.SpawnAccessTokenRefresher()
-		fmt.Println("###asdfasdf")
-		fmt.Println(app.AccessToken)
-		Expect(app.AccessToken).NotTo(BeNil())
 	})
 
 })
