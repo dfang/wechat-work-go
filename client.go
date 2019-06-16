@@ -5,16 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"os"
 	"sync"
-	"time"
 
 	"github.com/go-resty/resty"
 )
 
 // WechatWork 企业微信客户端
 type WechatWork struct {
-	opts options
-
 	// CorpID 企业 ID，必填
 	CorpID string
 }
@@ -28,23 +26,21 @@ type App struct {
 	// AgentID 应用 ID，必填
 	AgentID int64
 
-	tokenMu        *sync.RWMutex
-	AccessToken    string
-	tokenExpiresIn time.Duration
-	lastRefresh    time.Time
+	tokenMu     *sync.RWMutex
+	AccessToken string
+	// tokenExpiresIn time.Duration
+	// lastRefresh    time.Time
+
+	// refreshTokenRequestChan chan string // chan currentToken
+	// refreshTokenResponseChan chan refreshTokenResult // chan {token, err}
+
+	// Token     string `json:"access_token"`
+	ExpiresIn int64 `json:"expires_in"`
 }
 
 // New 构造一个 WechatWork 客户端对象，需要提供企业 ID
-func New(corpID string, opts ...ctorOption) *WechatWork {
-	optionsObj := defaultOptions()
-
-	for _, o := range opts {
-		o.ApplyTo(&optionsObj)
-	}
-
+func New(corpID string) *WechatWork {
 	return &WechatWork{
-		opts: optionsObj,
-
 		CorpID: corpID,
 	}
 }
@@ -59,21 +55,57 @@ func (c *WechatWork) WithApp(corpSecret string, agentID int64) *App {
 
 		tokenMu:     &sync.RWMutex{},
 		AccessToken: "",
-		lastRefresh: time.Time{},
+		// lastRefresh: time.Time{},
 	}
 }
 
-// Get Get 请求
-func (c *App) Get(path string, req urlValuer, respObj interface{}, withAccessToken bool) error {
-	// url := c.composeQyapiURLWithToken(path, req, withAccessToken)
-	// urlStr := url.String()
+func (c *App) NewRestyClient() *resty.Client {
+	client := resty.New()
+	// client.SetDebug(true)
+	client.SetHostURL("https://qyapi.weixin.qq.com")
+	client.SetDebug(true)
+	return client
+}
 
+// NewRequest return resty.Request with right url
+func (c *App) NewRequest(path string, qs urlValuer, withAccessToken bool) *resty.Request {
 	client := resty.New()
 	client.SetDebug(true)
+	// client.SetLogger(os.Stdout)
 	client.SetHostURL("https://qyapi.weixin.qq.com")
 
 	values := url.Values{}
-	if valuer, ok := req.(urlValuer); ok {
+	if valuer, ok := qs.(urlValuer); ok {
+		values = valuer.IntoURLValues()
+	}
+
+	if withAccessToken {
+		c.SyncAccessToken()
+		// c.SpawnAccessTokenRefresher()
+		if c.AccessToken != "" {
+			if values.Get("access_token") != "" {
+				values.Set("access_token", c.AccessToken)
+			} else {
+				values.Add("access_token", c.AccessToken)
+			}
+		}
+	}
+
+	url := path + "?" + values.Encode()
+	// client.R().URL = url
+	req := client.NewRequest()
+	req.URL = url
+	return req
+}
+
+// Get  Get 请求的api调用
+func (c *App) Get(path string, qs urlValuer, respObj interface{}, withAccessToken bool) error {
+	client := resty.New()
+	// client.SetDebug(true)
+	client.SetHostURL("https://qyapi.weixin.qq.com")
+
+	values := url.Values{}
+	if valuer, ok := qs.(urlValuer); ok {
 		values = valuer.IntoURLValues()
 	}
 
@@ -83,21 +115,61 @@ func (c *App) Get(path string, req urlValuer, respObj interface{}, withAccessTok
 	if withAccessToken {
 		c.SyncAccessToken()
 		// c.SpawnAccessTokenRefresher()
-
 		if c.AccessToken != "" {
-			values.Add("access_token", c.AccessToken)
+			if values.Get("access_token") != "" {
+				values.Set("access_token", c.AccessToken)
+			} else {
+				values.Add("access_token", c.AccessToken)
+			}
 		}
+	}
 
-		// fmt.Println(c.AccessToken)
+	url := path + "?" + values.Encode()
+	resp, err := client.R().SetResult(respObj).Get(url)
+	if err != nil {
+		fmt.Fprintln(os.Stdout, resp.Body())
+		panic(err)
+	}
+	return nil
+}
+
+// Post Post 请求的api调用
+func (c *App) Post(path string, qs urlValuer, body bodyer, respObj interface{}, withAccessToken bool) (interface{}, error) {
+	// url := c.composeQyapiURLWithToken(path, req, withAccessToken)
+	// urlStr := url.String()
+	client := resty.New()
+	client.SetDebug(true)
+	client.SetHostURL("https://qyapi.weixin.qq.com")
+
+	values := url.Values{}
+	if valuer, ok := qs.(urlValuer); ok {
+		values = valuer.IntoURLValues()
+	}
+
+	if withAccessToken {
+		c.SyncAccessToken()
+		// c.SpawnAccessTokenRefresher()
+		if c.AccessToken != "" {
+			if values.Get("access_token") != "" {
+				values.Set("access_token", c.AccessToken)
+			} else {
+				values.Add("access_token", c.AccessToken)
+			}
+		}
 	}
 
 	url := path + "?" + values.Encode()
 
-	// fmt.Println(url)
+	b, _ := body.IntoBody()
+	// TODO
 
-	resp, err := client.R().Get(url)
+	resp, err := client.R().
+		SetHeader("Content-Type", "application/json").
+		SetBody(b).
+		SetResult(&respObj).
+		Post(url)
+
 	if err != nil {
-		// panic("err when requesting api request to qyapi.weixin.qq.com")
 		panic(err)
 	}
 	// defer resp.Close()
@@ -105,108 +177,7 @@ func (c *App) Get(path string, req urlValuer, respObj interface{}, withAccessTok
 	decoder := json.NewDecoder(bytes.NewReader(resp.Body()))
 	err = decoder.Decode(&respObj)
 	if err != nil {
-		return err
+		return respObj, err
 	}
-	return nil
-}
-
-//
-// impl App
-//
-
-func (c *App) composeQyapiURL(path string, req interface{}) *url.URL {
-	values := url.Values{}
-	if valuer, ok := req.(urlValuer); ok {
-		values = valuer.IntoURLValues()
-	}
-
-	// TODO: refactor
-	base, err := url.Parse(c.opts.QYAPIHost)
-	if err != nil {
-		// TODO: error_chain
-		panic(fmt.Sprintf("qyapiHost invalid: host=%s err=%+v", c.opts.QYAPIHost, err))
-	}
-
-	base.Path = path
-	base.RawQuery = values.Encode()
-
-	return base
-}
-
-func (c *App) composeQyapiURLWithToken(path string, req interface{}, withAccessToken bool) *url.URL {
-	url := c.composeQyapiURL(path, req)
-
-	if !withAccessToken {
-		return url
-	}
-
-	// intensive mutex juggling action
-	c.tokenMu.RLock()
-	if c.AccessToken == "" {
-		c.tokenMu.RUnlock() // RWMutex doesn't like recursive locking
-		// TODO: what to do with the possible error?
-		_ = c.SyncAccessToken()
-		c.tokenMu.RLock()
-	}
-	tokenToUse := c.AccessToken
-	c.tokenMu.RUnlock()
-
-	q := url.Query()
-	q.Set("access_token", tokenToUse)
-	url.RawQuery = q.Encode()
-
-	return url
-}
-
-func (c *App) executeQyapiGet(path string, req urlValuer, respObj interface{}, withAccessToken bool) error {
-	url := c.composeQyapiURLWithToken(path, req, withAccessToken)
-	urlStr := url.String()
-
-	// fmt.Println(url)
-	// fmt.Println(urlStr)
-
-	// resp, err := resty.R().Get("http://httpbin.org/get")
-
-	resp, err := c.opts.HTTP.Get(urlStr)
-	if err != nil {
-		// TODO: error_chain
-		return err
-	}
-	defer resp.Body.Close()
-
-	decoder := json.NewDecoder(resp.Body)
-	err = decoder.Decode(respObj)
-	if err != nil {
-		// TODO: error_chain
-		return err
-	}
-
-	return nil
-}
-
-func (c *App) executeQyapiJSONPost(path string, req bodyer, respObj interface{}, withAccessToken bool) error {
-	url := c.composeQyapiURLWithToken(path, req, withAccessToken)
-	urlStr := url.String()
-
-	body, err := req.IntoBody()
-	if err != nil {
-		// TODO: error_chain
-		return err
-	}
-
-	resp, err := c.opts.HTTP.Post(urlStr, "application/json", bytes.NewReader(body))
-	if err != nil {
-		// TODO: error_chain
-		return err
-	}
-	defer resp.Body.Close()
-
-	decoder := json.NewDecoder(resp.Body)
-	err = decoder.Decode(respObj)
-	if err != nil {
-		// TODO: error_chain
-		return err
-	}
-
-	return nil
+	return respObj, nil
 }

@@ -23,6 +23,12 @@ export AGENT_ID=zzzzzz
 
 运行单个测试，比如只运行access_token_test.go的测试
 ginkgo -v -focus='access_token'
+
+或者
+go test -v wechat_work_go_suite_test.go client_test.go
+
+watch mode  
+ginkgo watch -v -focus='access_token*'
 ```
 
 ## Credits
