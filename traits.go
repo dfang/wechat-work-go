@@ -1,4 +1,4 @@
-package WechatWork
+package wechatwork
 
 import (
 	"net/url"

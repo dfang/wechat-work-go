@@ -1,20 +1,20 @@
-package WechatWork_test
+package wechatwork_test
 
 import (
 	"os"
 	"strconv"
 	"testing"
 
-	WechatWork "github.com/dfang/wechat-work-go"
-	"github.com/go-resty/resty"
+	wechatwork "github.com/dfang/wechat-work-go"
 	"github.com/jarcoal/httpmock"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"gopkg.in/resty.v1"
 
 	_ "github.com/joho/godotenv/autoload"
 )
 
-var app *WechatWork.App
+var app *wechatwork.App
 
 func TestWechatWorkGo(t *testing.T) {
 
@@ -27,7 +27,7 @@ var _ = BeforeSuite(func() {
 	corpSecret := os.Getenv("CORP_SECRET")
 	agentID, _ := strconv.ParseInt(os.Getenv("AGENT_ID"), 10, 64)
 
-	client := WechatWork.New(corpID)
+	client := wechatwork.New(corpID)
 	app = client.WithApp(corpSecret, agentID)
 
 	// block all HTTP requests

@@ -1,13 +1,13 @@
-package WechatWork_test
+package wechatwork_test
 
 import (
 	"fmt"
 
 	"github.com/dfang/wechat-work-go/models"
-	"github.com/go-resty/resty"
 	"github.com/jarcoal/httpmock"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"gopkg.in/resty.v1"
 )
 
 var _ = Describe("Access Token", func() {

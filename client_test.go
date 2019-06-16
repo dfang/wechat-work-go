@@ -1,15 +1,14 @@
-package WechatWork_test
+package wechatwork_test
 
 import (
 	"fmt"
 	"net/url"
 	"strconv"
 
-	// . "github.com/dfang/wechat-work-go"
 	"github.com/dfang/wechat-work-go/models"
-	"github.com/go-resty/resty"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"gopkg.in/resty.v1"
 )
 
 var _ = Describe("Client", func() {

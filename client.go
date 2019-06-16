@@ -1,4 +1,6 @@
-package WechatWork
+// Package wechatwork 企业微信api的封装
+// https://work.weixin.qq.com/api/doc#90000/90003/90556
+package wechatwork
 
 import (
 	"bytes"
@@ -8,7 +10,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/go-resty/resty"
+	"gopkg.in/resty.v1"
 )
 
 // WechatWork 企业微信客户端
@@ -59,9 +61,10 @@ func (c *WechatWork) WithApp(corpSecret string, agentID int64) *App {
 	}
 }
 
+// NewRestyClient 返回一个resty 的client
 func (c *App) NewRestyClient() *resty.Client {
 	client := resty.New()
-	// client.SetDebug(true)
+	client.SetDebug(true)
 	client.SetHostURL("https://qyapi.weixin.qq.com")
 	client.SetDebug(true)
 	return client
