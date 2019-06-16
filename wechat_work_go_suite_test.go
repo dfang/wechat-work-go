@@ -6,10 +6,8 @@ import (
 	"testing"
 
 	wechatwork "github.com/dfang/wechat-work-go"
-	"github.com/jarcoal/httpmock"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"gopkg.in/resty.v1"
 
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -31,5 +29,5 @@ var _ = BeforeSuite(func() {
 	app = client.WithApp(corpSecret, agentID)
 
 	// block all HTTP requests
-	httpmock.ActivateNonDefault(resty.DefaultClient.GetClient())
+	// httpmock.ActivateNonDefault(resty.DefaultClient.GetClient())
 })

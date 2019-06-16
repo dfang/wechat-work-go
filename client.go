@@ -4,8 +4,6 @@
 package wechatwork
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"net/url"
 	"os"
@@ -63,21 +61,18 @@ func (app *WechatWork) WithApp(corpSecret string, agentID int64) *App {
 	}
 }
 
-// NewRestyClient 返回一个resty 的client
-func (c *App) NewRestyClient() *resty.Client {
-	client := resty.New()
-	client.SetDebug(true)
-	client.SetHostURL("https://qyapi.weixin.qq.com")
-	client.SetDebug(true)
-	return client
-}
-
-// NewRequest return resty.Request with right url
-func (c *App) NewRequest(path string, qs urlValuer, withAccessToken bool) *resty.Request {
+// NewDefaultRestyClient 返回一个resty 的client
+func NewDefaultRestyClient() *resty.Client {
 	client := resty.New()
 	client.SetDebug(true)
 	client.SetLogger(os.Stdout)
 	client.SetHostURL("https://qyapi.weixin.qq.com")
+	return client
+}
+
+// NewRequest return resty.Request with right url, right configuration
+func (app *App) NewRequest(path string, qs urlValuer, withAccessToken bool) *resty.Request {
+	client := NewDefaultRestyClient()
 
 	values := url.Values{}
 	if valuer, ok := qs.(urlValuer); ok {
@@ -85,49 +80,28 @@ func (c *App) NewRequest(path string, qs urlValuer, withAccessToken bool) *resty
 	}
 
 	if withAccessToken {
-		c.SyncAccessToken()
-		// c.SpawnAccessTokenRefresher()
-		if c.AccessToken != "" {
+		app.SyncAccessToken()
+		if app.AccessToken != "" {
 			if values.Get("access_token") != "" {
-				values.Set("access_token", c.AccessToken)
+				values.Set("access_token", app.AccessToken)
 			} else {
-				values.Add("access_token", c.AccessToken)
+				values.Add("access_token", app.AccessToken)
 			}
 		}
 	}
 
 	url := path + "?" + values.Encode()
-	// client.R().URL = url
 	req := client.NewRequest()
 	req.URL = url
 	return req
 }
 
 // Get 一切get请求的api调用可使用此方法
-func (c *App) Get(path string, qs urlValuer, respObj interface{}, withAccessToken bool) error {
-	client := resty.New()
-	// client.SetDebug(true)
-	client.SetHostURL("https://qyapi.weixin.qq.com")
-
-	values := url.Values{}
-	if valuer, ok := qs.(urlValuer); ok {
-		values = valuer.IntoURLValues()
-	}
-
-	if withAccessToken {
-		c.SyncAccessToken()
-		// c.SpawnAccessTokenRefresher()
-		if c.AccessToken != "" {
-			if values.Get("access_token") != "" {
-				values.Set("access_token", c.AccessToken)
-			} else {
-				values.Add("access_token", c.AccessToken)
-			}
-		}
-	}
-
-	url := path + "?" + values.Encode()
-	resp, err := client.R().SetResult(respObj).Get(url)
+//
+// 企业微信中，获取操作和删除都是GET请求
+func (app *App) Get(path string, qs urlValuer, respObj interface{}, withAccessToken bool) error {
+	req := app.NewRequest(path, qs, withAccessToken)
+	resp, err := req.SetResult(&respObj).Get(req.URL)
 	if err != nil {
 		fmt.Fprintln(os.Stdout, resp.Body())
 		panic(err)
@@ -138,50 +112,19 @@ func (c *App) Get(path string, qs urlValuer, respObj interface{}, withAccessToke
 // Post 一切Post请求的api调用使用此方法
 //
 // 企业微信中，删除操作一般都是GET请求，更新操作、批量删除成员是POST请求，没有PUT、PATCH、DELETE
-func (c *App) Post(path string, qs urlValuer, body bodyer, respObj interface{}, withAccessToken bool) (interface{}, error) {
-	// url := c.composeQyapiURLWithToken(path, req, withAccessToken)
-	// urlStr := url.String()
-	client := resty.New()
-	client.SetDebug(true)
-	client.SetHostURL("https://qyapi.weixin.qq.com")
-
-	values := url.Values{}
-	if valuer, ok := qs.(urlValuer); ok {
-		values = valuer.IntoURLValues()
-	}
-
-	if withAccessToken {
-		c.SyncAccessToken()
-		// c.SpawnAccessTokenRefresher()
-		if c.AccessToken != "" {
-			if values.Get("access_token") != "" {
-				values.Set("access_token", c.AccessToken)
-			} else {
-				values.Add("access_token", c.AccessToken)
-			}
-		}
-	}
-
-	url := path + "?" + values.Encode()
-
+func (app *App) Post(path string, qs urlValuer, body bodyer, respObj interface{}, withAccessToken bool) error {
 	b, _ := body.IntoBody()
 	// TODO
-
-	resp, err := client.R().
+	req := app.NewRequest(path, qs, withAccessToken)
+	resp, err := req.
 		SetHeader("Content-Type", "application/json").
 		SetBody(b).
 		SetResult(&respObj).
-		Post(url)
+		Post(req.URL)
 
 	if err != nil {
+		fmt.Fprintln(os.Stdout, resp.Body())
 		panic(err)
 	}
-	// defer resp.Close()
-
-	decoder := json.NewDecoder(bytes.NewReader(resp.Body()))
-	err = decoder.Decode(&respObj)
-	if err != nil {
-		return respObj, err
-	}
-	return respObj, nil
+	return nil
 }

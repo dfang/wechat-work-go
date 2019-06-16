@@ -3,6 +3,7 @@ package wechatwork_test
 import (
 	"fmt"
 
+	wechatwork "github.com/dfang/wechat-work-go"
 	"github.com/dfang/wechat-work-go/models"
 	"github.com/jarcoal/httpmock"
 	. "github.com/onsi/ginkgo"
@@ -13,7 +14,7 @@ import (
 var _ = Describe("Access Token", func() {
 	BeforeEach(func() {
 		// httpmock.ActivateNonDefault(resty.DefaultClient.GetClient())
-		httpmock.ActivateNonDefault(app.NewRestyClient().GetClient())
+		httpmock.ActivateNonDefault(wechatwork.NewDefaultRestyClient().GetClient())
 	})
 
 	It("should retry when wxqy returns system is busy", func() {
