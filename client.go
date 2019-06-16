@@ -81,11 +81,18 @@ func (app *App) NewRequest(path string, qs urlValuer, withAccessToken bool) *res
 
 	if withAccessToken {
 		app.SpawnAccessTokenRefresher()
-		if app.AccessToken != "" {
-			if values.Get("access_token") != "" {
-				values.Set("access_token", app.AccessToken)
+
+		for {
+		GOTO_LABEL:
+			if app.AccessToken != "" {
+				if values.Get("access_token") != "" {
+					values.Set("access_token", app.AccessToken)
+				} else {
+					values.Add("access_token", app.AccessToken)
+				}
+				break
 			} else {
-				values.Add("access_token", app.AccessToken)
+				goto GOTO_LABEL
 			}
 		}
 	}
