@@ -80,7 +80,7 @@ func (app *App) NewRequest(path string, qs urlValuer, withAccessToken bool) *res
 	}
 
 	if withAccessToken {
-		app.SyncAccessToken()
+		app.SpawnAccessTokenRefresher()
 		if app.AccessToken != "" {
 			if values.Get("access_token") != "" {
 				values.Set("access_token", app.AccessToken)
