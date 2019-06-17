@@ -1,0 +1,16 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "agent.go",
+        "appchat.go",
+        "contact.go",
+        "core.go",
+        "menu.go",
+        "message.go",
+        "user.go",
+    ],
+    importpath = "github.com/dfang/wechat-work-go/models",
+    visibility = ["//visibility:public"],
+)
