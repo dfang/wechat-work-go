@@ -102,7 +102,7 @@ func (app *App) NewRequest(path string, qs urlValuer, withAccessToken bool) *res
 		// 		break
 		// 	}
 		// }
-		token, _ := app.getAccessToken()
+		token, _ := app.GetAccessToken()
 		values.Set("access_token", token)
 	}
 
@@ -118,6 +118,22 @@ func (app *App) NewRequest(path string, qs urlValuer, withAccessToken bool) *res
 func (app *App) Get(path string, qs urlValuer, respObj interface{}, withAccessToken bool) error {
 	req := app.NewRequest(path, qs, withAccessToken)
 	resp, err := req.SetResult(&respObj).Get(req.URL)
+	if err != nil {
+		fmt.Fprintln(os.Stdout, resp.Body())
+		panic(err)
+	}
+	return nil
+}
+
+// SimpleGet
+//
+// url must be full
+func (app *App) SimpleGet(url string, respObj interface{}) error {
+	resp, err := NewDefaultRestyClient().R().
+		SetHeader("Accept", "application/json").
+		SetResult(&respObj).
+		Get(url)
+
 	if err != nil {
 		fmt.Fprintln(os.Stdout, resp.Body())
 		panic(err)
@@ -145,6 +161,24 @@ func (app *App) Post(path string, qs urlValuer, body bodyer, respObj interface{}
 	return nil
 }
 
+// SimplePost
+//
+// url must be full
+func (app *App) SimplePost(url string, body bodyer, respObj interface{}) error {
+	b, _ := body.IntoBody()
+	resp, err := NewDefaultRestyClient().R().
+		SetHeader("Content-Type", "application/json").
+		SetBody(b).
+		SetResult(&respObj).
+		Post(url)
+
+	if err != nil {
+		fmt.Fprintln(os.Stdout, resp.Body())
+		panic(err)
+	}
+	return nil
+}
+
 // // NewRequest return resty.Request with right url, right configuration
 // func (ctx *Context) NewRequest(path string, qs urlValuer, withAccessToken bool) *resty.Request {
 // 	client := NewDefaultRestyClient()
@@ -157,7 +191,7 @@ func (app *App) Post(path string, qs urlValuer, body bodyer, respObj interface{}
 // 	fmt.Println("with token is true")
 // 	if withAccessToken {
 // 		fmt.Println("spawn access token refresher")
-// 		token, _ := ctx.App.getAccessToken()
+// 		token, _ := ctx.App.GetAccessToken()
 // 		values.Set("access_token", token)
 // 	}
 

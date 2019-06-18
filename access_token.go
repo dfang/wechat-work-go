@@ -64,7 +64,7 @@ func (app *App) GetAccessTokenFromServer() (models.RespAccessToken, error) {
 	return result, nil
 }
 
-func (app *App) getAccessToken() (accessToken string, err error) {
+func (app *App) GetAccessToken() (accessToken string, err error) {
 	// ctx.accessTokenLock.Lock()
 	// defer ctx.accessTokenLock.Unlock()
 
@@ -87,7 +87,7 @@ func (app *App) getAccessToken() (accessToken string, err error) {
 
 // // SyncAccessToken 同步该app实例的 access token
 // func (app *App) SyncAccessToken() error {
-// 	tok, err := app.getAccessToken()
+// 	tok, err := app.GetAccessToken()
 // 	if err != nil {
 // 		fmt.Println(err)
 // 		return err

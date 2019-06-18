@@ -49,13 +49,13 @@ type RespAgentGet struct {
 
 // ReqAgentSet 设置应用请求
 type ReqAgentSet struct {
-	Agentid            int    `json:"agentid"`
+	AgentID            string `json:"agentid"`
 	ReportLocationFlag int    `json:"report_location_flag,omitempty"`
-	LogoMediaid        string `json:"logo_mediaid,omitempty"`
+	LogoMediaID        string `json:"logo_mediaid,omitempty"`
 	Name               string `json:"name,omitempty"`
 	Description        string `json:"description,omitempty"`
 	RedirectDomain     string `json:"redirect_domain,omitempty"`
-	Isreportenter      int    `json:"isreportenter,omitempty"`
+	IsReportEnter      int    `json:"isreportenter,omitempty"`
 	HomeURL            string `json:"home_url,omitempty"`
 }
 
