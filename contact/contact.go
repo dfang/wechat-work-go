@@ -1,4 +1,10 @@
-// Package contact 通讯录管理
+// Package contact 提供通讯录管理相关的接口
+//
+// 注意: 关于创建成员（客服答复）
+//
+// 目前只能使用通讯录的secret 获取token进行创建  其他的secret是没有创建成员的权限的
+//
+// 获取路径：通讯录管理secret。在“管理工具”-“通讯录同步”里面查看（需开启“API接口同步”）
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90193
 package contact
