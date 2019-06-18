@@ -16,7 +16,11 @@ var _ = Describe("成员管理", func() {
 	BeforeEach(func() {
 		corpID := os.Getenv("CORP_ID")
 		client := wechatwork.New(corpID)
-		app = client.WithApp("itvtE93S-5QoDunx5yBUhJTccGetSks4Ye6CSs5k5OA", 0)
+		contactAppSecret := os.Getenv("CONTACT_APP_SECRET")
+		// 关于创建成员（客服答复）
+		// 目前只能使用通讯录的secret 获取token进行创建  其他的secret是没有创建成员的权限的
+		// 获取路径：通讯录管理secret。在“管理工具”-“通讯录同步”里面查看（需开启“API接口同步”）
+		app = client.WithApp(contactAppSecret, 0)
 	})
 
 	Context("基本功能", func() {
@@ -75,8 +79,15 @@ var _ = Describe("成员管理", func() {
 		})
 
 		It("删除成员", func() {
-			// result, _ := app.DeleteMember("zhangsan")
-			// Expect(result.ErrCode).To(Equal(0))
+			result, _ := app.DeleteMember("zhangsan")
+			Expect(result.ErrCode).To(Equal(0))
+		})
+
+		It("部门列表", func() {
+			result, _ := app.ListDepartments("0")
+			Expect(result.ErrCode).To(Equal(0))
+			Expect(len(result.Department)).To(BeNumerically(">", 0))
+			// Ω(len(result.Department)).Should(BeNumerically(">", 0))
 		})
 
 		It("更新部门", func() {
@@ -90,11 +101,9 @@ var _ = Describe("成员管理", func() {
 			Expect(result.ErrCode).To(Equal(0))
 		})
 
-		It("部门列表", func() {
-			result, _ := app.ListDepartments("0")
+		It("删除部门", func() {
+			result, _ := app.DeleteDepartment("9999")
 			Expect(result.ErrCode).To(Equal(0))
-			Expect(len(result.Department)).To(BeNumerically(">", 0))
-			// Ω(len(result.Department)).Should(BeNumerically(">", 0))
 		})
 	})
 })
