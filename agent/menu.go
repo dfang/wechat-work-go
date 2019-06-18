@@ -17,8 +17,6 @@ type Menu struct {
 func (menu Menu) CreateMenu(agentID string, m models.Menu) (models.RespCommon, error) {
 	apiPath := "/cgi-bin/menu/create"
 	uri := fmt.Sprintf("%s?access_token=%s&agentid=%s", apiPath, menu.App.GetAccessToken(), agentID)
-	// qs := url.Values{}
-	// qs.Add("agentid", agentID)
 	var result models.RespCommon
 	err := menu.App.SimplePost(uri, m, &result)
 	if err != nil {

@@ -10,6 +10,8 @@
 package contact
 
 import (
+	"fmt"
+
 	wechatwork "github.com/dfang/wechat-work-go"
 	. "github.com/dfang/wechat-work-go/models"
 	"github.com/pkg/errors"
@@ -24,14 +26,14 @@ type Contact struct {
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90195
 func (contact Contact) CreateMember(req ReqMemberCreate) (RespMemberCreate, error) {
-	// resp, err := resty.R().Get("http://httpbin.org/get")
 	apiPath := "cgi-bin/user/create"
-	var data RespMemberCreate
-	err := contact.App.Post(apiPath, nil, req, &data, true)
+	uri := fmt.Sprintf("%s?access_token=%s", apiPath, contact.App.GetAccessToken())
+	var result RespMemberCreate
+	err := contact.App.SimplePost(uri, req, &result)
 	if err != nil {
 		return RespMemberCreate{}, err
 	}
-	return data, nil
+	return result, nil
 }
 
 // GetMember 获取成员详情

@@ -162,12 +162,12 @@ func (app *App) Post(path string, qs urlValuer, body bodyer, respObj interface{}
 
 // SimplePost just like resty.SetBody(b).SetReult(&respObj).Post(url)
 //
+// resty can Automatically marshal and unmarshal
 // note: url must be full
-func (app *App) SimplePost(url string, body bodyer, respObj interface{}) error {
-	b, _ := body.IntoBody()
+func (app *App) SimplePost(url string, body interface{}, respObj interface{}) error {
 	resp, err := NewDefaultRestyClient().R().
 		SetHeader("Content-Type", "application/json").
-		SetBody(b).
+		SetBody(body).
 		SetResult(&respObj).
 		Post(url)
 
