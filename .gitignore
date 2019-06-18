@@ -191,3 +191,5 @@ $RECYCLE.BIN/
 
 .env
 tmp
+
+*/.env

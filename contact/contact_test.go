@@ -1,4 +1,4 @@
-package wechatwork_test
+package contact_test
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 
 	// wechatwork "github.com/dfang/wechat-work-go"
 	wechatwork "github.com/dfang/wechat-work-go"
+	"github.com/dfang/wechat-work-go/contact"
 	"github.com/dfang/wechat-work-go/models"
 
 	. "github.com/onsi/ginkgo"
@@ -13,6 +14,7 @@ import (
 )
 
 var _ = Describe("成员管理", func() {
+	var c contact.Contact
 	BeforeEach(func() {
 		corpID := os.Getenv("CORP_ID")
 		client := wechatwork.New(corpID)
@@ -20,7 +22,16 @@ var _ = Describe("成员管理", func() {
 		// 关于创建成员（客服答复）
 		// 目前只能使用通讯录的secret 获取token进行创建  其他的secret是没有创建成员的权限的
 		// 获取路径：通讯录管理secret。在“管理工具”-“通讯录同步”里面查看（需开启“API接口同步”）
-		app = client.WithApp(contactAppSecret, 0)
+		app := client.WithApp(contactAppSecret, 0)
+		// contact := Contact {
+		// 	ctx:
+		// }
+		// Contact{
+		// 	ctx:
+		// }
+		c = contact.Contact{
+			App: app,
+		}
 	})
 
 	Context("基本功能", func() {
@@ -33,7 +44,7 @@ var _ = Describe("成员管理", func() {
 			}
 
 			fmt.Println(data)
-			result, _ := app.CreateDepartment(data)
+			result, _ := c.CreateDepartment(data)
 			fmt.Println(result)
 
 			Expect(result.ErrCode).To(Equal(0))
@@ -49,14 +60,14 @@ var _ = Describe("成员管理", func() {
 			}
 
 			fmt.Println(data)
-			result, _ := app.CreateMember(data)
+			result, _ := c.CreateMember(data)
 			fmt.Println(result)
 
 			Expect(result.ErrCode).To(Equal(0))
 		})
 
 		It("获取成员", func() {
-			result, _ := app.GetMember("zhangsan")
+			result, _ := c.GetMember("zhangsan")
 			fmt.Println(result)
 			Expect(result.UserID).To(Equal("zhangsan"))
 		})
@@ -68,23 +79,23 @@ var _ = Describe("成员管理", func() {
 				Department: []int{9999},
 				Mobile:     "12345678901",
 			}
-			result, _ := app.UpdateMember(m)
+			result, _ := c.UpdateMember(m)
 			Expect(result.ErrCode).To(Equal(0))
 		})
 
 		It("获取部门成员", func() {
-			result, _ := app.ListMembers("9999", false)
+			result, _ := c.ListMembers("9999", false)
 			fmt.Println(result)
 			Expect(len(result.Userlist)).To(Equal(1))
 		})
 
 		It("删除成员", func() {
-			result, _ := app.DeleteMember("zhangsan")
+			result, _ := c.DeleteMember("zhangsan")
 			Expect(result.ErrCode).To(Equal(0))
 		})
 
 		It("部门列表", func() {
-			result, _ := app.ListDepartments("0")
+			result, _ := c.ListDepartments("0")
 			Expect(result.ErrCode).To(Equal(0))
 			Expect(len(result.Department)).To(BeNumerically(">", 0))
 			// Ω(len(result.Department)).Should(BeNumerically(">", 0))
@@ -97,12 +108,12 @@ var _ = Describe("成员管理", func() {
 				Order:    1,
 				ID:       9999,
 			}
-			result, _ := app.UpdateDepartment(m)
+			result, _ := c.UpdateDepartment(m)
 			Expect(result.ErrCode).To(Equal(0))
 		})
 
 		It("删除部门", func() {
-			result, _ := app.DeleteDepartment("9999")
+			result, _ := c.DeleteDepartment("9999")
 			Expect(result.ErrCode).To(Equal(0))
 		})
 	})
