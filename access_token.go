@@ -64,25 +64,23 @@ func (app *App) GetAccessTokenFromServer() (models.RespAccessToken, error) {
 	return result, nil
 }
 
-func (app *App) GetAccessToken() (accessToken string, err error) {
+func (app *App) GetAccessToken() string {
 	// ctx.accessTokenLock.Lock()
 	// defer ctx.accessTokenLock.Unlock()
 
 	accessTokenCacheKey := fmt.Sprintf("access_token_%d", app.AgentID)
 	val := app.Cache.Get(accessTokenCacheKey)
 	if val != nil {
-		accessToken = val.(string)
-		return
+		return val.(string)
 	}
 
 	//从微信服务器获取
 	var result models.RespAccessToken
-	result, err = app.GetAccessTokenFromServer()
+	result, err := app.GetAccessTokenFromServer()
 	if err != nil {
-		return
+		panic(err)
 	}
-	accessToken = result.AccessToken
-	return
+	return result.AccessToken
 }
 
 // // SyncAccessToken 同步该app实例的 access token
