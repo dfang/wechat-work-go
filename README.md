@@ -5,6 +5,7 @@
 [![Travis](https://travis-ci.com/dfang/wechat-work-go.svg?branch=refactor)](https://travis-ci.com/dfang/wechat-work-go)
 [![Maintainability](https://api.codeclimate.com/v1/badges/a054e30c788eb3a693ac/maintainability)](https://codeclimate.com/github/dfang/wechat-work-go/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a054e30c788eb3a693ac/test_coverage)](https://codeclimate.com/github/dfang/wechat-work-go/test_coverage)
+[![Build status](https://badge.buildkite.com/988dd09408df5bf2bb39403f4f3c10f50e05b84846ba6f6791.svg)](https://buildkite.com/curry/wechat-work-go)
 
 ```go
 import (

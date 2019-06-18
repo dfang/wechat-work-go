@@ -64,6 +64,7 @@ func (app *WechatWork) WithApp(corpSecret string, agentID int64) *App {
 // NewDefaultRestyClient 返回一个resty 的client
 func NewDefaultRestyClient() *resty.Client {
 	client := resty.New()
+	client.SetHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.90 Safari/537.36")
 	client.SetDebug(true)
 	client.SetLogger(os.Stdout)
 	client.SetHostURL("https://qyapi.weixin.qq.com")
@@ -79,20 +80,21 @@ func (app *App) NewRequest(path string, qs urlValuer, withAccessToken bool) *res
 		values = valuer.IntoURLValues()
 	}
 
+	fmt.Println("with token is true")
 	if withAccessToken {
-		app.SpawnAccessTokenRefresher()
+		fmt.Println("spawn access token refresher")
+
+		// app.SpawnAccessTokenRefresher()
+		app.SyncAccessToken()
 
 		for {
-		GOTO_LABEL:
 			if app.AccessToken != "" {
-				if values.Get("access_token") != "" {
-					values.Set("access_token", app.AccessToken)
-				} else {
-					values.Add("access_token", app.AccessToken)
-				}
+				// if values.Get("access_token") != "" {
+				values.Set("access_token", app.AccessToken)
+				// } else {
+				// 	values.Add("access_token", app.AccessToken)
+				// }
 				break
-			} else {
-				goto GOTO_LABEL
 			}
 		}
 	}
