@@ -84,7 +84,7 @@ var _ = Describe("成员管理", func() {
 		})
 
 		It("获取部门成员", func() {
-			result, _ := c.ListMembers("9999", false)
+			result, _ := c.ListMembers("9999", 0)
 			fmt.Println(result)
 			Expect(len(result.UserList)).To(BeNumerically(">=", 1))
 		})
@@ -117,7 +117,7 @@ var _ = Describe("成员管理", func() {
 			// 所以先删完测试用户 再删部门
 
 			// var userIDs []string
-			d1, _ := c.ListMembers("9999", false)
+			d1, _ := c.ListMembers("9999", 0)
 
 			for _, m := range d1.UserList {
 				// userIDs = append(userIDs, m.UserID)
