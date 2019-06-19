@@ -1,6 +1,7 @@
 package wechatwork_test
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"testing"
@@ -30,4 +31,10 @@ var _ = BeforeSuite(func() {
 
 	// block all HTTP requests
 	// httpmock.ActivateNonDefault(resty.DefaultClient.GetClient())
+	fmt.Println("Suite Started")
+
+})
+
+var _ = AfterSuite(func() {
+	fmt.Println("Suite Finished")
 })
