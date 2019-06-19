@@ -1,3 +1,6 @@
+// Package cache 简单的缓存
+//
+//
 package cache
 
 import "time"

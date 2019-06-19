@@ -258,3 +258,7 @@ type RespListDepartments struct {
 
 	Department []Department `json:"department"`
 }
+
+type ReqBatchDeleteMembers struct {
+	UserIDList []string `json:"useridlist"`
+}

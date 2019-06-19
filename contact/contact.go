@@ -71,8 +71,15 @@ func (contact Contact) DeleteMember(userID string) (RespCommon, error) {
 // DeleteMembers 批量删除成员
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90199
-func (contact Contact) DeleteMembers(userID string) error {
-	return errors.New("not implemented")
+func (contact Contact) DeleteMembers(req ReqBatchDeleteMembers) (RespCommon, error) {
+	apiPath := "cgi-bin/user/batchdelete"
+	uri := fmt.Sprintf("%s?access_token=%s", apiPath, contact.App.GetAccessToken())
+	var result RespCommon
+	err := contact.App.SimplePost(uri, req, &result)
+	if err != nil {
+		return RespCommon{}, err
+	}
+	return result, nil
 }
 
 // UpdateMember 更新成员详情
