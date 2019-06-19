@@ -2,24 +2,7 @@ package models
 
 import (
 	"encoding/json"
-	"net/url"
 )
-
-// ReqAgentGet 查询应用请求
-type ReqAgentGet struct {
-	AgentID string
-	// AccessToken string `json:"access_token"`
-}
-
-// IntoURLValues 转换为 url.Values 类型
-//
-// impl urlValuer for ReqAgentGet
-func (x ReqAgentGet) IntoURLValues() url.Values {
-	return url.Values{
-		"agentid": {x.AgentID},
-		// "access_token": {x.AccessToken},
-	}
-}
 
 // RespAgentGet 查询应用响应
 type RespAgentGet struct {

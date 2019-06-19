@@ -6,6 +6,8 @@
 package agent
 
 import (
+	"fmt"
+
 	wechatwork "github.com/dfang/wechat-work-go"
 	"github.com/dfang/wechat-work-go/models"
 )
@@ -20,15 +22,13 @@ type Agent struct {
 // https://work.weixin.qq.com/api/doc#90000/90135/90227
 func (agent Agent) GetAgent(agentID string) (models.RespAgentGet, error) {
 	apiPath := "/cgi-bin/agent/get"
-	req := models.ReqAgentGet{
-		AgentID: agentID,
-	}
-	var data models.RespAgentGet
-	err := agent.App.Get(apiPath, req, &data, true)
+	uri := fmt.Sprintf("%s?access_token=%s&agentid=%s", apiPath, agent.App.GetAccessToken(), agentID)
+	var result models.RespAgentGet
+	err := agent.App.SimpleGet(uri, &result)
 	if err != nil {
 		return models.RespAgentGet{}, err
 	}
-	return data, nil
+	return result, nil
 }
 
 // ListAgents 获取access_token 下应用列表
@@ -36,25 +36,25 @@ func (agent Agent) GetAgent(agentID string) (models.RespAgentGet, error) {
 // https://work.weixin.qq.com/api/doc#90000/90135/90227
 func (agent Agent) ListAgents() (models.RespAgentList, error) {
 	apiPath := "/cgi-bin/agent/list"
-	var data models.RespAgentList
-	err := agent.App.Get(apiPath, nil, &data, true)
+	uri := fmt.Sprintf("%s?access_token=%s", apiPath, agent.App.GetAccessToken())
+	var result models.RespAgentList
+	err := agent.App.SimpleGet(uri, &result)
 	if err != nil {
 		return models.RespAgentList{}, err
 	}
-	return data, nil
+	return result, nil
 }
 
 // SetAgent 设置应用详情
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90228
 func (agent Agent) SetAgent(req models.ReqAgentSet) (models.RespCommon, error) {
-	// /cgi-bin/agent/set?access_token=ACCESS_TOKEN
 	apiPath := "/cgi-bin/agent/set"
-	var data models.RespCommon
-	err := agent.App.Post(apiPath, nil, req, &data, true)
+	uri := fmt.Sprintf("%s?access_token=%s", apiPath, agent.App.GetAccessToken())
+	var result models.RespCommon
+	err := agent.App.SimplePost(uri, req, &result)
 	if err != nil {
 		return models.RespCommon{}, err
 	}
-
-	return data, nil
+	return result, nil
 }

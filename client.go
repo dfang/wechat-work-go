@@ -111,18 +111,18 @@ func (app *App) NewRequest(path string, qs urlValuer, withAccessToken bool) *res
 	return req
 }
 
-// Get 一切get请求的api调用可使用此方法
-//
-// 企业微信中，获取操作和删除都是GET请求
-func (app *App) Get(path string, qs urlValuer, respObj interface{}, withAccessToken bool) error {
-	req := app.NewRequest(path, qs, withAccessToken)
-	resp, err := req.SetResult(&respObj).Get(req.URL)
-	if err != nil {
-		fmt.Fprintln(os.Stdout, resp.Body())
-		panic(err)
-	}
-	return nil
-}
+// // Get 一切get请求的api调用可使用此方法
+// //
+// // 企业微信中，获取操作和删除都是GET请求
+// func (app *App) Get(path string, qs urlValuer, respObj interface{}, withAccessToken bool) error {
+// 	req := app.NewRequest(path, qs, withAccessToken)
+// 	resp, err := req.SetResult(&respObj).Get(req.URL)
+// 	if err != nil {
+// 		fmt.Fprintln(os.Stdout, resp.Body())
+// 		panic(err)
+// 	}
+// 	return nil
+// }
 
 // SimpleGet just like resty.SetReult(&respObj).Get(url)
 //
@@ -140,25 +140,25 @@ func (app *App) SimpleGet(url string, respObj interface{}) error {
 	return nil
 }
 
-// Post 一切Post请求的api调用使用此方法
-//
-// 企业微信中，删除操作一般都是GET请求，更新操作、批量删除成员是POST请求，没有PUT、PATCH、DELETE
-func (app *App) Post(path string, qs urlValuer, body bodyer, respObj interface{}, withAccessToken bool) error {
-	b, _ := body.IntoBody()
-	// TODO
-	req := app.NewRequest(path, qs, withAccessToken)
-	resp, err := req.
-		SetHeader("Content-Type", "application/json").
-		SetBody(b).
-		SetResult(&respObj).
-		Post(req.URL)
+// // Post 一切Post请求的api调用使用此方法
+// //
+// // 企业微信中，删除操作一般都是GET请求，更新操作、批量删除成员是POST请求，没有PUT、PATCH、DELETE
+// func (app *App) Post(path string, qs urlValuer, body bodyer, respObj interface{}, withAccessToken bool) error {
+// 	b, _ := body.IntoBody()
+// 	// TODO
+// 	req := app.NewRequest(path, qs, withAccessToken)
+// 	resp, err := req.
+// 		SetHeader("Content-Type", "application/json").
+// 		SetBody(b).
+// 		SetResult(&respObj).
+// 		Post(req.URL)
 
-	if err != nil {
-		fmt.Fprintln(os.Stdout, resp.Body())
-		panic(err)
-	}
-	return nil
-}
+// 	if err != nil {
+// 		fmt.Fprintln(os.Stdout, resp.Body())
+// 		panic(err)
+// 	}
+// 	return nil
+// }
 
 // SimplePost just like resty.SetBody(b).SetReult(&respObj).Post(url)
 //

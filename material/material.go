@@ -33,6 +33,7 @@ func (m Material) UploadMedia(mediaType string) {
 func (m Material) UploadImg() {
 	// apiPath:="cgi-bin/media/uploadimg"
 	// uri := fmt.Sprintf("%s?access_token=%s", apiPath, menu.App.GetAccessToken())
+	// TODO
 }
 
 // GetMedia 获取临时素材
@@ -41,6 +42,7 @@ func (m Material) UploadImg() {
 func (m Material) GetMedia(mediaID string) {
 	// apiPath:="cgi-bin/media/get"
 	// uri := fmt.Sprintf("%s?access_token=%s&media_id=%s", apiPath, menu.App.GetAccessToken(), mediaID)
+	// TODO
 }
 
 // GetVoice 获取高清语音素材
@@ -49,4 +51,5 @@ func (m Material) GetMedia(mediaID string) {
 func (m Material) GetVoice(mediaID string) {
 	// apiPath:="cgi-bin/media/get/jssdk"
 	// uri := fmt.Sprintf("%s?access_token=%s&media_id=%s", apiPath, menu.App.GetAccessToken(), mediaID)
+	// TODO
 }

@@ -41,15 +41,13 @@ func (contact Contact) CreateMember(req ReqMemberCreate) (RespMemberCreate, erro
 // https://work.weixin.qq.com/api/doc#90000/90135/90196
 func (contact Contact) GetMember(userID string) (RespMemberGet, error) {
 	apiPath := "/cgi-bin/user/get"
-	qs := ReqMemberGet{
-		UserID: userID,
-	}
-	var data RespMemberGet
-	err := contact.App.Get(apiPath, qs, &data, true)
+	uri := fmt.Sprintf("%s?access_token=%s&userid=%s", apiPath, contact.App.GetAccessToken(), userID)
+	var result RespMemberGet
+	err := contact.App.SimpleGet(uri, &result)
 	if err != nil {
 		return RespMemberGet{}, err
 	}
-	return data, nil
+	return result, nil
 }
 
 // DeleteMember 删除成员详情
@@ -57,15 +55,13 @@ func (contact Contact) GetMember(userID string) (RespMemberGet, error) {
 // https://work.weixin.qq.com/api/doc#90000/90135/90198
 func (contact Contact) DeleteMember(userID string) (RespCommon, error) {
 	apiPath := "/cgi-bin/user/delete"
-	qs := ReqMemberGet{
-		UserID: userID,
-	}
-	var data RespCommon
-	err := contact.App.Get(apiPath, qs, &data, true)
+	uri := fmt.Sprintf("%s?access_token=%s&userid=%s", apiPath, contact.App.GetAccessToken(), userID)
+	var result RespCommon
+	err := contact.App.SimpleGet(uri, &result)
 	if err != nil {
 		return RespCommon{}, err
 	}
-	return data, nil
+	return result, nil
 }
 
 // DeleteMembers 批量删除成员
@@ -87,21 +83,20 @@ func (contact Contact) DeleteMembers(req ReqBatchDeleteMembers) (RespCommon, err
 // https://work.weixin.qq.com/api/doc#90000/90135/90197
 func (contact Contact) UpdateMember(body Member) (RespCommon, error) {
 	apiPath := "/cgi-bin/user/update"
-	qs := ReqMemberGet{
-		AccessToken: contact.App.AccessToken,
-	}
-	var data RespCommon
-	err := contact.App.Post(apiPath, qs, body, &data, true)
+	uri := fmt.Sprintf("%s?access_token=%s", apiPath, contact.App.GetAccessToken())
+	var result RespCommon
+	err := contact.App.SimplePost(uri, body, &result)
 	if err != nil {
 		return RespCommon{}, err
 	}
-	return data, nil
+	return result, nil
 }
 
 // UserIDToOpenID userid转openid
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90202
 func (contact Contact) UserIDToOpenID() error {
+	// TODO
 	return errors.New("not implemented")
 }
 
@@ -109,6 +104,7 @@ func (contact Contact) UserIDToOpenID() error {
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90202
 func (contact Contact) OpenIDToUserID() error {
+	// TODO
 	return errors.New("not implemented")
 }
 
@@ -116,6 +112,7 @@ func (contact Contact) OpenIDToUserID() error {
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90203
 func (contact Contact) TwoFactorAuth() error {
+	// TODO
 	return errors.New("not implemented")
 }
 
@@ -123,5 +120,6 @@ func (contact Contact) TwoFactorAuth() error {
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90975
 func (contact Contact) InviteMember() error {
+	// TODO
 	return errors.New("not implemented")
 }
