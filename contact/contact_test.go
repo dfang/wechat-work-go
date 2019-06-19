@@ -113,7 +113,7 @@ var _ = Describe("成员管理 API", func() {
 			clearDepartment(c, testDepartmentID)
 		})
 
-		Context("已经存在的部门和成员才能查询、更新和删除", func() {
+		Context("已经存在的部门和成员才能查询、更新", func() {
 
 			It("获取成员", func() {
 				result, _ := c.GetMember("zhangsan")
@@ -149,6 +149,17 @@ var _ = Describe("成员管理 API", func() {
 				Expect(result.ErrCode).To(Equal(0))
 			})
 
+			// TODO 需要处理部门不存在的情况
+			It("获取部门成员", func() {
+				result, _ := c.ListMembers(testDepartmentID, 0)
+				// if result.ErrCode != 60003 { }
+				fmt.Println(result)
+				Expect(len(result.UserList)).To(BeNumerically(">=", 1))
+			})
+
+		})
+
+		Context("已经存在的部门和成员删除", func() {
 			It("删除部门", func() {
 				// 有成员不能删除部门
 				// 所以先删完测试用户 再删部门
@@ -166,19 +177,11 @@ var _ = Describe("成员管理 API", func() {
 				Expect(result.ErrCode).To(Equal(0))
 			})
 
-			It("获取部门成员", func() {
-				result, _ := c.ListMembers(testDepartmentID, 0)
-				fmt.Println(result)
-				Expect(len(result.UserList)).To(BeNumerically(">=", 1))
-			})
-
 			It("删除成员", func() {
 				result, _ := c.DeleteMember("zhangsan")
 				Expect(result.ErrCode).To(Equal(0))
 			})
-
 		})
-
 	})
 })
 
@@ -191,15 +194,15 @@ func clearDepartment(c contact.Contact, testDepartmentID int) {
 	for _, m := range d1.UserList {
 		ulist = append(ulist, m.UserID)
 	}
-	req := models.ReqBatchDeleteMembers{
-		UserIDList: ulist,
-	}
-	result1, _ := c.DeleteMembers(req)
-	if result1.ErrCode == 0 {
-		result2, _ := c.DeleteDepartment(testDepartmentID)
-		if result2.ErrCode == 0 {
-			fmt.Println("BeforeEach Prepared")
+	if len(ulist) > 0 {
+		req := models.ReqBatchDeleteMembers{
+			UserIDList: ulist,
 		}
+		c.DeleteMembers(req)
+	}
+	result2, _ := c.DeleteDepartment(testDepartmentID)
+	if result2.ErrCode == 0 {
+		fmt.Println("BeforeEach Prepared")
 	}
 }
 

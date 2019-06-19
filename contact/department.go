@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	. "github.com/dfang/wechat-work-go/models"
+	"github.com/pkg/errors"
 )
 
 // ListMembers 获取部门下成员概要
@@ -16,6 +17,10 @@ func (contact Contact) ListMembers(departmentID int, fetchChild int) (RespListMe
 	err := contact.App.SimpleGet(uri, &result)
 	if err != nil {
 		return RespListMembers{}, err
+	}
+	if result.ErrCode == 60003 {
+		fmt.Println("部门不存在")
+		return RespListMembers{}, errors.New("部门不存在")
 	}
 	return result, nil
 }
