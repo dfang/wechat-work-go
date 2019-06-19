@@ -1,0 +1,11 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "cache.go",
+        "memory.go",
+    ],
+    importpath = "github.com/dfang/wechat-work-go/cache",
+    visibility = ["//visibility:public"],
+)

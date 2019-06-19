@@ -9,6 +9,7 @@ go_library(
         "core.go",
         "menu.go",
         "message.go",
+        "tag.go",
         "user.go",
     ],
     importpath = "github.com/dfang/wechat-work-go/models",
