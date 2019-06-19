@@ -158,3 +158,9 @@ go_repository(
     commit = "ab21143f2384",
     importpath = "golang.org/x/tools",
 )
+
+go_repository(
+    name = "com_github_pkg_errors",
+    importpath = "github.com/pkg/errors",
+    tag = "v0.8.1",
+)
