@@ -18,7 +18,7 @@ import (
 <details>
 <summary>通讯录管理 API</summary>
 
-* [ ] 成员管理
+* [ ] [成员管理](https://work.weixin.qq.com/api/doc#90000/90135/90194)
     - [✓] 创建成员 (只能使用通讯录secret创建)
     - [✓] 读取成员 
     - [✓] 更新成员
@@ -29,11 +29,25 @@ import (
     - [ ] userid与openid互换
     - [ ] 二次验证
     - [ ] 邀请成员
-* [✓] 部门管理
+
+* [✓] [部门管理](https://work.weixin.qq.com/api/doc#90000/90135/90204)
     - [✓] 创建部门
     - [✓] 更新部门
     - [✓] 删除部门
     - [✓] 获取部门列表
+
+* [ ] [标签管理](https://work.weixin.qq.com/api/doc#90000/90135/90209)
+
+* [ ] [异步批量接口](https://work.weixin.qq.com/api/doc#90000/90135/90978)
+    
+</details>
+
+<details>
+<summary>身份认证</summary>
+
+* [ ] [网页授权登录时获取访问用户身份](https://work.weixin.qq.com/api/doc#90000/90135/91023)
+* [ ] [扫码授权登录时获取访问用户身份](https://work.weixin.qq.com/api/doc#90000/90135/91437)
+
 </details>
 
 <details>
@@ -57,6 +71,17 @@ import (
     - [✓] 修改群聊会话
     - [✓] 获取群聊会话
     - [✓] 应用推送消息
+
+</details>
+
+
+<details>
+<summary>TODO</summary>
+
+* [ ] 外部联系人管理
+* [ ] OA 数据接口
+* [ ] 企业支付
+* [ ] 电子发票
 
 </details>
 
