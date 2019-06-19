@@ -25,20 +25,17 @@ type App struct {
 
 	// CorpSecret 应用的凭证密钥，其实应该叫AgentSecret更好，必填
 	CorpSecret string
-
 	// AgentID 应用 ID，必填
 	AgentID int64
 
-	tokenMu     *sync.RWMutex
 	AccessToken string
-
-	//accessTokenLock 读写锁 同一个AgentID一个
-	accessTokenLock *sync.RWMutex
-
-	Cache cache.Cache
 
 	// Token     string `json:"access_token"`
 	ExpiresIn int `json:"expires_in"`
+
+	accessTokenLock *sync.RWMutex
+
+	Cache cache.Cache
 }
 
 // type Context struct {
@@ -47,6 +44,27 @@ type App struct {
 // }
 
 // New 构造一个 WechatWork 对象，需要提供企业 ID
+//
+// 通常，要使用wechat-work-go, 你需要先创建一个 WechatWork 的对象，
+// 接着以此对象调用 WithApp 创建一个app
+// 然后就可以以app对象调用API了
+//
+// 企业微信API是分应用的
+//
+// 简单来说就是 a 应用的CORP_SECRET 和 AGENT_ID 获取的access_token 是不能操作 b应用的
+//
+// 	CORP_ID 去企业微信管理中的 我的企业 最底部
+// 	CORP_SECRET 其实是应用的secret，应该叫AgentSecret 或 AppSecret 更合适, 但因为api接口和官方文档叫corpSecret，所以不改变
+// 	AGENT_ID 应用的ID， CORP_SECRET 和 AGENT_ID 都去应用的详情页面找
+//
+// 示例代码:
+//
+// 		corpID := os.Getenv("CORP_ID")
+// 		corpSecret := os.Getenv("CORP_SECRET")
+// 		agentID, _ := strconv.ParseInt(os.Getenv("AGENT_ID"), 10, 64)
+// 		client := wechatwork.New(corpID)
+//		app = client.WithApp(corpSecret, agentID)
+//
 func New(corpID string) *WechatWork {
 	return &WechatWork{
 		CorpID: corpID,
@@ -54,23 +72,29 @@ func New(corpID string) *WechatWork {
 }
 
 // WithApp 构造本企业下某自建 app 的对象
+//
+// 企业微信暂未提供创建 app 的 api, 创建应用需要去企业微信的管理后台中
+//
 func (app *WechatWork) WithApp(corpSecret string, agentID int64) *App {
 	return &App{
 		WechatWork: app,
 
-		CorpSecret:  corpSecret,
-		AgentID:     agentID,
-		tokenMu:     &sync.RWMutex{},
-		AccessToken: "",
-
-		Cache: cache.NewMemory(),
+		CorpSecret:      corpSecret,
+		AgentID:         agentID,
+		AccessToken:     "",
+		accessTokenLock: &sync.RWMutex{},
+		Cache:           cache.NewMemory(),
 	}
 }
 
 // NewDefaultRestyClient 返回一个resty 的client
 func NewDefaultRestyClient() *resty.Client {
+	debugFlag := false
+	if os.Getenv("DEBUG") == "true" {
+		debugFlag = true
+	}
 	client := resty.New()
-	client.SetDebug(true)
+	client.SetDebug(debugFlag)
 	client.SetLogger(os.Stdout)
 	client.SetHostURL("https://qyapi.weixin.qq.com")
 	return client

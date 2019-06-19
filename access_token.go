@@ -11,7 +11,6 @@ import (
 // GetAccessTokenFromServer 获取 access token
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/91039
-// https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=ID&corpsecret=SECRET
 func (app *App) GetAccessTokenFromServer() (models.RespAccessToken, error) {
 	apiPath := "/cgi-bin/gettoken"
 	resty.SetHostURL("https://qyapi.weixin.qq.com")
@@ -64,9 +63,12 @@ func (app *App) GetAccessTokenFromServer() (models.RespAccessToken, error) {
 	return result, nil
 }
 
+// GetAccessToken GetAccessToken()
+//
+//
 func (app *App) GetAccessToken() string {
-	// ctx.accessTokenLock.Lock()
-	// defer ctx.accessTokenLock.Unlock()
+	app.accessTokenLock.Lock()
+	defer app.accessTokenLock.Unlock()
 
 	accessTokenCacheKey := fmt.Sprintf("access_token_%d", app.AgentID)
 	val := app.Cache.Get(accessTokenCacheKey)
@@ -74,7 +76,7 @@ func (app *App) GetAccessToken() string {
 		return val.(string)
 	}
 
-	//从微信服务器获取
+	// 从微信服务器获取
 	var result models.RespAccessToken
 	result, err := app.GetAccessTokenFromServer()
 	if err != nil {
