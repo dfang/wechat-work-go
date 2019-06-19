@@ -169,8 +169,8 @@ func (x ReqListMembers) IntoURLValues() url.Values {
 
 type RespListMembers struct {
 	RespCommon
-	Userlist []struct {
-		Userid     string `json:"userid"`
+	UserList []struct {
+		UserID     string `json:"userid"`
 		Name       string `json:"name"`
 		Department []int  `json:"department"`
 	} `json:"userlist"`
@@ -178,7 +178,7 @@ type RespListMembers struct {
 
 type ReqCreateDepartment struct {
 	Name     string `json:"name"`
-	Parentid int    `json:"parentid"`
+	ParentID int    `json:"parentid"`
 	Order    int    `json:"order"`
 	ID       int    `json:"id"`
 }
@@ -201,7 +201,7 @@ func (x ReqCreateDepartment) IntoBody() ([]byte, error) {
 
 type ReqUpdateDepartment struct {
 	Name     string `json:"name"`
-	Parentid int    `json:"parentid"`
+	ParentID int    `json:"parentid"`
 	Order    int    `json:"order"`
 	ID       int    `json:"id"`
 }
@@ -227,7 +227,7 @@ func (x Member) IntoBody() ([]byte, error) {
 type Department struct {
 	ID       int    `json:"id"`
 	Name     string `json:"name"`
-	Parentid int    `json:"parentid"`
+	ParentID int    `json:"parentid"`
 	Order    int    `json:"order"`
 }
 

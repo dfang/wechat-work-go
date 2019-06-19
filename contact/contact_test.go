@@ -38,7 +38,7 @@ var _ = Describe("成员管理", func() {
 		It("创建部门", func() {
 			var data = models.ReqCreateDepartment{
 				Name:     "测试部门",
-				Parentid: 1,
+				ParentID: 1,
 				Order:    1,
 				ID:       9999,
 			}
@@ -86,7 +86,7 @@ var _ = Describe("成员管理", func() {
 		It("获取部门成员", func() {
 			result, _ := c.ListMembers("9999", false)
 			fmt.Println(result)
-			Expect(len(result.Userlist)).To(Equal(1))
+			Expect(len(result.UserList)).To(BeNumerically(">=", 1))
 		})
 
 		It("删除成员", func() {
@@ -104,7 +104,7 @@ var _ = Describe("成员管理", func() {
 		It("更新部门", func() {
 			m := models.ReqUpdateDepartment{
 				Name:     "测试部门222",
-				Parentid: 1,
+				ParentID: 1,
 				Order:    1,
 				ID:       9999,
 			}
@@ -113,6 +113,18 @@ var _ = Describe("成员管理", func() {
 		})
 
 		It("删除部门", func() {
+			// 有成员不能删除部门
+			// 所以先删完测试用户 再删部门
+
+			// var userIDs []string
+			d1, _ := c.ListMembers("9999", false)
+
+			for _, m := range d1.UserList {
+				// userIDs = append(userIDs, m.UserID)
+				// 批量删除成员接口暂未实现
+				c.DeleteMember(m.UserID)
+			}
+
 			result, _ := c.DeleteDepartment("9999")
 			Expect(result.ErrCode).To(Equal(0))
 		})

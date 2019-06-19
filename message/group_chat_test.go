@@ -41,7 +41,7 @@ var _ = Describe("GroupChat", func() {
 		It("创建群聊会话", func() {
 			var d = models.ReqCreateDepartment{
 				Name:     "测试部门",
-				Parentid: 1,
+				ParentID: 1,
 				Order:    1,
 				ID:       9999,
 			}
