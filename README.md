@@ -55,7 +55,7 @@ import (
 
 * [✓] 获取应用
 * [✓] 设置应用
-* [✓] 自定义菜单
+* [✓] [自定义菜单](https://work.weixin.qq.com/api/doc#90000/90135/90230)
     - [✓] 创建菜单
     - [✓] 获取菜单
     - [✓] 删除菜单
@@ -65,18 +65,18 @@ import (
 <details>
 <summary>消息推送</summary>
 
-* [✓] 发送应用消息
+* [✓] [发送应用消息](https://work.weixin.qq.com/api/doc#90000/90135/90236)
 * [✓] 发送消息到群聊会话
     - [✓] 创建群聊会话
     - [✓] 修改群聊会话
     - [✓] 获取群聊会话
-    - [✓] 应用推送消息
+    - [✓] [应用推送消息](https://work.weixin.qq.com/api/doc#90000/90135/90248)
 
 </details>
 
 
 <details>
-<summary>TODO</summary>
+<summary>TODO(以下接口个人暂时用不到)</summary>
 
 * [ ] 外部联系人管理
 * [ ] OA 数据接口
