@@ -101,20 +101,20 @@ func (contact Contact) UserIDToOpenID() error {
 // OpenIDToUserID userid转openid
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90202
-func (app Contact) OpenIDToUserID() error {
+func (contact Contact) OpenIDToUserID() error {
 	return errors.New("not implemented")
 }
 
 // TwoFactorAuth 二次验证
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90203
-func (app Contact) TwoFactorAuth() error {
+func (contact Contact) TwoFactorAuth() error {
 	return errors.New("not implemented")
 }
 
 // InviteMember 邀请成员
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90975
-func (app Contact) InviteMember() error {
+func (contact Contact) InviteMember() error {
 	return errors.New("not implemented")
 }

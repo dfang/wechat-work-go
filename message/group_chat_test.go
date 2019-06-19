@@ -64,7 +64,7 @@ var _ = Describe("GroupChat", func() {
 
 			req := message.ReqCreateGroupChat{
 				Name:     "test",
-				UserList: []string{"zhangsan", "lisi"},
+				UserList: []string{u1.UserID, u2.UserID},
 			}
 
 			result, _ := g.CreateGroupChat(req)
