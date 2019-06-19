@@ -20,7 +20,7 @@ type Agent struct {
 // GetAgent 获取应用
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90227
-func (agent Agent) GetAgent(agentID string) (models.RespAgentGet, error) {
+func (agent *Agent) GetAgent(agentID string) (models.RespAgentGet, error) {
 	apiPath := "/cgi-bin/agent/get"
 	uri := fmt.Sprintf("%s?access_token=%s&agentid=%s", apiPath, agent.App.GetAccessToken(), agentID)
 	var result models.RespAgentGet
@@ -34,7 +34,7 @@ func (agent Agent) GetAgent(agentID string) (models.RespAgentGet, error) {
 // ListAgents 获取access_token 下应用列表
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90227
-func (agent Agent) ListAgents() (models.RespAgentList, error) {
+func (agent *Agent) ListAgents() (models.RespAgentList, error) {
 	apiPath := "/cgi-bin/agent/list"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, agent.App.GetAccessToken())
 	var result models.RespAgentList
@@ -48,7 +48,7 @@ func (agent Agent) ListAgents() (models.RespAgentList, error) {
 // SetAgent 设置应用详情
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90228
-func (agent Agent) SetAgent(req models.ReqAgentSet) (models.RespCommon, error) {
+func (agent *Agent) SetAgent(req models.ReqAgentSet) (models.RespCommon, error) {
 	apiPath := "/cgi-bin/agent/set"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, agent.App.GetAccessToken())
 	var result models.RespCommon
