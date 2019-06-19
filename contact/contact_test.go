@@ -15,6 +15,7 @@ import (
 
 var _ = Describe("成员管理", func() {
 	var c contact.Contact
+	testDepartmentID := 9999
 	BeforeEach(func() {
 		corpID := os.Getenv("CORP_ID")
 		client := wechatwork.New(corpID)
@@ -40,7 +41,7 @@ var _ = Describe("成员管理", func() {
 				Name:     "测试部门",
 				ParentID: 1,
 				Order:    1,
-				ID:       9999,
+				ID:       testDepartmentID,
 			}
 
 			fmt.Println(data)
@@ -52,39 +53,44 @@ var _ = Describe("成员管理", func() {
 		})
 
 		It("创建成员", func() {
-			var data = models.ReqMemberCreate{
+			var u1 = models.ReqMemberCreate{
 				UserID:     "zhangsan",
 				Name:       "张三",
 				Department: []int{9999},
 				Mobile:     "12345678901",
 			}
 
-			fmt.Println(data)
-			result, _ := c.CreateMember(data)
-			fmt.Println(result)
+			var u2 = models.ReqMemberCreate{
+				UserID:     "lisi",
+				Name:       "李四",
+				Department: []int{9999},
+				Mobile:     "12345678989",
+			}
 
-			Expect(result.ErrCode).To(Equal(0))
+			result1, _ := c.CreateMember(u1)
+			result2, _ := c.CreateMember(u2)
+			Expect(result1.ErrCode).To(Equal(0))
+			Expect(result2.ErrCode).To(Equal(0))
 		})
 
 		It("获取成员", func() {
 			result, _ := c.GetMember("zhangsan")
-			fmt.Println(result)
 			Expect(result.UserID).To(Equal("zhangsan"))
 		})
 
 		It("更新成员", func() {
-			m := models.Member{
+			u := models.Member{
 				UserID:     "zhangsan",
 				Name:       "张三三",
-				Department: []int{9999},
-				Mobile:     "12345678901",
+				Mobile:     "12345678911",
+				Department: []int{testDepartmentID},
 			}
-			result, _ := c.UpdateMember(m)
+			result, _ := c.UpdateMember(u)
 			Expect(result.ErrCode).To(Equal(0))
 		})
 
 		It("获取部门成员", func() {
-			result, _ := c.ListMembers("9999", 0)
+			result, _ := c.ListMembers(testDepartmentID, 0)
 			fmt.Println(result)
 			Expect(len(result.UserList)).To(BeNumerically(">=", 1))
 		})
@@ -95,7 +101,7 @@ var _ = Describe("成员管理", func() {
 		})
 
 		It("部门列表", func() {
-			result, _ := c.ListDepartments("0")
+			result, _ := c.ListDepartments(0)
 			Expect(result.ErrCode).To(Equal(0))
 			Expect(len(result.Department)).To(BeNumerically(">", 0))
 			// Ω(len(result.Department)).Should(BeNumerically(">", 0))
@@ -106,7 +112,7 @@ var _ = Describe("成员管理", func() {
 				Name:     "测试部门222",
 				ParentID: 1,
 				Order:    1,
-				ID:       9999,
+				ID:       testDepartmentID,
 			}
 			result, _ := c.UpdateDepartment(m)
 			Expect(result.ErrCode).To(Equal(0))
@@ -117,7 +123,7 @@ var _ = Describe("成员管理", func() {
 			// 所以先删完测试用户 再删部门
 
 			// var userIDs []string
-			d1, _ := c.ListMembers("9999", 0)
+			d1, _ := c.ListMembers(testDepartmentID, 0)
 
 			for _, m := range d1.UserList {
 				// userIDs = append(userIDs, m.UserID)
@@ -125,7 +131,7 @@ var _ = Describe("成员管理", func() {
 				c.DeleteMember(m.UserID)
 			}
 
-			result, _ := c.DeleteDepartment("9999")
+			result, _ := c.DeleteDepartment(testDepartmentID)
 			Expect(result.ErrCode).To(Equal(0))
 		})
 	})
