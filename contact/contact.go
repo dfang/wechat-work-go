@@ -17,7 +17,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Contact
 type Contact struct {
 	App *wechatwork.App
 }
@@ -25,7 +24,7 @@ type Contact struct {
 // CreateMember 创建成员详情
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90195
-func (contact Contact) CreateMember(req ReqMemberCreate) (RespMemberCreate, error) {
+func (contact *Contact) CreateMember(req ReqMemberCreate) (RespMemberCreate, error) {
 	apiPath := "cgi-bin/user/create"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, contact.App.GetAccessToken())
 	var result RespMemberCreate
@@ -39,7 +38,7 @@ func (contact Contact) CreateMember(req ReqMemberCreate) (RespMemberCreate, erro
 // GetMember 获取成员详情
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90196
-func (contact Contact) GetMember(userID string) (RespMemberGet, error) {
+func (contact *Contact) GetMember(userID string) (RespMemberGet, error) {
 	apiPath := "/cgi-bin/user/get"
 	uri := fmt.Sprintf("%s?access_token=%s&userid=%s", apiPath, contact.App.GetAccessToken(), userID)
 	var result RespMemberGet
@@ -53,7 +52,7 @@ func (contact Contact) GetMember(userID string) (RespMemberGet, error) {
 // DeleteMember 删除成员详情
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90198
-func (contact Contact) DeleteMember(userID string) (RespCommon, error) {
+func (contact *Contact) DeleteMember(userID string) (RespCommon, error) {
 	apiPath := "/cgi-bin/user/delete"
 	uri := fmt.Sprintf("%s?access_token=%s&userid=%s", apiPath, contact.App.GetAccessToken(), userID)
 	var result RespCommon
@@ -67,7 +66,7 @@ func (contact Contact) DeleteMember(userID string) (RespCommon, error) {
 // DeleteMembers 批量删除成员
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90199
-func (contact Contact) DeleteMembers(req ReqBatchDeleteMembers) (RespCommon, error) {
+func (contact *Contact) DeleteMembers(req ReqBatchDeleteMembers) (RespCommon, error) {
 	apiPath := "cgi-bin/user/batchdelete"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, contact.App.GetAccessToken())
 	var result RespCommon
@@ -81,7 +80,7 @@ func (contact Contact) DeleteMembers(req ReqBatchDeleteMembers) (RespCommon, err
 // UpdateMember 更新成员详情
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90197
-func (contact Contact) UpdateMember(body Member) (RespCommon, error) {
+func (contact *Contact) UpdateMember(body Member) (RespCommon, error) {
 	apiPath := "/cgi-bin/user/update"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, contact.App.GetAccessToken())
 	var result RespCommon
@@ -95,7 +94,7 @@ func (contact Contact) UpdateMember(body Member) (RespCommon, error) {
 // UserIDToOpenID userid转openid
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90202
-func (contact Contact) UserIDToOpenID() error {
+func (contact *Contact) UserIDToOpenID() error {
 	// TODO
 	return errors.New("not implemented")
 }
@@ -103,7 +102,7 @@ func (contact Contact) UserIDToOpenID() error {
 // OpenIDToUserID userid转openid
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90202
-func (contact Contact) OpenIDToUserID() error {
+func (contact *Contact) OpenIDToUserID() error {
 	// TODO
 	return errors.New("not implemented")
 }
@@ -111,7 +110,7 @@ func (contact Contact) OpenIDToUserID() error {
 // TwoFactorAuth 二次验证
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90203
-func (contact Contact) TwoFactorAuth() error {
+func (contact *Contact) TwoFactorAuth() error {
 	// TODO
 	return errors.New("not implemented")
 }
@@ -119,7 +118,7 @@ func (contact Contact) TwoFactorAuth() error {
 // InviteMember 邀请成员
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90975
-func (contact Contact) InviteMember() error {
+func (contact *Contact) InviteMember() error {
 	// TODO
 	return errors.New("not implemented")
 }

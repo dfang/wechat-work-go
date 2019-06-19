@@ -10,7 +10,7 @@ import (
 // ListMembers 获取部门下成员概要
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90200
-func (contact Contact) ListMembers(departmentID int, fetchChild int) (RespListMembers, error) {
+func (contact *Contact) ListMembers(departmentID int, fetchChild int) (RespListMembers, error) {
 	apiPath := "/cgi-bin/user/simplelist"
 	uri := fmt.Sprintf("%s?access_token=%s&department_id=%d&fetch_child=%d", apiPath, contact.App.GetAccessToken(), departmentID, fetchChild)
 	var result RespListMembers
@@ -19,7 +19,6 @@ func (contact Contact) ListMembers(departmentID int, fetchChild int) (RespListMe
 		return RespListMembers{}, err
 	}
 	if result.ErrCode == 60003 {
-		fmt.Println("部门不存在")
 		return RespListMembers{}, errors.New("部门不存在")
 	}
 	return result, nil
@@ -28,7 +27,7 @@ func (contact Contact) ListMembers(departmentID int, fetchChild int) (RespListMe
 // ListMembers2 获取部门下成员详情
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90201
-func (contact Contact) ListMembers2(departmentID int, fetchChild int) (RespListMembers2, error) {
+func (contact *Contact) ListMembers2(departmentID int, fetchChild int) (RespListMembers2, error) {
 	apiPath := "/cgi-bin/user/list"
 	uri := fmt.Sprintf("%s?access_token=%s&department_id=%d&fetch_child=%d", apiPath, contact.App.GetAccessToken(), departmentID, fetchChild)
 	var result RespListMembers2
@@ -42,7 +41,7 @@ func (contact Contact) ListMembers2(departmentID int, fetchChild int) (RespListM
 // CreateDepartment 创建部门
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90205
-func (contact Contact) CreateDepartment(body ReqCreateDepartment) (RespCreateDepartment, error) {
+func (contact *Contact) CreateDepartment(body ReqCreateDepartment) (RespCreateDepartment, error) {
 	apiPath := "cgi-bin/department/create"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, contact.App.GetAccessToken())
 	var result RespCreateDepartment
@@ -56,7 +55,7 @@ func (contact Contact) CreateDepartment(body ReqCreateDepartment) (RespCreateDep
 // UpdateDepartment 更新部门
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90206
-func (contact Contact) UpdateDepartment(body ReqUpdateDepartment) (RespCommon, error) {
+func (contact *Contact) UpdateDepartment(body ReqUpdateDepartment) (RespCommon, error) {
 	apiPath := "/cgi-bin/department/update"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, contact.App.GetAccessToken())
 	var result RespCommon
@@ -70,7 +69,7 @@ func (contact Contact) UpdateDepartment(body ReqUpdateDepartment) (RespCommon, e
 // DeleteDepartment 删除部门
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90207
-func (contact Contact) DeleteDepartment(departmentID int) (RespCommon, error) {
+func (contact *Contact) DeleteDepartment(departmentID int) (RespCommon, error) {
 	apiPath := "/cgi-bin/department/delete"
 	uri := fmt.Sprintf("%s?access_token=%s&id=%d", apiPath, contact.App.GetAccessToken(), departmentID)
 	var result RespCommon
@@ -84,7 +83,7 @@ func (contact Contact) DeleteDepartment(departmentID int) (RespCommon, error) {
 // ListDepartments 获取部门列表
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90208
-func (contact Contact) ListDepartments(departmentID int) (RespListDepartments, error) {
+func (contact *Contact) ListDepartments(departmentID int) (RespListDepartments, error) {
 	apiPath := "/cgi-bin/department/list"
 	uri := fmt.Sprintf("%s?access_token=%s&id=%d", apiPath, contact.App.GetAccessToken(), departmentID)
 	var result RespListDepartments
