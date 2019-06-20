@@ -201,3 +201,9 @@ func (app *App) SimplePost(url string, body interface{}, respObj interface{}) er
 	}
 	return nil
 }
+
+// urlValuer 可转化为 url.Values 类型的 trait
+type urlValuer interface {
+	// IntoURLValues 转换为 url.Values 类型
+	IntoURLValues() url.Values
+}
