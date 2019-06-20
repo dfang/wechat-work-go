@@ -7,8 +7,25 @@ package message
 import (
 	"fmt"
 
+	wechatwork "github.com/dfang/wechat-work-go"
 	"github.com/dfang/wechat-work-go/models"
 )
+
+// Message 消息推送
+type Message struct {
+	App *wechatwork.App
+}
+
+// WithApp 返回 Message 的实例
+//
+// 所有消息推送相关API 通过此方法返回的实例调用
+func WithApp(app *wechatwork.App) *Message {
+	return &Message{
+		App: app,
+	}
+}
+
+type Sendable interface{}
 
 // SendMessage 发送应用消息
 //

@@ -17,8 +17,18 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Contact 通讯录
 type Contact struct {
 	App *wechatwork.App
+}
+
+// WithApp 返回 Contact的 实例
+//
+// 所有通讯录相关API 通过此方法返回的实例调用
+func WithApp(app *wechatwork.App) *Contact {
+	return &Contact{
+		App: app,
+	}
 }
 
 // CreateMember 创建成员详情

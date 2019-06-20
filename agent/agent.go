@@ -17,6 +17,15 @@ type Agent struct {
 	App *wechatwork.App
 }
 
+// WithApp 返回 Agent 实例
+//
+// 所有应用管理相关API 通过此方法返回的实例调用
+func WithApp(app *wechatwork.App) *Agent {
+	return &Agent{
+		App: app,
+	}
+}
+
 // GetAgent 获取应用
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90227
