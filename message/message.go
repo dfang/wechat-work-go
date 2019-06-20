@@ -111,3 +111,9 @@ type RespGetCallbackIPs struct {
 	ErrMsg  string   `json:"errmsg"`
 	IPList  []string `json:"ip_list"`
 }
+
+// RespCommon Comman Response Struct
+type RespCommon struct {
+	ErrCode int    `json:"errcode"`
+	ErrMsg  string `json:"errmsg"`
+}

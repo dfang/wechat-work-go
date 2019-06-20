@@ -1,6 +1,7 @@
 package message_test
 
 import (
+	"github.com/dfang/wechat-work-go/contact"
 	"github.com/dfang/wechat-work-go/message"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -13,7 +14,7 @@ var _ = Describe("GroupChat", func() {
 	Context("群聊会话", func() {
 
 		It("创建群聊会话", func() {
-			var d = models.ReqCreateDepartment{
+			var d = contact.ReqCreateDepartment{
 				Name:     "测试部门",
 				ParentID: 1,
 				Order:    1,
@@ -21,13 +22,13 @@ var _ = Describe("GroupChat", func() {
 			}
 			c.CreateDepartment(d)
 
-			var u1 = models.ReqMemberCreate{
+			var u1 = contact.ReqMemberCreate{
 				UserID:     "zhangsan",
 				Name:       "张三",
 				Department: []int{9999},
 				Mobile:     "12345678901",
 			}
-			var u2 = models.ReqMemberCreate{
+			var u2 = contact.ReqMemberCreate{
 				UserID:     "lisi",
 				Name:       "李四",
 				Department: []int{9999},

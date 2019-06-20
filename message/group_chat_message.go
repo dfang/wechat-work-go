@@ -29,13 +29,13 @@ func (g Message) CreateGroupChat(req ReqCreateGroupChat) (RespCreateGroupChat, e
 // UpdateGroupChat 修改群聊会话
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90246
-func (g Message) UpdateGroupChat(req ReqUpdateGroupChat) (models.RespCommon, error) {
+func (g Message) UpdateGroupChat(req ReqUpdateGroupChat) (RespCommon, error) {
 	apiPath := "cgi-bin/appchat/update"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, g.App.GetAccessToken())
-	var result models.RespCommon
+	var result RespCommon
 	err := g.App.SimplePost(uri, req, &result)
 	if err != nil {
-		return models.RespCommon{}, err
+		return RespCommon{}, err
 	}
 	return result, nil
 }
@@ -64,7 +64,7 @@ type ReqCreateGroupChat struct {
 
 // RespCreateGroupChat 创建群聊会话响应
 type RespCreateGroupChat struct {
-	models.RespCommon
+	RespCommon
 
 	ChatID string `json:"chatid"`
 }
@@ -80,7 +80,7 @@ type ReqUpdateGroupChat struct {
 
 // RespGetGroupChat 获取群聊会话响应
 type RespGetGroupChat struct {
-	models.RespCommon
+	RespCommon
 
 	ChatInfo struct {
 		ChatID   string   `json:"chatid"`
