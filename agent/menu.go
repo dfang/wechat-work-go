@@ -11,7 +11,7 @@ import (
 // https://work.weixin.qq.com/api/doc#90000/90135/90231
 func (agent *Agent) CreateMenu(agentID string, m models.Menu) (models.RespCommon, error) {
 	apiPath := "/cgi-bin/menu/create"
-	uri := fmt.Sprintf("%s?access_token=%s&agentid=%s", apiPath, agent.App.GetAccessToken(), agentID)
+	uri := agent.formatURL(apiPath, agentID)
 	var result models.RespCommon
 	err := agent.App.SimplePost(uri, m, &result)
 	if err != nil {
@@ -25,7 +25,7 @@ func (agent *Agent) CreateMenu(agentID string, m models.Menu) (models.RespCommon
 // https://work.weixin.qq.com/api/doc#90000/90135/90232
 func (agent *Agent) GetMenu(agentID string) (models.Menu, error) {
 	apiPath := "/cgi-bin/menu/get"
-	uri := fmt.Sprintf("%s?access_token=%s&agentid=%s", apiPath, agent.App.GetAccessToken(), agentID)
+	uri := agent.formatURL(apiPath, agentID)
 	var result models.Menu
 	err := agent.App.SimpleGet(uri, &result)
 	if err != nil {
@@ -39,11 +39,18 @@ func (agent *Agent) GetMenu(agentID string) (models.Menu, error) {
 // https://work.weixin.qq.com/api/doc#90000/90135/90233
 func (agent *Agent) DeleteMenu(agentID string) (models.RespCommon, error) {
 	apiPath := "/cgi-bin/menu/delete"
-	uri := fmt.Sprintf("%s?access_token=%s&agentid=%s", apiPath, agent.App.GetAccessToken(), agentID)
+	uri := agent.formatURL(apiPath, agentID)
 	var result models.RespCommon
 	err := agent.App.SimpleGet(uri, &result)
 	if err != nil {
 		return models.RespCommon{}, nil
 	}
 	return result, nil
+}
+
+// formatUrl format url for Menu API
+func (agent *Agent) formatURL(apiPath, agentID string) string {
+	token := agent.App.GetAccessToken()
+	uri := fmt.Sprintf("%s?access_token=%s&agentid=%s", apiPath, token, agentID)
+	return uri
 }
