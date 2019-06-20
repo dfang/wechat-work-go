@@ -2,6 +2,7 @@ package wechatwork
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	. "github.com/dfang/wechat-work-go/models"
@@ -16,7 +17,8 @@ func (app *App) GetAccessTokenFromServer() (RespAccessToken, error) {
 	resty.SetHostURL("https://qyapi.weixin.qq.com")
 	resty.SetQueryParam("corpid", app.CorpID)
 	resty.SetQueryParam("corpsecret", app.CorpSecret)
-	resty.SetDebug(true)
+	resty.SetDebug(os.Getenv("DEBUG") == "true")
+
 	var result RespAccessToken
 	resp, err := resty.R().SetResult(&result).Get(apiPath)
 	if err != nil {

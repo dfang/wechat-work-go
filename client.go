@@ -89,12 +89,8 @@ func (corp *WechatWork) NewApp(corpSecret string, agentID int64) *App {
 
 // NewDefaultRestyClient 返回一个resty 的client
 func NewDefaultRestyClient() *resty.Client {
-	debugFlag := false
-	if os.Getenv("DEBUG") == "true" {
-		debugFlag = true
-	}
 	client := resty.New()
-	client.SetDebug(debugFlag)
+	client.SetDebug(os.Getenv("DEBUG") == "true")
 	client.SetLogger(os.Stdout)
 	client.SetHostURL("https://qyapi.weixin.qq.com")
 	return client
