@@ -20,7 +20,7 @@ var _ = Describe("Agent", func() {
 		agentID, _ := strconv.ParseInt(os.Getenv("AGENT_ID"), 10, 64)
 
 		client := wechatwork.New(corpID)
-		app := client.WithApp(corpSecret, agentID)
+		app := client.NewApp(corpSecret, agentID)
 		a = &agent.Agent{
 			App: app,
 		}

@@ -63,7 +63,7 @@ type App struct {
 // 		corpSecret := os.Getenv("CORP_SECRET")
 // 		agentID, _ := strconv.ParseInt(os.Getenv("AGENT_ID"), 10, 64)
 // 		client := wechatwork.New(corpID)
-//		app = client.WithApp(corpSecret, agentID)
+//		app = client.NewApp(corpSecret, agentID)
 //
 func New(corpID string) *WechatWork {
 	return &WechatWork{
@@ -71,13 +71,13 @@ func New(corpID string) *WechatWork {
 	}
 }
 
-// WithApp 构造本企业下某自建 app 的对象
+// NewApp 构造本企业下某自建 app 的对象
 //
 // 企业微信暂未提供创建 app 的 api, 创建应用需要去企业微信的管理后台中
 //
-func (app *WechatWork) WithApp(corpSecret string, agentID int64) *App {
+func (corp *WechatWork) NewApp(corpSecret string, agentID int64) *App {
 	return &App{
-		WechatWork: app,
+		WechatWork: corp,
 
 		CorpSecret:      corpSecret,
 		AgentID:         agentID,

@@ -27,7 +27,7 @@ var _ = BeforeSuite(func() {
 	agentID, _ := strconv.ParseInt(os.Getenv("AGENT_ID"), 10, 64)
 
 	client := wechatwork.New(corpID)
-	app := client.WithApp(contactAppSecret, agentID)
+	app := client.NewApp(contactAppSecret, agentID)
 	c = &contact.Contact{
 		App: app,
 	}

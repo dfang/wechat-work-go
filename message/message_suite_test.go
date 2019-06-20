@@ -13,7 +13,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var g *message.GroupChat
+var g *message.Message
 var c *contact.Contact
 
 func TestMessage(t *testing.T) {
@@ -27,8 +27,8 @@ var _ = BeforeSuite(func() {
 	agentID, _ := strconv.ParseInt(os.Getenv("AGENT_ID"), 10, 64)
 
 	client := wechatwork.New(corpID)
-	app := client.WithApp(corpSecret, agentID)
-	g = &message.GroupChat{
+	app := client.NewApp(corpSecret, agentID)
+	g = &message.Message{
 		App: app,
 	}
 
@@ -36,7 +36,7 @@ var _ = BeforeSuite(func() {
 	// 关于创建成员（客服答复）
 	// 目前只能使用通讯录的secret 获取token进行创建  其他的secret是没有创建成员的权限的
 	// 获取路径：通讯录管理secret。在“管理工具”-“通讯录同步”里面查看（需开启“API接口同步”）
-	app2 := client.WithApp(contactAppSecret, 0)
+	app2 := client.NewApp(contactAppSecret, 0)
 	c = &contact.Contact{
 		App: app2,
 	}
