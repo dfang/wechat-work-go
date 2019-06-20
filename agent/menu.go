@@ -7,7 +7,7 @@ import (
 // CreateMenu 创建菜单
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90231
-func (agent *Agent) CreateMenu(agentID int64, m Menu) (RespCommon, error) {
+func (agent *Agent) CreateMenu(agentID int64, m interface{}) (RespCommon, error) {
 	apiPath := "/cgi-bin/menu/create"
 	uri := agent.formatURL(apiPath, agentID)
 	var result RespCommon
