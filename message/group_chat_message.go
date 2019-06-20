@@ -3,7 +3,6 @@ package message
 import (
 	"fmt"
 
-	wechatwork "github.com/dfang/wechat-work-go"
 	"github.com/dfang/wechat-work-go/models"
 )
 
@@ -11,14 +10,14 @@ import (
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90245
 
-type GroupChat struct {
-	App *wechatwork.App
-}
+// type GroupChat struct {
+// 	App *wechatwork.App
+// }
 
 // CreateGroupChat 创建群聊会话
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90245
-func (g GroupChat) CreateGroupChat(req ReqCreateGroupChat) (RespCreateGroupChat, error) {
+func (g Message) CreateGroupChat(req ReqCreateGroupChat) (RespCreateGroupChat, error) {
 	apiPath := "cgi-bin/appchat/create"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, g.App.GetAccessToken())
 	var result RespCreateGroupChat
@@ -32,7 +31,7 @@ func (g GroupChat) CreateGroupChat(req ReqCreateGroupChat) (RespCreateGroupChat,
 // UpdateGroupChat 修改群聊会话
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90246
-func (g GroupChat) UpdateGroupChat(req ReqUpdateGroupChat) (models.RespCommon, error) {
+func (g Message) UpdateGroupChat(req ReqUpdateGroupChat) (models.RespCommon, error) {
 	apiPath := "cgi-bin/appchat/update"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, g.App.GetAccessToken())
 	var result models.RespCommon
@@ -46,7 +45,7 @@ func (g GroupChat) UpdateGroupChat(req ReqUpdateGroupChat) (models.RespCommon, e
 // GetGroupChat 获取群聊会话
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90247
-func (g GroupChat) GetGroupChat(chatid string) (RespGetGroupChat, error) {
+func (g Message) GetGroupChat(chatid string) (RespGetGroupChat, error) {
 	apiPath := "cgi-bin/appchat/get"
 	uri := fmt.Sprintf("%s?access_token=%s&chatid=%s", apiPath, g.App.GetAccessToken(), chatid)
 	var result RespGetGroupChat
