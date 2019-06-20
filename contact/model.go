@@ -1,9 +1,5 @@
 package contact
 
-import (
-	"encoding/json"
-)
-
 // RespMemberGet 查询成员响应
 type RespMemberGet struct {
 	RespCommon
@@ -60,20 +56,6 @@ type ReqMemberCreate struct {
 			} `json:"miniprogram,omitempty"`
 		} `json:"external_attr"`
 	} `json:"external_profile"`
-}
-
-// IntoBody 转换为请求体的 []byte 类型
-//
-// impl bodyer for ReqMemberCreate
-func (x ReqMemberCreate) IntoBody() ([]byte, error) {
-	result, err := json.Marshal(x)
-	if err != nil {
-		// should never happen unless OOM or similar bad things
-		// TODO: error_chain
-		return nil, err
-	}
-
-	return result, nil
 }
 
 type RespMemberCreate struct {
@@ -215,40 +197,11 @@ type RespCreateDepartment struct {
 	ID int `json:"id"`
 }
 
-func (x ReqCreateDepartment) IntoBody() ([]byte, error) {
-	result, err := json.Marshal(x)
-	if err != nil {
-		// should never happen unless OOM or similar bad things
-		// TODO: error_chain
-		return nil, err
-	}
-
-	return result, nil
-}
-
 type ReqUpdateDepartment struct {
 	Name     string `json:"name"`
 	ParentID int    `json:"parentid"`
 	Order    int    `json:"order"`
 	ID       int    `json:"id"`
-}
-
-func (x ReqUpdateDepartment) IntoBody() ([]byte, error) {
-	result, err := json.Marshal(x)
-	if err != nil {
-		return nil, err
-	}
-
-	return result, nil
-}
-
-func (x Member) IntoBody() ([]byte, error) {
-	result, err := json.Marshal(x)
-	if err != nil {
-		return nil, err
-	}
-
-	return result, nil
 }
 
 type Department struct {
