@@ -4,20 +4,20 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/dfang/wechat-work-go/models"
+	. "github.com/dfang/wechat-work-go/models"
 	"gopkg.in/resty.v1"
 )
 
 // GetAccessTokenFromServer 获取 access token
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/91039
-func (app *App) GetAccessTokenFromServer() (models.RespAccessToken, error) {
+func (app *App) GetAccessTokenFromServer() (RespAccessToken, error) {
 	apiPath := "/cgi-bin/gettoken"
 	resty.SetHostURL("https://qyapi.weixin.qq.com")
 	resty.SetQueryParam("corpid", app.CorpID)
 	resty.SetQueryParam("corpsecret", app.CorpSecret)
 	resty.SetDebug(true)
-	var result models.RespAccessToken
+	var result RespAccessToken
 	resp, err := resty.R().SetResult(&result).Get(apiPath)
 	if err != nil {
 		// log.Println("err when request gettoken api")
@@ -25,7 +25,7 @@ func (app *App) GetAccessTokenFromServer() (models.RespAccessToken, error) {
 		fmt.Println(resp.Status())
 		// fmt.Println(resp.StatusCode())
 		// fmt.Printf("%+v\n", data)
-		return models.RespAccessToken{}, err
+		return RespAccessToken{}, err
 	}
 
 	// 40001 不合法的secret参数
@@ -77,7 +77,7 @@ func (app *App) GetAccessToken() string {
 	}
 
 	// 从微信服务器获取
-	var result models.RespAccessToken
+	var result RespAccessToken
 	result, err := app.GetAccessTokenFromServer()
 	if err != nil {
 		panic(err)

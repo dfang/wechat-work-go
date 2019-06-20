@@ -8,7 +8,7 @@ import (
 	"fmt"
 
 	wechatwork "github.com/dfang/wechat-work-go"
-	"github.com/dfang/wechat-work-go/models"
+	. "github.com/dfang/wechat-work-go/models"
 )
 
 // Message 消息推送
@@ -44,14 +44,14 @@ func (m Message) SendMessage(v Sendable) (RespSendMsg, error) {
 // SendAppChatMessage 应用推送消息
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90248
-func (m Message) SendAppChatMessage(v Sendable) (models.RespCommon, error) {
+func (m Message) SendAppChatMessage(v Sendable) (RespCommon, error) {
 	apiPath := "/cgi-bin/appchat/send"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, m.App.GetAccessToken())
 
-	var result models.RespCommon
+	var result RespCommon
 	err := m.App.SimplePost(uri, v, &result)
 	if err != nil {
-		return models.RespCommon{}, err
+		return RespCommon{}, err
 	}
 	return result, nil
 }

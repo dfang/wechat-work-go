@@ -4,7 +4,7 @@
 package message
 
 import (
-	"github.com/dfang/wechat-work-go/models"
+	. "github.com/dfang/wechat-work-go/models"
 )
 
 // AppChatMessage 应用消息
@@ -235,7 +235,7 @@ func NewAppChatFileMessage(chatid, mediaid string, safe int) AppChatFileMessage 
 // }
 
 type RespSendMsg struct {
-	models.RespCommon
+	RespCommon
 
 	Invaliduser  string `json:"invaliduser"`
 	Invalidparty string `json:"invalidparty"`
