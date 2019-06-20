@@ -6,7 +6,6 @@ import (
 	// wechatwork "github.com/dfang/wechat-work-go"
 
 	"github.com/dfang/wechat-work-go/contact"
-	"github.com/dfang/wechat-work-go/models"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

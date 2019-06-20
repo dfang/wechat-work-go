@@ -2,8 +2,6 @@ package message
 
 import (
 	"fmt"
-
-	"github.com/dfang/wechat-work-go/models"
 )
 
 // 群聊会话

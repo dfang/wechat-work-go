@@ -8,7 +8,6 @@ import (
 	"fmt"
 
 	wechatwork "github.com/dfang/wechat-work-go"
-	. "github.com/dfang/wechat-work-go/models"
 )
 
 // Message 消息推送

@@ -2,7 +2,6 @@ package message_test
 
 import (
 	"github.com/dfang/wechat-work-go/message"
-	"github.com/dfang/wechat-work-go/models"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )

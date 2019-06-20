@@ -2,8 +2,6 @@ package agent
 
 import (
 	"fmt"
-
-	. "github.com/dfang/wechat-work-go/models"
 )
 
 // CreateMenu 创建菜单

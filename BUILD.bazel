@@ -17,7 +17,6 @@ go_library(
     visibility = ["//visibility:public"],
     deps = [
         "//cache:go_default_library",
-        "//models:go_default_library",
         "@in_gopkg_resty_v1//:go_default_library",
     ],
 )

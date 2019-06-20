@@ -5,13 +5,11 @@ go_library(
     srcs = [
         "agent.go",
         "menu.go",
+        "model.go",
     ],
     importpath = "github.com/dfang/wechat-work-go/agent",
     visibility = ["//visibility:public"],
-    deps = [
-        "//:go_default_library",
-        "//models:go_default_library",
-    ],
+    deps = ["//:go_default_library"],
 )
 
 go_test(

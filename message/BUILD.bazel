@@ -9,10 +9,7 @@ go_library(
     ],
     importpath = "github.com/dfang/wechat-work-go/message",
     visibility = ["//visibility:public"],
-    deps = [
-        "//:go_default_library",
-        "//models:go_default_library",
-    ],
+    deps = ["//:go_default_library"],
 )
 
 go_test(
@@ -25,7 +22,6 @@ go_test(
     deps = [
         "//:go_default_library",
         "//contact:go_default_library",
-        "//models:go_default_library",
         "@com_github_joho_godotenv//autoload:go_default_library",
         "@com_github_onsi_ginkgo//:go_default_library",
         "@com_github_onsi_gomega//:go_default_library",

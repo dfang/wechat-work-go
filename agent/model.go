@@ -1,4 +1,4 @@
-package models
+package agent
 
 import (
 	"encoding/json"
@@ -63,4 +63,10 @@ type AgentItem struct {
 	Agentid       int    `json:"agentid"`
 	Name          string `json:"name"`
 	SquareLogoURL string `json:"square_logo_url"`
+}
+
+// RespCommon Comman Response Struct
+type RespCommon struct {
+	ErrCode int    `json:"errcode"`
+	ErrMsg  string `json:"errmsg"`
 }

@@ -1,4 +1,4 @@
-package models
+package contact
 
 import (
 	"encoding/json"
@@ -266,4 +266,10 @@ type RespListDepartments struct {
 
 type ReqBatchDeleteMembers struct {
 	UserIDList []string `json:"useridlist"`
+}
+
+// RespCommon Comman Response Struct
+type RespCommon struct {
+	ErrCode int    `json:"errcode"`
+	ErrMsg  string `json:"errmsg"`
 }

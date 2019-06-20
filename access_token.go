@@ -5,7 +5,6 @@ import (
 	"os"
 	"time"
 
-	. "github.com/dfang/wechat-work-go/models"
 	"gopkg.in/resty.v1"
 )
 

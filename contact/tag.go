@@ -1,4 +1,4 @@
-package models
+package contact
 
 type Tag struct {
 	Tagname string `json:"tagname"`

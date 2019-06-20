@@ -3,7 +3,6 @@ package contact
 import (
 	"fmt"
 
-	. "github.com/dfang/wechat-work-go/models"
 	"github.com/pkg/errors"
 )
 

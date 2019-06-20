@@ -13,7 +13,6 @@ import (
 	"fmt"
 
 	wechatwork "github.com/dfang/wechat-work-go"
-	. "github.com/dfang/wechat-work-go/models"
 	"github.com/pkg/errors"
 )
 

@@ -9,7 +9,6 @@ import (
 	"fmt"
 
 	wechatwork "github.com/dfang/wechat-work-go"
-	. "github.com/dfang/wechat-work-go/models"
 )
 
 // Agent 应用管理

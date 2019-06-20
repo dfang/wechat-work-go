@@ -3,10 +3,6 @@
 // https://work.weixin.qq.com/api/doc#90000/90135/90235
 package message
 
-import (
-	. "github.com/dfang/wechat-work-go/models"
-)
-
 // AppMessageCommon 公共字段
 // touser，toparty, totag 不可同时为空
 type AppMessageCommon struct {
