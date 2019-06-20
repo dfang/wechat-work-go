@@ -1,0 +1,3 @@
+发送到群聊的叫[群聊消息](https://work.weixin.qq.com/api/doc#90000/90135/90248) group_chat_message.go
+发送到应用的叫[应用消息](https://work.weixin.qq.com/api/doc#90000/90135/90236) app_message.go
+

@@ -88,3 +88,132 @@ type RespGetGroupChat struct {
 		UserList []string `json:"userlist"`
 	} `json:"chat_info"`
 }
+
+// GroupChatMessageCommon 公共字段
+type GroupChatMessageCommon struct {
+	ChatID string `json:"chatid"`
+
+	MsgType string `json:"msgtype"`
+	Safe    int    `json:"safe"`
+}
+
+// AppTextMessage 文字信息
+type GroupChatTextMessage struct {
+	GroupChatMessageCommon
+
+	Text struct {
+		Content string `json:"content"`
+	} `json:"text"`
+}
+
+func (a GroupChatTextMessage) Sendable() bool {
+	return a.ChatID != ""
+}
+
+// AppImageMessage 图片信息
+type GroupChatImageMessage struct {
+	GroupChatMessageCommon
+
+	Image struct {
+		MediaID string `json:"media_id"`
+	} `json:"image"`
+}
+
+func (a GroupChatImageMessage) Sendable() bool {
+	return a.ChatID != ""
+}
+
+// AppVoiceMessage 语音消息
+type GroupChatVoiceMessage struct {
+	GroupChatMessageCommon
+
+	Voice struct {
+		MediaID string `json:"media_id"`
+	} `json:"voice"`
+}
+
+func (a GroupChatVoiceMessage) Sendable() bool {
+	return a.ChatID != ""
+}
+
+// AppVedioMessage 视频消息
+type GroupChatVedioMessage struct {
+	GroupChatMessageCommon
+
+	Video struct {
+		MediaID     string `json:"media_id"`
+		Description string `json:"description"`
+	} `json:"video"`
+}
+
+func (a GroupChatVedioMessage) Sendable() bool {
+	return a.ChatID != ""
+}
+
+// AppFileMessage 文件消息
+type GroupChatFileMessage struct {
+	GroupChatMessageCommon
+
+	File struct {
+		MediaID string `json:"media_id"`
+	} `json:"file"`
+}
+
+func (a GroupChatFileMessage) Sendable() bool {
+	return a.ChatID != ""
+}
+
+// AppTextCardMessage 文本卡片消息
+type GroupChatTextCardMessage struct {
+	GroupChatMessageCommon
+
+	Textcard struct {
+		Title       string `json:"title"`
+		Description string `json:"description"`
+		URL         string `json:"url"`
+		Btntxt      string `json:"btntxt"`
+	} `json:"textcard"`
+}
+
+func (a GroupChatTextCardMessage) Sendable() bool {
+	return a.ChatID != ""
+}
+
+// AppNewsMessage 图文消息
+type GroupChatNewsMessage struct {
+	GroupChatMessageCommon
+
+	News struct {
+		Articles []struct {
+			Title       string `json:"title"`
+			Description string `json:"description"`
+			URL         string `json:"url"`
+			Picurl      string `json:"picurl"`
+		} `json:"articles"`
+	} `json:"news"`
+}
+
+func (a GroupChatNewsMessage) Sendable() bool {
+	return a.ChatID != ""
+}
+
+// AppNewsMessage 图文消息2
+type GroupChatMPNewsMessage struct {
+	GroupChatMessageCommon
+
+	MPNews struct {
+		Articles []struct {
+			Title            string `json:"title"`
+			ThumbMediaID     string `json:"thumb_media_id"`
+			Author           string `json:"author"`
+			ContentSourceURL string `json:"content_source_url"`
+			Content          string `json:"content"`
+			Digest           string `json:"digest"`
+		} `json:"articles"`
+	} `json:"mpnews"`
+	Safe int `json:"safe"`
+}
+
+func (a GroupChatMPNewsMessage) Sendable() bool {
+	return a.ChatID != ""
+}
