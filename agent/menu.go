@@ -7,7 +7,7 @@ import (
 // CreateMenu 创建菜单
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90231
-func (agent *Agent) CreateMenu(agentID string, m Menu) (RespCommon, error) {
+func (agent *Agent) CreateMenu(agentID int64, m Menu) (RespCommon, error) {
 	apiPath := "/cgi-bin/menu/create"
 	uri := agent.formatURL(apiPath, agentID)
 	var result RespCommon
@@ -21,7 +21,7 @@ func (agent *Agent) CreateMenu(agentID string, m Menu) (RespCommon, error) {
 // GetMenu 获取菜单
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90232
-func (agent *Agent) GetMenu(agentID string) (Menu, error) {
+func (agent *Agent) GetMenu(agentID int64) (Menu, error) {
 	apiPath := "/cgi-bin/menu/get"
 	uri := agent.formatURL(apiPath, agentID)
 	var result Menu
@@ -35,7 +35,7 @@ func (agent *Agent) GetMenu(agentID string) (Menu, error) {
 // DeleteMenu 删除菜单
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90233
-func (agent *Agent) DeleteMenu(agentID string) (RespCommon, error) {
+func (agent *Agent) DeleteMenu(agentID int64) (RespCommon, error) {
 	apiPath := "/cgi-bin/menu/delete"
 	uri := agent.formatURL(apiPath, agentID)
 	var result RespCommon
@@ -47,8 +47,30 @@ func (agent *Agent) DeleteMenu(agentID string) (RespCommon, error) {
 }
 
 // formatUrl format url for Menu API
-func (agent *Agent) formatURL(apiPath, agentID string) string {
+func (agent *Agent) formatURL(apiPath string, agentID int64) string {
 	token := agent.App.GetAccessToken()
-	uri := fmt.Sprintf("%s?access_token=%s&agentid=%s", apiPath, token, agentID)
+	uri := fmt.Sprintf("%s?access_token=%s&agentid=%d", apiPath, token, agentID)
 	return uri
+}
+
+// Menu 菜单
+type Menu struct {
+	Button []Button `json:"button"`
+}
+
+// Button 菜单项
+type Button struct {
+	Name      string      `json:"name"`
+	SubButton []SubButton `json:"sub_button,omitempty"`
+	Type      string      `json:"type,omitempty"`
+	Key       string      `json:"key,omitempty"`
+}
+
+// SubButton 子菜单项
+type SubButton struct {
+	Type      string        `json:"type"`
+	Name      string        `json:"name"`
+	Key       string        `json:"key,omitempty"`
+	URL       string        `json:"url,omitempty"`
+	SubButton []interface{} `json:"sub_button,omitempty"`
 }

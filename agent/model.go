@@ -8,7 +8,7 @@ import (
 type RespAgentGet struct {
 	RespCommon
 
-	AgentID        int    `json:"agentid"`
+	AgentID        int64  `json:"agentid"`
 	Name           string `json:"name"`
 	SquareLogoURL  string `json:"square_logo_url"`
 	Description    string `json:"description"`
@@ -32,7 +32,7 @@ type RespAgentGet struct {
 
 // ReqAgentSet 设置应用请求
 type ReqAgentSet struct {
-	AgentID            string `json:"agentid"`
+	AgentID            int64  `json:"agentid"`
 	ReportLocationFlag int    `json:"report_location_flag,omitempty"`
 	LogoMediaID        string `json:"logo_mediaid,omitempty"`
 	Name               string `json:"name,omitempty"`

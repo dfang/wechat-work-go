@@ -193,3 +193,5 @@ $RECYCLE.BIN/
 tmp
 
 */.env
+
+*.coverprofile

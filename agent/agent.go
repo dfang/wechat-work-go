@@ -28,9 +28,9 @@ func WithApp(app *wechatwork.App) *Agent {
 // GetAgent 获取应用
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90227
-func (agent *Agent) GetAgent(agentID string) (RespAgentGet, error) {
+func (agent *Agent) GetAgent(agentID int64) (RespAgentGet, error) {
 	apiPath := "/cgi-bin/agent/get"
-	uri := fmt.Sprintf("%s?access_token=%s&agentid=%s", apiPath, agent.App.GetAccessToken(), agentID)
+	uri := fmt.Sprintf("%s?access_token=%s&agentid=%d", apiPath, agent.App.GetAccessToken(), agentID)
 	var result RespAgentGet
 	err := agent.App.SimpleGet(uri, &result)
 	if err != nil {
