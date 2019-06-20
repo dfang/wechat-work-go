@@ -18,7 +18,7 @@ import (
 <details>
 <summary>通讯录管理 API</summary>
 
-* [ ] [成员管理](https://work.weixin.qq.com/api/doc#90000/90135/90194)
+* [✓] [成员管理](https://work.weixin.qq.com/api/doc#90000/90135/90194)
     - [✓] 创建成员 (只能使用通讯录secret创建)
     - [✓] 读取成员 
     - [✓] 更新成员
@@ -26,9 +26,9 @@ import (
     - [✓] 批量删除成员
     - [✓] 获取部门成员
     - [✓] 获取部门成员详情
-    - [ ] userid与openid互换
-    - [ ] 二次验证
-    - [ ] 邀请成员
+    - [✓] userid与openid互换
+    - [✓] 二次验证
+    - [✓] 邀请成员
 
 * [✓] [部门管理](https://work.weixin.qq.com/api/doc#90000/90135/90204)
     - [✓] 创建部门
@@ -37,9 +37,23 @@ import (
     - [✓] 获取部门列表
 
 * [ ] [标签管理](https://work.weixin.qq.com/api/doc#90000/90135/90209)
+    - [ ] 创建标签
+    - [ ] 更新标签名字
+    - [ ] 删除标签
+    - [ ] 获取标签成员
+    - [ ] 增加标签成员
+    - [ ] 删除标签成员
+    - [ ] 获取标签列表
 
 * [ ] [异步批量接口](https://work.weixin.qq.com/api/doc#90000/90135/90978)
-    
+    - [ ] 增量更新成员
+    - [ ] 全量覆盖成员
+    - [ ] 全量覆盖部门
+    - [ ] 获取异步任务结果
+
+* [ ] [通讯录回调通知](https://work.weixin.qq.com/api/doc#90000/90135/90966)
+
+
 </details>
 
 <details>

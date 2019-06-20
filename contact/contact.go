@@ -13,7 +13,6 @@ import (
 	"fmt"
 
 	wechatwork "github.com/dfang/wechat-work-go"
-	"github.com/pkg/errors"
 )
 
 // Contact 通讯录
@@ -103,31 +102,89 @@ func (contact *Contact) UpdateMember(body Member) (RespCommon, error) {
 // UserIDToOpenID userid转openid
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90202
-func (contact *Contact) UserIDToOpenID() error {
-	// TODO
-	return errors.New("not implemented")
+func (contact *Contact) UserIDToOpenID(userID string) (RespOpenIDInfo, error) {
+	apiPath := "/cgi-bin/user/convert_to_openid"
+	uri := fmt.Sprintf("%s?access_token=%s", apiPath, contact.App.GetAccessToken())
+	var result RespOpenIDInfo
+	body := struct {
+		UserID string `json:"userid"`
+	}{
+		UserID: userID,
+	}
+	err := contact.App.SimplePost(uri, body, &result)
+	if err != nil {
+		return RespOpenIDInfo{}, err
+	}
+	return result, nil
 }
 
 // OpenIDToUserID userid转openid
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90202
-func (contact *Contact) OpenIDToUserID() error {
-	// TODO
-	return errors.New("not implemented")
+func (contact *Contact) OpenIDToUserID(openID string) (RespUserIDInfo, error) {
+	apiPath := "/cgi-bin/user/convert_to_userid"
+	uri := fmt.Sprintf("%s?access_token=%s", apiPath, contact.App.GetAccessToken())
+	var result RespUserIDInfo
+	body := struct {
+		OpenID string `json:"openid"`
+	}{
+		OpenID: openID,
+	}
+	err := contact.App.SimplePost(uri, body, &result)
+	if err != nil {
+		return RespUserIDInfo{}, err
+	}
+	return result, nil
+}
+
+type RespOpenIDInfo struct {
+	RespCommon
+	OpenID string `json:"openid"`
+}
+
+type RespUserIDInfo struct {
+	RespCommon
+	UserID string `json:"userid"`
 }
 
 // TwoFactorAuth 二次验证
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90203
-func (contact *Contact) TwoFactorAuth() error {
-	// TODO
-	return errors.New("not implemented")
+func (contact *Contact) TwoFactorAuth(userID string) (RespCommon, error) {
+	apiPath := "/cgi-bin/user/authsucc"
+	uri := fmt.Sprintf("%s?access_token=%s&userid=%s", apiPath, contact.App.GetAccessToken(), userID)
+	var result RespCommon
+	err := contact.App.SimpleGet(uri, &result)
+	if err != nil {
+		return RespCommon{}, err
+	}
+	return result, nil
 }
 
-// InviteMember 邀请成员
+// InviteMembers 邀请成员
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90975
-func (contact *Contact) InviteMember() error {
-	// TODO
-	return errors.New("not implemented")
+func (contact *Contact) InviteMembers(body interface{}) (ResqInviteMembers, error) {
+	apiPath := "/cgi-bin/cgi-bin/batch/invite"
+	uri := fmt.Sprintf("%s?access_token=%s", apiPath, contact.App.GetAccessToken())
+	var result ResqInviteMembers
+	err := contact.App.SimplePost(uri, body, &result)
+	if err != nil {
+		return ResqInviteMembers{}, err
+	}
+	return result, nil
+}
+
+type ReqInviteMembers struct {
+	User  []string `json:"user"`
+	Party []string `json:"party"`
+	Tag   []string `json:"tag"`
+}
+
+type ResqInviteMembers struct {
+	Errcode      int    `json:"errcode"`
+	Errmsg       string `json:"errmsg"`
+	Invaliduser  string `json:"invaliduser"`
+	Invalidparty string `json:"invalidparty"`
+	Invalidtag   string `json:"invalidtag"`
 }
