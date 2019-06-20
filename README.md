@@ -88,6 +88,16 @@ import (
 
 </details>
 
+<details>
+<summary>素材管理</summary>
+
+* [ ] 素材管理
+    - [ ] 上传临时素材
+    - [ ] 上传永久图片
+    - [ ] 获取临时素材
+    - [ ] 获取高清语音素材
+
+</details>
 
 <details>
 <summary>TODO(以下接口个人暂时用不到， 暂时不开发)</summary>
