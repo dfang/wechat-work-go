@@ -10,7 +10,7 @@ type AppMessageCommon struct {
 	ToParty string `json:"toparty,omitempty"`
 	ToTag   string `json:"totag,omitempty"`
 
-	AgentID int `json:"agentid"`
+	AgentID int64 `json:"agentid"`
 
 	MsgType string `json:"msgtype"`
 	Safe    int    `json:"safe"`
@@ -86,12 +86,14 @@ func (a AppFileMessage) Sendable() bool {
 type AppTextCardMessage struct {
 	AppMessageCommon
 
-	Textcard struct {
-		Title       string `json:"title"`
-		Description string `json:"description"`
-		URL         string `json:"url"`
-		Btntxt      string `json:"btntxt"`
-	} `json:"textcard"`
+	TextCard `json:"textcard"`
+}
+
+type TextCard struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	URL         string `json:"url"`
+	Btntxt      string `json:"btntxt"`
 }
 
 func (a AppTextCardMessage) Sendable() bool {
@@ -150,7 +152,7 @@ func (a AppMarkdownMessage) Sendable() bool {
 	return !(a.ToParty == "" && a.ToUser == "" && a.ToTag == "")
 }
 
-func NewAppTextMessage(agentID int, content string, safe int) AppTextMessage {
+func NewAppTextMessage(agentID int64, content string, safe int) AppTextMessage {
 	a := AppTextMessage{}
 	a.AgentID = agentID
 	a.MsgType = "text"
@@ -163,7 +165,7 @@ func NewAppTextMessage(agentID int, content string, safe int) AppTextMessage {
 	return a
 }
 
-func NewAppImageMessage(agentID int, mediaid string, safe int) AppImageMessage {
+func NewAppImageMessage(agentID int64, mediaid string, safe int) AppImageMessage {
 	a := AppImageMessage{}
 	a.AgentID = agentID
 	a.MsgType = "image"
@@ -176,7 +178,7 @@ func NewAppImageMessage(agentID int, mediaid string, safe int) AppImageMessage {
 	return a
 }
 
-func NewAppVoiceMessage(agentID int, mediaid string) AppVoiceMessage {
+func NewAppVoiceMessage(agentID int64, mediaid string) AppVoiceMessage {
 	a := AppVoiceMessage{}
 	a.AgentID = agentID
 	a.MsgType = "voice"
@@ -188,7 +190,7 @@ func NewAppVoiceMessage(agentID int, mediaid string) AppVoiceMessage {
 	return a
 }
 
-func NewAppVedioMessage(agentID int, mediaid, description string, safe int) AppVedioMessage {
+func NewAppVedioMessage(agentID int64, mediaid, description string, safe int) AppVedioMessage {
 	a := AppVedioMessage{}
 	a.AgentID = agentID
 	a.MsgType = "vedio"
@@ -203,7 +205,7 @@ func NewAppVedioMessage(agentID int, mediaid, description string, safe int) AppV
 	return a
 }
 
-func NewAppFileMessage(agentID int, mediaid string, safe int) AppFileMessage {
+func NewAppFileMessage(agentID int64, mediaid string, safe int) AppFileMessage {
 	a := AppFileMessage{}
 	a.AgentID = agentID
 	a.MsgType = "file"
