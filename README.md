@@ -45,8 +45,8 @@ import (
 <details>
 <summary>身份认证</summary>
 
-* [ ] [网页授权登录时获取访问用户身份](https://work.weixin.qq.com/api/doc#90000/90135/91023)
-* [ ] [扫码授权登录时获取访问用户身份](https://work.weixin.qq.com/api/doc#90000/90135/91437)
+* [✓] [网页授权登录时获取访问用户身份](https://work.weixin.qq.com/api/doc#90000/90135/91023)
+* [✓] [扫码授权登录时获取访问用户身份](https://work.weixin.qq.com/api/doc#90000/90135/91437)
 
 </details>
 

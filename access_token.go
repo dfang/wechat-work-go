@@ -136,3 +136,26 @@ func (app *App) GetAccessToken() string {
 // 	once := &sync.Once{}
 // 	go app.AccessTokenRefresher(once)
 // }
+
+// GetUserInfo 网页授权或扫码授权时 AccessToken 和 Code 获取 UserInfo
+//
+// https://work.weixin.qq.com/api/doc#90000/90135/91023
+//
+// https://work.weixin.qq.com/api/doc#90000/90135/91437
+func (app *App) GetUserInfo(code string) (RespGetUserInfo, error) {
+	apiPath := "/cgi-bin/user/getuserinfo"
+	uri := fmt.Sprintf("%s?access_token=%s&code=%s", apiPath, app.GetAccessToken(), code)
+	var result RespGetUserInfo
+	err := app.SimpleGet(uri, &result)
+	if err != nil {
+		return RespGetUserInfo{}, err
+	}
+	return result, nil
+}
+
+type RespGetUserInfo struct {
+	RespCommon
+	UserID   string `json:"UserId`
+	OpenID   string `json:"OpenId`
+	DeviceID string `json:"DeviceId`
+}
