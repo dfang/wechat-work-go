@@ -3,19 +3,19 @@ package agent
 import (
 	"fmt"
 
-	"github.com/dfang/wechat-work-go/models"
+	. "github.com/dfang/wechat-work-go/models"
 )
 
 // CreateMenu 创建菜单
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90231
-func (agent *Agent) CreateMenu(agentID string, m models.Menu) (models.RespCommon, error) {
+func (agent *Agent) CreateMenu(agentID string, m Menu) (RespCommon, error) {
 	apiPath := "/cgi-bin/menu/create"
 	uri := agent.formatURL(apiPath, agentID)
-	var result models.RespCommon
+	var result RespCommon
 	err := agent.App.SimplePost(uri, m, &result)
 	if err != nil {
-		return models.RespCommon{}, err
+		return RespCommon{}, err
 	}
 	return result, nil
 }
@@ -23,13 +23,13 @@ func (agent *Agent) CreateMenu(agentID string, m models.Menu) (models.RespCommon
 // GetMenu 获取菜单
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90232
-func (agent *Agent) GetMenu(agentID string) (models.Menu, error) {
+func (agent *Agent) GetMenu(agentID string) (Menu, error) {
 	apiPath := "/cgi-bin/menu/get"
 	uri := agent.formatURL(apiPath, agentID)
-	var result models.Menu
+	var result Menu
 	err := agent.App.SimpleGet(uri, &result)
 	if err != nil {
-		return models.Menu{}, err
+		return Menu{}, err
 	}
 	return result, nil
 }
@@ -37,13 +37,13 @@ func (agent *Agent) GetMenu(agentID string) (models.Menu, error) {
 // DeleteMenu 删除菜单
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90233
-func (agent *Agent) DeleteMenu(agentID string) (models.RespCommon, error) {
+func (agent *Agent) DeleteMenu(agentID string) (RespCommon, error) {
 	apiPath := "/cgi-bin/menu/delete"
 	uri := agent.formatURL(apiPath, agentID)
-	var result models.RespCommon
+	var result RespCommon
 	err := agent.App.SimpleGet(uri, &result)
 	if err != nil {
-		return models.RespCommon{}, nil
+		return RespCommon{}, nil
 	}
 	return result, nil
 }

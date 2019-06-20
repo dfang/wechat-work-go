@@ -9,7 +9,7 @@ import (
 	"fmt"
 
 	wechatwork "github.com/dfang/wechat-work-go"
-	"github.com/dfang/wechat-work-go/models"
+	. "github.com/dfang/wechat-work-go/models"
 )
 
 // Agent 应用管理
@@ -29,13 +29,13 @@ func WithApp(app *wechatwork.App) *Agent {
 // GetAgent 获取应用
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90227
-func (agent *Agent) GetAgent(agentID string) (models.RespAgentGet, error) {
+func (agent *Agent) GetAgent(agentID string) (RespAgentGet, error) {
 	apiPath := "/cgi-bin/agent/get"
 	uri := fmt.Sprintf("%s?access_token=%s&agentid=%s", apiPath, agent.App.GetAccessToken(), agentID)
-	var result models.RespAgentGet
+	var result RespAgentGet
 	err := agent.App.SimpleGet(uri, &result)
 	if err != nil {
-		return models.RespAgentGet{}, err
+		return RespAgentGet{}, err
 	}
 	return result, nil
 }
@@ -43,13 +43,13 @@ func (agent *Agent) GetAgent(agentID string) (models.RespAgentGet, error) {
 // ListAgents 获取access_token 下应用列表
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90227
-func (agent *Agent) ListAgents() (models.RespAgentList, error) {
+func (agent *Agent) ListAgents() (RespAgentList, error) {
 	apiPath := "/cgi-bin/agent/list"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, agent.App.GetAccessToken())
-	var result models.RespAgentList
+	var result RespAgentList
 	err := agent.App.SimpleGet(uri, &result)
 	if err != nil {
-		return models.RespAgentList{}, err
+		return RespAgentList{}, err
 	}
 	return result, nil
 }
@@ -57,13 +57,13 @@ func (agent *Agent) ListAgents() (models.RespAgentList, error) {
 // SetAgent 设置应用详情
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90228
-func (agent *Agent) SetAgent(req models.ReqAgentSet) (models.RespCommon, error) {
+func (agent *Agent) SetAgent(req ReqAgentSet) (RespCommon, error) {
 	apiPath := "/cgi-bin/agent/set"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, agent.App.GetAccessToken())
-	var result models.RespCommon
+	var result RespCommon
 	err := agent.App.SimplePost(uri, req, &result)
 	if err != nil {
-		return models.RespCommon{}, err
+		return RespCommon{}, err
 	}
 	return result, nil
 }
