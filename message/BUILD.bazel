@@ -3,8 +3,8 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "go_default_library",
     srcs = [
-        "appchat_message.go",
-        "group_chat.go",
+        "app_message.go",
+        "group_chat_message.go",
         "message.go",
     ],
     importpath = "github.com/dfang/wechat-work-go/message",
@@ -18,7 +18,7 @@ go_library(
 go_test(
     name = "go_default_test",
     srcs = [
-        "group_chat_test.go",
+        "group_chat_message_test.go",
         "message_suite_test.go",
     ],
     embed = [":go_default_library"],

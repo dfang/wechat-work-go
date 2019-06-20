@@ -23,7 +23,6 @@ go_test(
     embed = [":go_default_library"],
     deps = [
         "//:go_default_library",
-        "//models:go_default_library",
         "@com_github_joho_godotenv//autoload:go_default_library",
         "@com_github_onsi_ginkgo//:go_default_library",
         "@com_github_onsi_gomega//:go_default_library",

@@ -4,11 +4,9 @@ go_library(
     name = "go_default_library",
     srcs = [
         "agent.go",
-        "appchat.go",
         "contact.go",
         "core.go",
         "menu.go",
-        "message.go",
         "tag.go",
         "user.go",
     ],

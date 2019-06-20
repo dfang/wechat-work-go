@@ -56,6 +56,7 @@ func (g Message) GetGroupChat(chatid string) (RespGetGroupChat, error) {
 	return result, nil
 }
 
+// ReqCreateGroupChat 创建群聊会话请求
 type ReqCreateGroupChat struct {
 	Name     string   `json:"name"`
 	Owner    string   `json:"owner"`
@@ -63,13 +64,14 @@ type ReqCreateGroupChat struct {
 	ChatID   string   `json:"chatid"`
 }
 
+// RespCreateGroupChat 创建群聊会话响应
 type RespCreateGroupChat struct {
 	models.RespCommon
 
-	UserList []string `json:"userlist"`
-	ChatID   string   `json:"chatid"`
+	ChatID string `json:"chatid"`
 }
 
+// ReqUpdateGroupChat 修改群聊会话请求
 type ReqUpdateGroupChat struct {
 	ChatID      string   `json:"chatid"`
 	Name        string   `json:"name"`
@@ -78,6 +80,7 @@ type ReqUpdateGroupChat struct {
 	DelUserList []string `json:"del_user_list"`
 }
 
+// RespGetGroupChat 获取群聊会话响应
 type RespGetGroupChat struct {
 	models.RespCommon
 
