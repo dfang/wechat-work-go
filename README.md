@@ -86,7 +86,44 @@ import (
 </details>
 
 
-## 对照API文档, 运行测试, 快速了解API
+## 使用
+
+企业微信是分应用的， 一个企业（一个corpid）中有多个app （对应的一套corpsecret，agentid）  
+
+所以使用的时候先创建一个企业的client，然后用这个client创建不同的app对象  
+
+```go
+import (
+    wechatwork "github.com/dfang/wechat-work-go" // package wechatwork
+)
+
+corpID := os.Getenv("CORP_ID")
+corpSecret := os.Getenv("CORP_SECRET")
+agentID, _ := strconv.ParseInt(os.Getenv("AGENT_ID"), 10, 64)
+
+client := wechatwork.New(corpID)
+app = client.NewApp(corpSecret, agentID)
+    
+```
+
+要使用哪个模块的功能，就创建哪个模块的实例
+
+
+```
+import "github.com/dfang/wechat-work-go/message"
+
+msg := message.WithApp(app)
+
+msg.SendAppChatMessage(....)
+```
+
+
+
+
+
+## 开发 
+
+对照API文档, 运行测试, 快速了解API
 
 ```
 export CORP_ID=xxxxxx
