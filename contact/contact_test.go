@@ -20,21 +20,21 @@ var _ = Describe("成员管理 API", func() {
 
 	testDepartmentID := 99999
 	var resp1 contact.RespCommon
-	Context("创建", func() {
-		JustBeforeEach(func() {
-			createTestDepartment(c, testDepartmentID)
-			createTestUsersInDepartment(c, testDepartmentID)
+	JustBeforeEach(func() {
+		createTestDepartment(c, testDepartmentID)
+		createTestUsersInDepartment(c, testDepartmentID)
 
-			body := contact.ReqUpdateDepartment{
-				ID:       testDepartmentID,
-				ParentID: 1,
-				Name:     "X 部门",
-			}
-			resp1, _ = c.UpdateDepartment(body)
-		})
+		body := contact.ReqUpdateDepartment{
+			ID:       testDepartmentID,
+			ParentID: 1,
+			Name:     "X 部门",
+		}
+		resp1, _ = c.UpdateDepartment(body)
+	})
+
+	Context("创建", func() {
 
 		It("能更新部门信息", func() {
-
 			Expect(resp1.ErrCode).To(Equal(0))
 			By("能更新部门信息，说明部门存在，创建不用测试")
 		})
