@@ -18,7 +18,7 @@ func (contact *Contact) ListMembers(departmentID int, fetchChild int) (RespListM
 		return RespListMembers{}, err
 	}
 	if result.ErrCode == 60003 {
-		return RespListMembers{}, errors.New("部门不存在")
+		return result, errors.New("部门不存在")
 	}
 	return result, nil
 }

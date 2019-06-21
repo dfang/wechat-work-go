@@ -18,23 +18,24 @@ import (
 var _ = Describe("成员管理 API", func() {
 	// var data contact.ReqCreateDepartment
 	// var result contact.RespCreateDepartment
-	testDepartmentID := 99999
 
+	testDepartmentID := 99999
+	var resp1 contact.RespCommon
 	Context("创建", func() {
 		JustBeforeEach(func() {
 			createTestDepartment(c, testDepartmentID)
 			createTestUsersInDepartment(c, testDepartmentID)
-		})
 
-		It("能更新部门信息", func() {
 			body := contact.ReqUpdateDepartment{
 				ID:       testDepartmentID,
 				ParentID: 1,
 				Name:     "X 部门",
 			}
-			resp, _ := c.UpdateDepartment(body)
+			resp1, _ = c.UpdateDepartment(body)
+		})
 
-			Expect(resp.ErrCode).To(Equal(0))
+		It("能更新部门信息", func() {
+			Expect(resp1.ErrCode).To(Equal(0))
 			By("能更新部门信息，说明部门存在，创建不用测试")
 		})
 
@@ -47,8 +48,7 @@ var _ = Describe("成员管理 API", func() {
 				Mobile: "12345678911",
 				// Department: []int{*testDepartmentID},
 			}
-
-			BeforeEach(func() {
+			JustBeforeEach(func() {
 				result, _ = c.GetMember("zhangsan")
 				result2, _ = c.UpdateMember(u)
 			})
@@ -100,7 +100,7 @@ func clearDepartment(c *contact.Contact, testDepartmentID int) {
 }
 
 // createTestDepartment 创建测试部门
-// a test_helper that create a test department with id: 9999
+// a test_helper that create a test department with id: 99999
 func createTestDepartment(c *contact.Contact, testDepartmentID int) {
 	var data = contact.ReqCreateDepartment{
 		Name:     "测试部门",
@@ -122,6 +122,7 @@ func createTestUsersInDepartment(c *contact.Contact, testDepartmentID int) {
 		Name:       "张三",
 		Department: []int{testDepartmentID},
 		Mobile:     "12345678901",
+		Enable:     1,
 	}
 
 	var u2 = contact.ReqMemberCreate{
@@ -129,8 +130,22 @@ func createTestUsersInDepartment(c *contact.Contact, testDepartmentID int) {
 		Name:       "李四",
 		Department: []int{testDepartmentID},
 		Mobile:     "12345678989",
+		Enable:     1,
+	}
+
+	var u3 = contact.ReqMemberCreate{
+		UserID:         "df1228",
+		Name:           "df1228",
+		Alias:          "我是部门老大 哈哈哈哈",
+		Position:       "部门BOSS",
+		Department:     []int{testDepartmentID},
+		Mobile:         "15618903181",
+		Gender:         "男",
+		Enable:         1,
+		IsLeaderInDept: []int{1},
 	}
 
 	c.CreateMember(u1)
 	c.CreateMember(u2)
+	c.CreateMember(u3)
 }
