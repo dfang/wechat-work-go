@@ -88,7 +88,7 @@ func clearDepartment(c *contact.Contact, testDepartmentID int) {
 			req := contact.ReqBatchDeleteMembers{
 				UserIDList: ulist,
 			}
-			c.DeleteMembers(req)
+			_, _ = c.DeleteMembers(req)
 		}
 		result2, _ := c.DeleteDepartment(testDepartmentID)
 		if result2.ErrCode == 0 {
@@ -143,9 +143,9 @@ func createTestUsersInDepartment(c *contact.Contact, testDepartmentID int) {
 		IsLeaderInDept: []int{1},
 	}
 
-	c.CreateMember(u1)
-	c.CreateMember(u2)
-	c.CreateMember(u3)
+	_, _ = c.CreateMember(u1)
+	_, _ = c.CreateMember(u2)
+	_, _ = c.CreateMember(u3)
 
 	By("Test Users Created")
 }

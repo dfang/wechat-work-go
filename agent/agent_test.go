@@ -89,7 +89,7 @@ var _ = Describe("Agent", func() {
 		JustBeforeEach(func() {
 			// json.NewEncoder(os.Stdout).Encode(menu)
 			By("Create menu")
-			a.CreateMenu(agentID, menu)
+			_, _ = a.CreateMenu(agentID, menu)
 		})
 
 		It("创建菜单", func() {

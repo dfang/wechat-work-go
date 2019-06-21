@@ -69,7 +69,7 @@ func createTestDepartmentForChatTest() {
 		Order:    1,
 		ID:       9999,
 	}
-	c.CreateDepartment(d)
+	_, _ = c.CreateDepartment(d)
 }
 
 func createTestUsersForChat() {
@@ -85,6 +85,6 @@ func createTestUsersForChat() {
 		Department: []int{9999},
 		Mobile:     "15618903010",
 	}
-	c.CreateMember(u1)
-	c.CreateMember(u2)
+	_, _ = c.CreateMember(u1)
+	_, _ = c.CreateMember(u2)
 }

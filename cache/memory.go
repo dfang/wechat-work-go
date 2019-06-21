@@ -28,7 +28,7 @@ func NewMemory() *Memory {
 func (mem *Memory) Get(key string) interface{} {
 	if ret, ok := mem.data[key]; ok {
 		if ret.Expired.Before(time.Now()) {
-			mem.deleteKey(key)
+			_ = mem.deleteKey(key)
 			return nil
 		}
 		return ret.Data
@@ -36,11 +36,11 @@ func (mem *Memory) Get(key string) interface{} {
 	return nil
 }
 
-// IsExist check value exists in memcache.
-func (mem *Memory) IsExist(key string) bool {
+// Exists check value exists in memcache.
+func (mem *Memory) Exists(key string) bool {
 	if ret, ok := mem.data[key]; ok {
 		if ret.Expired.Before(time.Now()) {
-			mem.deleteKey(key)
+			_ = mem.deleteKey(key)
 			return false
 		}
 		return true
