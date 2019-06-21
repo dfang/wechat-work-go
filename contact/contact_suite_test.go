@@ -31,8 +31,8 @@ var _ = BeforeSuite(func() {
 
 	// testDepartmentID = 99999
 
-	client := wechatwork.New(corpID)
-	app := client.NewApp(contactAppSecret, agentID)
+	corp := wechatwork.New(corpID)
+	app := corp.NewApp(contactAppSecret, agentID)
 	c = contact.WithApp(app)
 
 	// Clear test department

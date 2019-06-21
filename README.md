@@ -127,8 +127,8 @@ corpID := os.Getenv("CORP_ID")
 corpSecret := os.Getenv("CORP_SECRET")
 agentID, _ := strconv.ParseInt(os.Getenv("AGENT_ID"), 10, 64)
 
-client := wechatwork.New(corpID)
-app = client.NewApp(corpSecret, agentID)
+corp := wechatwork.New(corpID)
+app = corp.NewApp(corpSecret, agentID)
     
 ```
 

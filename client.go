@@ -43,7 +43,7 @@ type App struct {
 // 	App    *App
 // }
 
-// New 构造一个 WechatWork 对象，需要提供企业 ID
+// NewCorp 构造一个 WechatWork 对象，需要提供企业 ID
 //
 // 通常，要使用wechat-work-go, 你需要先创建一个 WechatWork 的对象，
 // 接着以此对象调用 WithApp 创建一个app
@@ -62,8 +62,8 @@ type App struct {
 // 		corpID := os.Getenv("CORP_ID")
 // 		corpSecret := os.Getenv("CORP_SECRET")
 // 		agentID, _ := strconv.ParseInt(os.Getenv("AGENT_ID"), 10, 64)
-// 		client := wechatwork.New(corpID)
-//		app = client.NewApp(corpSecret, agentID)
+// 		corp := wechatwork.New(corpID)
+//		app = corp.NewApp(corpSecret, agentID)
 //
 func New(corpID string) *WechatWork {
 	return &WechatWork{
