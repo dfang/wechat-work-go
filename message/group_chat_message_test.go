@@ -7,53 +7,50 @@ import (
 	. "github.com/onsi/gomega"
 )
 
+var userIDForChat1 string
+var userIDForChat2 string
+
 var _ = Describe("GroupChat", func() {
 	var chatid string
-	BeforeEach(func() {})
+	BeforeEach(func() {
+		userIDForChat1 = "chat1"
+		userIDForChat2 = "chat2"
+		chatid = "groupchat_test"
+	})
+	JustBeforeEach(func() {
+		createTestDepartmentForChatTest()
+	})
 
+	// TODO
+	// 群聊会话 不支持通过 API 来删除
+	// 对于完整的测试很不利
+	// CI 经常会出错
 	Context("群聊会话", func() {
 
-		It("创建群聊会话", func() {
-			var d = contact.ReqCreateDepartment{
-				Name:     "测试部门",
-				ParentID: 1,
-				Order:    1,
-				ID:       9999,
-			}
-			c.CreateDepartment(d)
+		var res1 message.RespCreateGroupChat
+		var res2 message.RespCommon
 
-			var u1 = contact.ReqMemberCreate{
-				UserID:     "zhangsan",
-				Name:       "张三",
-				Department: []int{9999},
-				Mobile:     "12345678901",
+		JustBeforeEach(func() {
+			req1 := message.ReqCreateGroupChat{
+				Name:     chatid,
+				UserList: []string{userIDForChat1, userIDForChat2},
 			}
-			var u2 = contact.ReqMemberCreate{
-				UserID:     "lisi",
-				Name:       "李四",
-				Department: []int{9999},
-				Mobile:     "15618903010",
-			}
-			c.CreateMember(u1)
-			c.CreateMember(u2)
+			res1, _ = g.CreateGroupChat(req1)
 
-			req := message.ReqCreateGroupChat{
-				Name:     "test",
-				UserList: []string{u1.UserID, u2.UserID},
-			}
-
-			result, _ := g.CreateGroupChat(req)
-			chatid = result.ChatID
-			Expect(result.ErrCode).To(Equal(0))
-		})
-
-		It("修改群聊会话", func() {
-			req := message.ReqUpdateGroupChat{
+			req2 := message.ReqUpdateGroupChat{
 				ChatID: chatid,
 				Name:   "hello wechat work",
 			}
-			result, _ := g.UpdateGroupChat(req)
-			Expect(result.ErrCode).To(Equal(0))
+			res2, _ = g.UpdateGroupChat(req2)
+		})
+
+		It("创建群聊会话", func() {
+			Expect(res1.ErrCode).To(Equal(0))
+			Expect(res1.ChatID).To(Equal("groupchat_test"))
+		})
+
+		It("修改群聊会话", func() {
+			Expect(res2.ErrCode).To(Equal(0))
 		})
 
 		It("获取群聊会话", func() {
@@ -64,3 +61,30 @@ var _ = Describe("GroupChat", func() {
 
 	})
 })
+
+func createTestDepartmentForChatTest() {
+	var d = contact.ReqCreateDepartment{
+		Name:     "群聊会话测试部门",
+		ParentID: 1,
+		Order:    1,
+		ID:       9999,
+	}
+	c.CreateDepartment(d)
+}
+
+func createTestUsersForChat() {
+	var u1 = contact.ReqMemberCreate{
+		UserID:     "chat1",
+		Name:       "张三",
+		Department: []int{9999},
+		Mobile:     "12345678901",
+	}
+	var u2 = contact.ReqMemberCreate{
+		UserID:     "chat2",
+		Name:       "李四",
+		Department: []int{9999},
+		Mobile:     "15618903010",
+	}
+	c.CreateMember(u1)
+	c.CreateMember(u2)
+}
