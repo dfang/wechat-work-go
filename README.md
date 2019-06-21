@@ -13,7 +13,7 @@ import (
 )
 ```
 
-## Features (Refactoring ......)
+## Features
 
 <details>
 <summary>通讯录管理 API</summary>
@@ -79,12 +79,14 @@ import (
 <details>
 <summary>消息推送</summary>
 
-* [✓] [发送应用消息](https://work.weixin.qq.com/api/doc#90000/90135/90236)
+* [✓] [推送消息到应用](https://work.weixin.qq.com/api/doc#90000/90135/90236)
 * [✓] 发送消息到群聊会话
     - [✓] 创建群聊会话
     - [✓] 修改群聊会话
     - [✓] 获取群聊会话
-    - [✓] [应用推送消息](https://work.weixin.qq.com/api/doc#90000/90135/90248)
+    - [✓] [推送消息到群聊会话](https://work.weixin.qq.com/api/doc#90000/90135/90248)
+* [ ] 互联企业消息推送
+    - [ ] 发送应用消息
 
 </details>
 
@@ -163,9 +165,3 @@ go test -v wechat_work_go_suite_test.go client_test.go
 watch mode  
 ginkgo watch -v -focus='access_token*'
 ```
-
-## Credits
-
-直接从[Commits](https://github.com/xen0n/go-workwx/tree/5dbb164de258486669bbd9637d19e07124444d60)开始fork，获取access_token直接照搬的, 做了一些重构，添加了一些测试。感谢[xen0n](https://github.com/xen0n)。
-
-目前api极不稳定, 快速迭代中 .....
