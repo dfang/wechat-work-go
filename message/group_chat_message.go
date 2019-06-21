@@ -212,7 +212,6 @@ type GroupChatMPNewsMessage struct {
 			Digest           string `json:"digest"`
 		} `json:"articles"`
 	} `json:"mpnews"`
-	Safe int `json:"safe"`
 }
 
 func (a GroupChatMPNewsMessage) Sendable() bool {

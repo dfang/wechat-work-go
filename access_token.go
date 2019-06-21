@@ -155,7 +155,8 @@ func (app *App) GetUserInfo(code string) (RespGetUserInfo, error) {
 
 type RespGetUserInfo struct {
 	RespCommon
-	UserID   string `json:"UserId`
-	OpenID   string `json:"OpenId`
-	DeviceID string `json:"DeviceId`
+
+	UserID   string `json:"UserId"`
+	OpenID   string `json:"OpenId"`
+	DeviceID string `json:"DeviceId"`
 }

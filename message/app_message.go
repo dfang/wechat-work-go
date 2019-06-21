@@ -132,7 +132,6 @@ type AppMPNewsMessage struct {
 			Digest           string `json:"digest"`
 		} `json:"articles"`
 	} `json:"mpnews"`
-	Safe int `json:"safe"`
 }
 
 func (a AppMPNewsMessage) Sendable() bool {
