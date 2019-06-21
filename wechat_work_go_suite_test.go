@@ -16,7 +16,6 @@ import (
 var app *wechatwork.App
 
 func TestWechatWorkGo(t *testing.T) {
-
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "WechatWorkGo Suite")
 }
@@ -26,13 +25,12 @@ var _ = BeforeSuite(func() {
 	corpSecret := os.Getenv("CORP_SECRET")
 	agentID, _ := strconv.ParseInt(os.Getenv("AGENT_ID"), 10, 64)
 
-	corpSecret := wechatwork.New(corpID)
-	app = corpSecret.NewApp(corpSecret, agentID)
+	corp := wechatwork.New(corpID)
+	app = corp.NewApp(corpSecret, agentID)
 
 	// block all HTTP requests
 	// httpmock.ActivateNonDefault(resty.DefaultClient.GetClient())
 	fmt.Println("Suite Started")
-
 })
 
 var _ = AfterSuite(func() {
