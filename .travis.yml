@@ -1,8 +1,30 @@
+# use the latest ubuntu environment (18.04) available on travis
+dist: xenial
+
 language: go
 
-go:
-- 1.10.x
-- 1.11.x
-- 1.12.x
+before_script:
+  - go install github.com/golangci/golangci-lint/cmd/golangci-lint
+  - go get -u github.com/onsi/ginkgo/ginkgo
 
-script: ginkgo -randomizeAllSpecs -r ./...
+env:
+  - GO111MODULE=on
+
+# You don't need to test on very old versions of the Go compiler. It's the user's
+# responsibility to keep their compiler up to date.
+go:
+  - 1.10.x
+  - 1.11.x
+  - 1.12.x
+
+# Only clone the most recent commit.
+git:
+  depth: 1
+
+# Don't email me the results of the test runs.
+notifications:
+  email: false
+
+script:
+  - golangci-lint run
+  - ginkgo -randomizeAllSpecs -r ./...
