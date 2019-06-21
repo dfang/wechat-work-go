@@ -1,6 +1,8 @@
 // Package wechatwork 企业微信api的封装
 //
 // https://work.weixin.qq.com/api/doc#90000/90003/90556
+//
+// 商户版见 https://github.com/dfang/wechat-work-go-sp
 package wechatwork
 
 import (
