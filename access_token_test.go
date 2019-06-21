@@ -1,10 +1,8 @@
 package wechatwork_test
 
 import (
-	"fmt"
-
 	. "github.com/onsi/ginkgo"
-	// . "github.com/onsi/gomega"
+	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("Access Token", func() {
@@ -16,7 +14,9 @@ var _ = Describe("Access Token", func() {
 
 		It("should", func() {
 			result, _ := app.GetAccessTokenFromServer()
-			fmt.Printf("%+v\n", result)
+			// fmt.Printf("%+v\n", result)
+			Expect(result.ErrCode).To(Equal(0))
+			Expect(result.AccessToken).NotTo(BeEmpty())
 		})
 
 		// It("shoule panic when either corpid or corpsecret not correct, and both not correct", func() {

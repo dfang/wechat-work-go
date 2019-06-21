@@ -23,7 +23,7 @@ func (app *App) GetAccessTokenFromServer() (RespAccessToken, error) {
 	if err != nil {
 		// log.Println("err when request gettoken api")
 		// fmt.Println(err)
-		fmt.Println(resp.Status())
+		// fmt.Println(resp.Status())
 		// fmt.Println(resp.StatusCode())
 		// fmt.Printf("%+v\n", data)
 		return RespAccessToken{}, err

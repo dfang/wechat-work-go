@@ -1,7 +1,6 @@
 package agent_test
 
 import (
-	"fmt"
 	"os"
 	"strconv"
 
@@ -38,7 +37,6 @@ var _ = Describe("Agent", func() {
 
 		It("获取应用列表", func() {
 			result, _ := a.ListAgents()
-			fmt.Println(result.AgentList)
 			Expect(result.ErrCode).To(Equal(0))
 			Expect(len(result.AgentList)).To(BeNumerically(">", 0))
 		})

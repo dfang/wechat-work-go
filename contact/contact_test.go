@@ -1,7 +1,6 @@
 package contact_test
 
 import (
-	"fmt"
 
 	// wechatwork "github.com/dfang/wechat-work-go"
 
@@ -35,6 +34,7 @@ var _ = Describe("成员管理 API", func() {
 		})
 
 		It("能更新部门信息", func() {
+
 			Expect(resp1.ErrCode).To(Equal(0))
 			By("能更新部门信息，说明部门存在，创建不用测试")
 		})
@@ -78,8 +78,6 @@ var _ = Describe("成员管理 API", func() {
 // a test_helper that clear members in department, then delete the department
 func clearDepartment(c *contact.Contact, testDepartmentID int) {
 	d1, _ := c.ListMembers(testDepartmentID, 0)
-	fmt.Println("%%%%%%%%%%%")
-	fmt.Println(d1)
 	// 60003 部门不存在
 	if d1.ErrCode != 60003 {
 		var ulist []string
@@ -94,7 +92,7 @@ func clearDepartment(c *contact.Contact, testDepartmentID int) {
 		}
 		result2, _ := c.DeleteDepartment(testDepartmentID)
 		if result2.ErrCode == 0 {
-			fmt.Println("BeforeEach Prepared")
+			By("Department Cleared")
 		}
 	}
 }
@@ -110,7 +108,7 @@ func createTestDepartment(c *contact.Contact, testDepartmentID int) {
 	}
 	result, _ := c.CreateDepartment(data)
 	if result.ErrCode == 0 {
-		fmt.Println("BeforeEach Prepared")
+		By("Department Created")
 	}
 
 }
@@ -148,4 +146,6 @@ func createTestUsersInDepartment(c *contact.Contact, testDepartmentID int) {
 	c.CreateMember(u1)
 	c.CreateMember(u2)
 	c.CreateMember(u3)
+
+	By("Test Users Created")
 }
