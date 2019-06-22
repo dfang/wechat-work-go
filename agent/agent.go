@@ -56,7 +56,7 @@ func (agent *Agent) ListAgents() (RespAgentList, error) {
 // SetAgent 设置应用详情
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90228
-func (agent *Agent) SetAgent(req ReqAgentSet) (RespCommon, error) {
+func (agent *Agent) SetAgent(req ReqSetAgent) (RespCommon, error) {
 	apiPath := "/cgi-bin/agent/set"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, agent.App.GetAccessToken())
 	var result RespCommon

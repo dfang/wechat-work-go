@@ -30,8 +30,8 @@ type RespAgentGet struct {
 	HomeURL            string `json:"home_url"`
 }
 
-// ReqAgentSet 设置应用请求
-type ReqAgentSet struct {
+// ReqSetAgent 设置应用请求
+type ReqSetAgent struct {
 	AgentID            int64  `json:"agentid"`
 	ReportLocationFlag int    `json:"report_location_flag,omitempty"`
 	LogoMediaID        string `json:"logo_mediaid,omitempty"`
@@ -44,8 +44,8 @@ type ReqAgentSet struct {
 
 // IntoBody 转换为请求体的 []byte 类型
 //
-// impl bodyer for ReqAgentSet
-func (x ReqAgentSet) IntoBody() ([]byte, error) {
+// impl bodyer for ReqSetAgent
+func (x ReqSetAgent) IntoBody() ([]byte, error) {
 	result, err := json.Marshal(x)
 	if err != nil {
 		return nil, err

@@ -42,7 +42,7 @@ var _ = Describe("Agent", func() {
 		})
 
 		It("设置应用", func() {
-			data := agent.ReqAgentSet{
+			data := agent.ReqSetAgent{
 				AgentID:       agentID,
 				IsReportEnter: 1,
 			}
