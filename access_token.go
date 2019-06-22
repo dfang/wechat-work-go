@@ -153,6 +153,13 @@ func (app *App) GetUserInfo(code string) (RespGetUserInfo, error) {
 	return result, nil
 }
 
+type RespAccessToken struct {
+	RespCommon
+
+	AccessToken   string `json:"access_token"`
+	ExpiresInSecs int    `json:"expires_in"`
+}
+
 type RespGetUserInfo struct {
 	RespCommon
 

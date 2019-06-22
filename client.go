@@ -7,7 +7,6 @@ package wechatwork
 
 import (
 	"fmt"
-	"net/url"
 	"os"
 	"sync"
 
@@ -96,11 +95,11 @@ func newDefaultRestyClient() *resty.Client {
 
 // SimpleGet 一切get请求的api调用可使用此方法
 //
-// just like resty.SetReult(&respObj).Get(url)
-//
 // 企业微信中，获取操作和删除都是GET请求
 //
-// note: url must be full
+// just like resty.SetReult(&respObj).Get(url)
+//
+// note: url must be full, if you're consuming this library, you don't need this method, have to export this method for other packages to call
 func (app *App) SimpleGet(url string, respObj interface{}) error {
 	resp, err := newDefaultRestyClient().R().
 		SetHeader("Accept", "application/json").
@@ -116,12 +115,13 @@ func (app *App) SimpleGet(url string, respObj interface{}) error {
 
 // SimplePost 一切Post请求的api调用使用此方法
 //
-// just like resty.SetBody(b).SetReult(&respObj).Post(url)
-//
 // 企业微信中，删除操作一般都是GET请求，更新操作、批量删除成员是POST请求，没有PUT、PATCH、DELETE
 //
+// just like resty.SetBody(b).SetReult(&respObj).Post(url)
+//
 // resty can Automatically marshal and unmarshal
-// note: url must be full
+//
+// note: url must be full, if you're consuming this library, you don't need this method, have to export this method for other packages to call
 func (app *App) SimplePost(url string, body interface{}, respObj interface{}) error {
 	resp, err := newDefaultRestyClient().R().
 		SetHeader("Content-Type", "application/json").
@@ -134,12 +134,6 @@ func (app *App) SimplePost(url string, body interface{}, respObj interface{}) er
 		panic(err)
 	}
 	return nil
-}
-
-// urlValuer 可转化为 url.Values 类型的 trait
-type urlValuer interface {
-	// IntoURLValues 转换为 url.Values 类型
-	IntoURLValues() url.Values
 }
 
 // RespCommon Comman Response Struct
@@ -159,16 +153,4 @@ type RespCommon struct {
 // > 而errmsg仅作参考，后续可能会有变动，因此不可作为是否调用成功的判据。
 func (x *RespCommon) IsOK() bool {
 	return x.ErrCode == 0
-}
-
-type ReqAccessToken struct {
-	CorpID     string `json:"corpid"`
-	CorpSecret string `json:"corpsecret"`
-}
-
-type RespAccessToken struct {
-	RespCommon
-
-	AccessToken   string `json:"access_token"`
-	ExpiresInSecs int    `json:"expires_in"`
 }
