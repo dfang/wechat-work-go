@@ -65,14 +65,14 @@ func (m Message) SendGroupChatMessage(v Sendable) (RespCommon, error) {
 // UpdateTaskCard 更新任务卡片消息状态
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/91579
-func (m Message) UpdateTaskCard(v ReqUpdateTaskCard) (RespTaskCardUpdate, error) {
+func (m Message) UpdateTaskCard(v ReqUpdateTaskCard) (RespUpdateTaskCard, error) {
 	apiPath := "/cgi-bin/message/update_taskcard"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, m.App.GetAccessToken())
 
-	var result RespTaskCardUpdate
+	var result RespUpdateTaskCard
 	err := m.App.SimplePost(uri, v, &result)
 	if err != nil {
-		return RespTaskCardUpdate{}, err
+		return RespUpdateTaskCard{}, err
 	}
 	return result, nil
 }
@@ -99,8 +99,8 @@ type ReqUpdateTaskCard struct {
 	ClickedKey string   `json:"clicked_key"`
 }
 
-// RespTaskCardUpdate 更新任务卡片状态的响应
-type RespTaskCardUpdate struct {
+// RespUpdateTaskCard 更新任务卡片状态的响应
+type RespUpdateTaskCard struct {
 	ErrCode     int      `json:"errcode"`
 	ErrMsg      string   `json:"errmsg"`
 	Invaliduser []string `json:"invaliduser"`
