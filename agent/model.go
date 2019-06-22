@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 )
 
-// RespAgentGet 查询应用响应
-type RespAgentGet struct {
+// RespGetAgent 查询应用响应
+type RespGetAgent struct {
 	RespCommon
 
 	AgentID        int64  `json:"agentid"`
@@ -54,7 +54,7 @@ func (x ReqSetAgent) IntoBody() ([]byte, error) {
 	return result, nil
 }
 
-type RespAgentList struct {
+type RespListAgents struct {
 	*RespCommon
 	AgentList []AgentItem `json:"agentlist"`
 }

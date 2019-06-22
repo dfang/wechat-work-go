@@ -28,13 +28,13 @@ func WithApp(app *wechatwork.App) *Agent {
 // GetAgent 获取应用
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90227
-func (agent *Agent) GetAgent(agentID int64) (RespAgentGet, error) {
+func (agent *Agent) GetAgent(agentID int64) (RespGetAgent, error) {
 	apiPath := "/cgi-bin/agent/get"
 	uri := fmt.Sprintf("%s?access_token=%s&agentid=%d", apiPath, agent.App.GetAccessToken(), agentID)
-	var result RespAgentGet
+	var result RespGetAgent
 	err := agent.App.SimpleGet(uri, &result)
 	if err != nil {
-		return RespAgentGet{}, err
+		return RespGetAgent{}, err
 	}
 	return result, nil
 }
@@ -42,13 +42,13 @@ func (agent *Agent) GetAgent(agentID int64) (RespAgentGet, error) {
 // ListAgents 获取access_token 下应用列表
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90227
-func (agent *Agent) ListAgents() (RespAgentList, error) {
+func (agent *Agent) ListAgents() (RespListAgents, error) {
 	apiPath := "/cgi-bin/agent/list"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, agent.App.GetAccessToken())
-	var result RespAgentList
+	var result RespListAgents
 	err := agent.App.SimpleGet(uri, &result)
 	if err != nil {
-		return RespAgentList{}, err
+		return RespListAgents{}, err
 	}
 	return result, nil
 }
