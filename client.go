@@ -6,6 +6,7 @@
 package wechatwork
 
 import (
+	"fmt"
 	"os"
 	"sync"
 
@@ -106,6 +107,7 @@ func (app *App) SimpleGet(url string, respObj interface{}) error {
 		Get(url)
 
 	if err != nil {
+		fmt.Fprintln(os.Stdout, resp.Body())
 		panic(err)
 	}
 	return nil
@@ -128,6 +130,7 @@ func (app *App) SimplePost(url string, body interface{}, respObj interface{}) er
 		Post(url)
 
 	if err != nil {
+		fmt.Fprintln(os.Stdout, resp.Body())
 		panic(err)
 	}
 	return nil
