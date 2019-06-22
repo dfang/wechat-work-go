@@ -74,13 +74,13 @@ func createTestDepartmentForChatTest() {
 }
 
 func createTestUsersForChat() {
-	var u1 = contact.ReqMemberCreate{
+	var u1 = contact.ReqCreateMember{
 		UserID:     "chat1",
 		Name:       "张三",
 		Department: []int{9999},
 		Mobile:     "12345678901",
 	}
-	var u2 = contact.ReqMemberCreate{
+	var u2 = contact.ReqCreateMember{
 		UserID:     "chat2",
 		Name:       "李四",
 		Department: []int{9999},

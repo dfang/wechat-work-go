@@ -7,7 +7,7 @@ type RespMemberGet struct {
 	Member
 }
 
-type ReqMemberCreate struct {
+type ReqCreateMember struct {
 	UserID         string `json:"userid"`
 	Name           string `json:"name"`
 	Alias          string `json:"alias"`

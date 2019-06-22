@@ -115,7 +115,7 @@ func createTestDepartment(c *contact.Contact, testDepartmentID int) {
 
 // createTestUsersInDepartment  在测试部门里创建一些测试成员
 func createTestUsersInDepartment(c *contact.Contact, testDepartmentID int) {
-	var u1 = contact.ReqMemberCreate{
+	var u1 = contact.ReqCreateMember{
 		UserID:     "zhangsan",
 		Name:       "张三",
 		Department: []int{testDepartmentID},
@@ -123,7 +123,7 @@ func createTestUsersInDepartment(c *contact.Contact, testDepartmentID int) {
 		Enable:     1,
 	}
 
-	var u2 = contact.ReqMemberCreate{
+	var u2 = contact.ReqCreateMember{
 		UserID:     "lisi",
 		Name:       "李四",
 		Department: []int{testDepartmentID},
@@ -131,7 +131,7 @@ func createTestUsersInDepartment(c *contact.Contact, testDepartmentID int) {
 		Enable:     1,
 	}
 
-	var u3 = contact.ReqMemberCreate{
+	var u3 = contact.ReqCreateMember{
 		UserID:         "df1228",
 		Name:           "df1228",
 		Alias:          "我是部门老大 哈哈哈哈",
