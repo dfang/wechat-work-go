@@ -49,7 +49,7 @@ func (app *App) getAccessTokenFromServer() (RespAccessToken, error) {
 
 	// 全局错误码 https://work.weixin.qq.com/api/doc#90000/90139/90313
 	// -1 表示系统繁忙
-	if result.ErrCode == -1 {
+	if result.ErrCode == -1 { //nolint
 		// TODO: retry logic here
 	}
 
