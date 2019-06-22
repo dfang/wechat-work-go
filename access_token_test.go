@@ -13,10 +13,8 @@ var _ = Describe("Access Token", func() {
 	Context("Access Token", func() {
 
 		It("should", func() {
-			result, _ := app.GetAccessTokenFromServer()
-			// fmt.Printf("%+v\n", result)
-			Expect(result.ErrCode).To(Equal(0))
-			Expect(result.AccessToken).NotTo(BeEmpty())
+			tokn := app.GetAccessToken()
+			Expect(tokn).NotTo(BeEmpty())
 		})
 
 		// It("shoule panic when either corpid or corpsecret not correct, and both not correct", func() {

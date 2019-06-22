@@ -8,10 +8,10 @@ import (
 	"gopkg.in/resty.v1"
 )
 
-// GetAccessTokenFromServer 获取 access token
+// getAccessTokenFromServer 获取 access token
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/91039
-func (app *App) GetAccessTokenFromServer() (RespAccessToken, error) {
+func (app *App) getAccessTokenFromServer() (RespAccessToken, error) {
 	apiPath := "/cgi-bin/gettoken"
 	resty.SetHostURL("https://qyapi.weixin.qq.com")
 	resty.SetQueryParam("corpid", app.CorpID)
@@ -79,7 +79,7 @@ func (app *App) GetAccessToken() string {
 
 	// 从微信服务器获取
 	var result RespAccessToken
-	result, err := app.GetAccessTokenFromServer()
+	result, err := app.getAccessTokenFromServer()
 	if err != nil {
 		panic(err)
 	}
