@@ -40,11 +40,11 @@ func (app *App) getAccessTokenFromServer() (RespAccessToken, error) {
 	}
 
 	if result.ErrCode == 40001 {
-		panic("请检查CorpSecret 参数")
+		panic("请检查下CorpSecret 参数是否设置或者正确, 提示: 如果你在管理工具>通讯录同步中重置过Secret, 请注意更换CONTACT_APP_SECRET env")
 	}
 
 	if len(resp.Body()) == 0 {
-		panic("在获取token的时候, 企业微信服务器的接口返回了空的Body, 这很不正常，通常如果corpid和corpsecret都错了(各删一个字符试试)的情况下会这样, 请都检查下")
+		panic("在获取token的时候, 企业微信服务器的接口返回了空的Body, 这很腾讯, 通常如果corpid和corpsecret都错了(各删一个字符试试)的情况下会这样, 总之都检查一下")
 	}
 
 	// 全局错误码 https://work.weixin.qq.com/api/doc#90000/90139/90313
@@ -53,7 +53,6 @@ func (app *App) getAccessTokenFromServer() (RespAccessToken, error) {
 		// TODO: retry logic here
 	}
 
-	// TODO: save access_token to cache
 	accessTokenCacheKey := fmt.Sprintf("access_token_%d", app.AgentID)
 	expires := result.ExpiresInSecs - 1500
 	err = app.Cache.Set(accessTokenCacheKey, result.AccessToken, time.Duration(expires)*time.Second)
