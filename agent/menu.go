@@ -7,6 +7,8 @@ import (
 // CreateMenu 创建菜单
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90231
+//
+// note: 这里m的参数类型, 意味着你传入传入参数的时候既可以是Menu 也是其他自定义对象，甚至一段json字段都可以，非常的方便，因为resty会自动marshal, 只要符合企业微信菜单的结构就行了，具体见上述链接
 func (agent *Agent) CreateMenu(agentID int64, m interface{}) (RespCommon, error) {
 	apiPath := "/cgi-bin/menu/create"
 	uri := agent.formatURL(apiPath, agentID)
@@ -54,6 +56,8 @@ func (agent *Agent) formatURL(apiPath string, agentID int64) string {
 }
 
 // Menu 菜单
+//
+// https://work.weixin.qq.com/api/doc#90000/90135/90231
 type Menu struct {
 	Button []Button `json:"button"`
 }

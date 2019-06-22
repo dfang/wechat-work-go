@@ -1,9 +1,5 @@
 package agent
 
-import (
-	"encoding/json"
-)
-
 // RespGetAgent 查询应用响应
 type RespGetAgent struct {
 	RespCommon
@@ -40,18 +36,6 @@ type ReqSetAgent struct {
 	RedirectDomain     string `json:"redirect_domain,omitempty"`
 	IsReportEnter      int    `json:"isreportenter,omitempty"`
 	HomeURL            string `json:"home_url,omitempty"`
-}
-
-// IntoBody 转换为请求体的 []byte 类型
-//
-// impl bodyer for ReqSetAgent
-func (x ReqSetAgent) IntoBody() ([]byte, error) {
-	result, err := json.Marshal(x)
-	if err != nil {
-		return nil, err
-	}
-
-	return result, nil
 }
 
 type RespListAgents struct {
