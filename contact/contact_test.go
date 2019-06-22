@@ -40,7 +40,7 @@ var _ = Describe("成员管理 API", func() {
 		})
 
 		Context("已经存在的部门和成员才能查询、更新", func() {
-			var result contact.RespMemberGet
+			var result contact.RespGetMember
 			var result2 contact.RespCommon
 			u := contact.Member{
 				UserID: "zhangsan",

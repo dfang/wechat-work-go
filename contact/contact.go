@@ -46,13 +46,13 @@ func (contact *Contact) CreateMember(req ReqCreateMember) (RespCreateMember, err
 // GetMember 获取成员详情
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90196
-func (contact *Contact) GetMember(userID string) (RespMemberGet, error) {
+func (contact *Contact) GetMember(userID string) (RespGetMember, error) {
 	apiPath := "/cgi-bin/user/get"
 	uri := fmt.Sprintf("%s?access_token=%s&userid=%s", apiPath, contact.App.GetAccessToken(), userID)
-	var result RespMemberGet
+	var result RespGetMember
 	err := contact.App.SimpleGet(uri, &result)
 	if err != nil {
-		return RespMemberGet{}, err
+		return RespGetMember{}, err
 	}
 	return result, nil
 }

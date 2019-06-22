@@ -1,7 +1,7 @@
 package contact
 
-// RespMemberGet 查询成员响应
-type RespMemberGet struct {
+// RespGetMember 查询成员响应
+type RespGetMember struct {
 	RespCommon
 
 	Member
