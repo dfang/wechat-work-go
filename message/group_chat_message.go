@@ -74,8 +74,8 @@ type ReqUpdateGroupChat struct {
 	ChatID      string   `json:"chatid"`
 	Name        string   `json:"name"`
 	Owner       string   `json:"owner"`
-	AddUserList []string `json:"add_user_list"`
-	DelUserList []string `json:"del_user_list"`
+	AddUserList []string `json:"add_user_list,omitempty"`
+	DelUserList []string `json:"del_user_list,omitempty"`
 }
 
 // RespGetGroupChat 获取群聊会话响应
