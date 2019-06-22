@@ -13,8 +13,9 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var g *message.Message
+var msg *message.Message
 var c *contact.Contact
+var selfID *string
 
 func TestMessage(t *testing.T) {
 	RegisterFailHandler(Fail)
@@ -28,9 +29,11 @@ var _ = BeforeSuite(func() {
 
 	corp := wechatwork.New(corpID)
 	app := corp.NewApp(corpSecret, agentID)
-	g = &message.Message{
+	msg = &message.Message{
 		App: app,
 	}
+
+	selfID = strPtr("Fang")
 
 	contactAppSecret := os.Getenv("CONTACT_APP_SECRET")
 	// 关于创建成员（客服答复）
@@ -40,4 +43,40 @@ var _ = BeforeSuite(func() {
 	c = &contact.Contact{
 		App: app2,
 	}
+
+	clearDepartment(c, 9999)
+
+	createTestDepartmentForChatTest()
+	createTestUsersForChat()
 })
+
+// clearDepartment 清理部门
+// a test_helper that clear members in department, then delete the department
+func clearDepartment(c *contact.Contact, testDepartmentID int) {
+	d1, _ := c.ListMembers(testDepartmentID, 0)
+	// 60003 部门不存在
+	if d1.ErrCode != 60003 {
+		var ulist []string
+		for _, m := range d1.UserList {
+			ulist = append(ulist, m.UserID)
+		}
+		if len(ulist) > 0 {
+			req := contact.ReqBatchDeleteMembers{
+				UserIDList: ulist,
+			}
+			_, _ = c.DeleteMembers(req)
+		}
+		result2, _ := c.DeleteDepartment(testDepartmentID)
+		if result2.ErrCode == 0 {
+			By("Department Cleared")
+		}
+	}
+}
+
+// func intPtr(i int) *int {
+// 	return &i
+// }
+
+func strPtr(s string) *string {
+	return &s
+}
