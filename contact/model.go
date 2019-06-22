@@ -58,7 +58,7 @@ type ReqCreateMember struct {
 	} `json:"external_profile"`
 }
 
-type RespMemberCreate struct {
+type RespCreateMember struct {
 	RespCommon
 }
 

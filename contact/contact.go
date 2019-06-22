@@ -32,13 +32,13 @@ func WithApp(app *wechatwork.App) *Contact {
 // CreateMember 创建成员详情
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90195
-func (contact *Contact) CreateMember(req ReqCreateMember) (RespMemberCreate, error) {
+func (contact *Contact) CreateMember(req ReqCreateMember) (RespCreateMember, error) {
 	apiPath := "cgi-bin/user/create"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, contact.App.GetAccessToken())
-	var result RespMemberCreate
+	var result RespCreateMember
 	err := contact.App.SimplePost(uri, req, &result)
 	if err != nil {
-		return RespMemberCreate{}, err
+		return RespCreateMember{}, err
 	}
 	return result, nil
 }
