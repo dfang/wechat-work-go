@@ -13,10 +13,9 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
-// var app *wechatwork.App
 var c *contact.Contact
-
-// var testDepartmentID *int
+var testDepartmentID *int
+var testUserID *string
 var testDepartmentData *contact.ReqCreateDepartment
 
 func TestContact(t *testing.T) {
@@ -25,27 +24,50 @@ func TestContact(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
+	By("BeforeSuite started")
+
 	corpID := os.Getenv("CORP_ID")
 	contactAppSecret := os.Getenv("CONTACT_APP_SECRET")
 	agentID, _ := strconv.ParseInt(os.Getenv("AGENT_ID"), 10, 64)
 
-	// testDepartmentID = 99999
+	testDepartmentID = intPtr(99999)
+	// testDepartmentID = new(int)
+	// *testDepartmentID = 99999
 
 	corp := wechatwork.New(corpID)
 	app := corp.NewApp(contactAppSecret, agentID)
 	c = contact.WithApp(app)
 
 	// Clear test department
-	clearDepartment(c, 99999)
+	clearDepartment(c, *testDepartmentID)
 
 	testDepartmentData = &contact.ReqCreateDepartment{
 		Name:     "测试部门",
 		ParentID: 1,
 		Order:    1,
-		ID:       99999,
+		ID:       *testDepartmentID,
 	}
+
+	createTestDepartment(c, *testDepartmentID)
+
+	userIDs := createTestUsersInDepartment(c, *testDepartmentID)
+	testUserID = strPtr(userIDs[0])
+
+	By("BeforeSuite completed")
 })
 
 var _ = AfterSuite(func() {
-	clearDepartment(c, 99999)
+	By("AfterSuite started")
+
+	// clearDepartment(c, 99999)
+
+	By("AfterSuite started")
 })
+
+func intPtr(i int) *int {
+	return &i
+}
+
+func strPtr(s string) *string {
+	return &s
+}

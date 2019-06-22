@@ -4,6 +4,11 @@ import (
 
 	// wechatwork "github.com/dfang/wechat-work-go"
 
+	"fmt"
+	"math/rand"
+	"strings"
+	"time"
+
 	"github.com/dfang/wechat-work-go/contact"
 
 	. "github.com/onsi/ginkgo"
@@ -15,62 +20,56 @@ import (
 // Context blocks to exercise those behaviors under different circumstances.
 
 var _ = Describe("成员管理 API", func() {
-	// var data contact.ReqCreateDepartment
-	// var result contact.RespCreateDepartment
-
-	testDepartmentID := 99999
 	var resp1 contact.RespCommon
-	JustBeforeEach(func() {
-		createTestDepartment(c, testDepartmentID)
-		createTestUsersInDepartment(c, testDepartmentID)
 
-		body := contact.ReqUpdateDepartment{
-			ID:       testDepartmentID,
-			ParentID: 1,
-			Name:     "X 部门",
-		}
-		resp1, _ = c.UpdateDepartment(body)
-	})
-
-	Context("创建", func() {
+	Context("能更新部门信息", func() {
+		JustBeforeEach(func() {
+			body := contact.ReqUpdateDepartment{
+				ID:       *testDepartmentID,
+				ParentID: 1,
+				Name:     fmt.Sprintf("X 部门 %d", rand.Intn(10)),
+			}
+			resp1, _ = c.UpdateDepartment(body)
+		})
 
 		It("能更新部门信息", func() {
 			Expect(resp1.ErrCode).To(Equal(0))
 			By("能更新部门信息，说明部门存在，创建不用测试")
 		})
+	})
 
-		Context("已经存在的部门和成员才能查询、更新", func() {
-			var result contact.RespGetMember
-			var result2 contact.RespCommon
+	Context("已经存在的成员才能查询、更新", func() {
+		var result contact.RespGetMember
+		var result2 contact.RespCommon
+		JustBeforeEach(func() {
 			u := contact.Member{
-				UserID: "zhangsan",
-				Name:   "张三三",
-				Mobile: "12345678911",
-				// Department: []int{*testDepartmentID},
+				UserID:     *testUserID,
+				Name:       randCNName(),
+				Mobile:     randCNPhone(),
+				Enable:     1,
+				Department: []int{*testDepartmentID},
 			}
-			JustBeforeEach(func() {
-				result, _ = c.GetMember("zhangsan")
-				result2, _ = c.UpdateMember(u)
-			})
-
-			It("获取成员", func() {
-				Expect(result.UserID).To(Equal("zhangsan"))
-				By("能获取成员信息，说明成员存在，创建不用测试")
-			})
-
-			It("更新成员", func() {
-				Expect(result2.ErrCode).To(Equal(0))
-				By("能更新成员信息，说明成员存在，创建不用测试")
-			})
+			result, _ = c.GetMember(*testUserID)
+			result2, _ = c.UpdateMember(u)
 		})
 
-		// 创建和删除部门、成员都不需测试, 因为BeforeSuite、AfterSuite
-		// TODO 添加其他api的测试
-		// UserIDToOpenID
-		// OpenIDToUserID
-		// TwoFactorAuth
-		// InviteMember
+		It("获取成员", func() {
+			Expect(result.UserID).To(Equal(*testUserID))
+			By("能获取成员信息，说明成员存在，创建不用测试")
+		})
+
+		It("更新成员", func() {
+			Expect(result2.ErrCode).To(Equal(0))
+			By("能更新成员信息，说明成员存在，创建不用测试")
+		})
 	})
+
+	// 创建和删除部门、成员都不需测试, 因为BeforeSuite、AfterSuite
+	// TODO 添加其他api的测试
+	// UserIDToOpenID
+	// OpenIDToUserID
+	// TwoFactorAuth
+	// InviteMember
 
 })
 
@@ -110,42 +109,102 @@ func createTestDepartment(c *contact.Contact, testDepartmentID int) {
 	if result.ErrCode == 0 {
 		By("Department Created")
 	}
-
 }
 
 // createTestUsersInDepartment  在测试部门里创建一些测试成员
-func createTestUsersInDepartment(c *contact.Contact, testDepartmentID int) {
-	var u1 = contact.ReqCreateMember{
-		UserID:     "zhangsan",
-		Name:       "张三",
-		Department: []int{testDepartmentID},
-		Mobile:     "12345678901",
-		Enable:     1,
-	}
+func createTestUsersInDepartment(c *contact.Contact, testDepartmentID int) []string {
 
-	var u2 = contact.ReqCreateMember{
-		UserID:     "lisi",
-		Name:       "李四",
-		Department: []int{testDepartmentID},
-		Mobile:     "12345678989",
-		Enable:     1,
+	var a []string
+	u1, err := createTestUserInDepartment(c, testDepartmentID)
+	if err != nil {
+		panic("u1")
 	}
-
-	var u3 = contact.ReqCreateMember{
-		UserID:         "df1228",
-		Name:           "df1228",
-		Alias:          "我是部门老大 哈哈哈哈",
-		Position:       "部门BOSS",
-		Department:     []int{testDepartmentID},
-		Mobile:         "15618903181",
-		Gender:         "男",
-		Enable:         1,
-		IsLeaderInDept: []int{1},
+	a = append(a, u1)
+	u2, err := createTestUserInDepartment(c, testDepartmentID)
+	if err != nil {
+		panic("u2")
 	}
+	a = append(a, u2)
 
-	_, _ = c.CreateMember(u1)
-	_, _ = c.CreateMember(u2)
-	_, _ = c.CreateMember(u3)
+	u3, err := createTestUserInDepartment(c, testDepartmentID)
+	if err != nil {
+		panic("u3")
+	}
+	a = append(a, u3)
+
+	// var u3 = contact.ReqCreateMember{
+	// 	UserID:         "df1228",
+	// 	Name:           "df1228",
+	// 	Alias:          "我是部门老大 哈哈哈哈",
+	// 	Position:       "部门BOSS",
+	// 	Department:     []int{testDepartmentID},
+	// 	Mobile:         "15618903181",
+	// 	Gender:         "男",
+	// 	Enable:         1,
+	// 	IsLeaderInDept: []int{1},
+	// }
 
 	By("Test Users Created")
+
+	return a
+}
+
+func createTestUserInDepartment(c *contact.Contact, testDepartmentID int) (string, error) {
+	var u1 = contact.ReqCreateMember{
+		UserID:     randomUserID(),
+		Name:       randCNName(),
+		Department: []int{testDepartmentID},
+		Mobile:     randCNPhone(),
+		Enable:     1,
+	}
+	_, err := c.CreateMember(u1)
+	if err != nil {
+		return "", err
+	}
+	return u1.UserID, nil
+}
+
+func randomUserID() string {
+	rand.Seed(time.Now().UnixNano())
+	chars := []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+		"abcdefghijklmnopqrstuvwxyz" +
+		"0123456789")
+	length := 8
+	var b strings.Builder
+	for i := 0; i < length; i++ {
+		b.WriteRune(chars[rand.Intn(len(chars))])
+	}
+	return b.String()
+}
+
+/*
+func randomMobilePhone() string {
+	rand.Seed(time.Now().UnixNano())
+	chars := []rune("0123456789")
+	length := 11
+	var b strings.Builder
+	for i := 0; i < length; i++ {
+		b.WriteRune(chars[rand.Intn(len(chars))])
+	}
+	return b.String()
+}
+*/
+
+func randCNName() string {
+	rand.Seed(time.Now().UnixNano())
+	var fList []string = []string{"赵", "钱", "孙", "李", "周", "吴", "郑", "王", "冯", "陈", "褚", "卫", "蒋", "沈", "韩", "杨", "朱"}
+	var lList []string = []string{"一", "二", "三", "四", "五", "六", "七", "八", "九", "十"}
+	f := fList[rand.Intn(len(fList)-1)]
+	l := lList[rand.Intn(len(lList)-1)]
+	return f + l
+}
+
+func randCNPhone() string {
+	rand.Seed(time.Now().UnixNano())
+	prefix := []string{"130", "131", "132", "133", "134", "135", "136", "137", "138",
+		"139", "147", "150", "151", "152", "153", "155", "156", "157", "158", "159", "186",
+		"187", "188"}
+	f := prefix[rand.Intn(len(prefix)-1)]
+	s := fmt.Sprintf("%08d", rand.Int63n(99999999))
+	return f + s
 }
