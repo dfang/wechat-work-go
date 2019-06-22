@@ -65,7 +65,7 @@ func (m Message) SendGroupChatMessage(v Sendable) (RespCommon, error) {
 // UpdateTaskCard 更新任务卡片消息状态
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/91579
-func (m Message) UpdateTaskCard(v ReqTaskCardUpdate) (RespTaskCardUpdate, error) {
+func (m Message) UpdateTaskCard(v ReqUpdateTaskCard) (RespTaskCardUpdate, error) {
 	apiPath := "/cgi-bin/message/update_taskcard"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, m.App.GetAccessToken())
 
@@ -80,7 +80,7 @@ func (m Message) UpdateTaskCard(v ReqTaskCardUpdate) (RespTaskCardUpdate, error)
 // GetCallbackIPs 获取企业微信服务器的ip段
 //
 // https://work.weixin.qq.com/api/doc#90000/90135/90237/%E8%8E%B7%E5%8F%96%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84ip%E6%AE%B5
-func (m Message) GetCallbackIPs(v ReqTaskCardUpdate) (RespGetCallbackIPs, error) {
+func (m Message) GetCallbackIPs(v ReqUpdateTaskCard) (RespGetCallbackIPs, error) {
 	apiPath := "/cgi-bin/getcallbackip"
 	uri := fmt.Sprintf("%s?access_token=%s", apiPath, m.App.GetAccessToken())
 	var result RespGetCallbackIPs
@@ -91,8 +91,8 @@ func (m Message) GetCallbackIPs(v ReqTaskCardUpdate) (RespGetCallbackIPs, error)
 	return result, nil
 }
 
-// ReqTaskCardUpdate 更新任务卡片状态的请求
-type ReqTaskCardUpdate struct {
+// ReqUpdateTaskCard 更新任务卡片状态的请求
+type ReqUpdateTaskCard struct {
 	Userids    []string `json:"userids"`
 	Agentid    int      `json:"agentid"`
 	TaskID     string   `json:"task_id"`
