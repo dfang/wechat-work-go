@@ -56,7 +56,7 @@ type App struct {
 // 简单来说就是 a 应用的CORP_SECRET 和 AGENT_ID 获取的access_token 是不能操作 b应用的
 //
 // 	CORP_ID 去企业微信管理中的 我的企业 最底部
-// 	CORP_SECRET 其实是应用的secret，应该叫AgentSecret 或 AppSecret 更合适, 但因为api接口和官方文档叫corpSecret，所以不改变
+// 	CORP_SECRET 其实是应用的secret，个人应该叫AgentSecret 或 AppSecret 更合适, 但因为api接口和官方文档叫corpSecret，所以不改变
 // 	AGENT_ID 应用的ID， CORP_SECRET 和 AGENT_ID 都去应用的详情页面找
 //
 // 示例代码:
@@ -89,8 +89,8 @@ func (corp *WechatWork) NewApp(corpSecret string, agentID int64) *App {
 	}
 }
 
-// NewDefaultRestyClient 返回一个resty 的client
-func NewDefaultRestyClient() *resty.Client {
+// newDefaultRestyClient 返回一个resty 的client
+func newDefaultRestyClient() *resty.Client {
 	client := resty.New()
 	client.SetDebug(os.Getenv("DEBUG") == "true")
 	client.SetLogger(os.Stdout)
@@ -100,7 +100,7 @@ func NewDefaultRestyClient() *resty.Client {
 
 // NewRequest return resty.Request with right url, right configuration
 func (app *App) NewRequest(path string, qs urlValuer, withAccessToken bool) *resty.Request {
-	client := NewDefaultRestyClient()
+	client := newDefaultRestyClient()
 
 	values := url.Values{}
 	if valuer, ok := qs.(urlValuer); ok {
@@ -150,7 +150,7 @@ func (app *App) NewRequest(path string, qs urlValuer, withAccessToken bool) *res
 //
 // note: url must be full
 func (app *App) SimpleGet(url string, respObj interface{}) error {
-	resp, err := NewDefaultRestyClient().R().
+	resp, err := newDefaultRestyClient().R().
 		SetHeader("Accept", "application/json").
 		SetResult(&respObj).
 		Get(url)
@@ -187,7 +187,7 @@ func (app *App) SimpleGet(url string, respObj interface{}) error {
 // resty can Automatically marshal and unmarshal
 // note: url must be full
 func (app *App) SimplePost(url string, body interface{}, respObj interface{}) error {
-	resp, err := NewDefaultRestyClient().R().
+	resp, err := newDefaultRestyClient().R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(body).
 		SetResult(&respObj).
@@ -217,7 +217,9 @@ type RespCommon struct {
 // 实现依据: https://work.weixin.qq.com/api/doc#10013
 //
 // > 企业微信所有接口，返回包里都有errcode、errmsg。
+//
 // > 开发者需根据errcode是否为0判断是否调用成功(errcode意义请见全局错误码)。
+//
 // > 而errmsg仅作参考，后续可能会有变动，因此不可作为是否调用成功的判据。
 func (x *RespCommon) IsOK() bool {
 	return x.ErrCode == 0
