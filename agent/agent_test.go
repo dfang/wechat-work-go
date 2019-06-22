@@ -57,27 +57,27 @@ var _ = Describe("Agent", func() {
 		BeforeEach(func() {
 			menu = agent.Menu{
 				Button: []agent.Button{
-					agent.Button{
+					{
 						Type: "click",
 						Name: "今日歌曲",
 						Key:  "V1001_TODAY_MUSIC",
 					},
-					agent.Button{
+					{
 						Name: "菜单1",
 						SubButton: []agent.SubButton{
-							agent.SubButton{
+							{
 								Name: "菜单1",
 								Type: "view",
 								URL:  "http://baidu.com",
 							},
-							agent.SubButton{
+							{
 								Name: "菜单2",
 								Type: "click",
 								Key:  "V1001_GOOD",
 							},
 						},
 					},
-					agent.Button{
+					{
 						Type: "click",
 						Name: "今日美食",
 						Key:  "V1001_TODAY_MUSIC",
