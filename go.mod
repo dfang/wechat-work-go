@@ -8,3 +8,5 @@ require (
 	golang.org/x/net v0.0.0-20190311183353-d8887717615a // indirect
 	gopkg.in/resty.v1 v1.12.0
 )
+
+go 1.13
