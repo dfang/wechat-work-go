@@ -14,6 +14,10 @@ type AppMessageCommon struct {
 
 	MsgType string `json:"msgtype"`
 	Safe    int    `json:"safe"`
+
+	EnableIDTrans          int `json:"enable_id_trans,omitempty"`          //表示是否开启id转译，0表示否，1表示是，默认0
+	EnableDuplicateCheck   int `json:"enable_duplicate_check,omitempty"`   //表示是否开启重复消息检查，0表示否，1表示是，默认0
+	DuplicateCheckInterval int `json:"duplicate_check_interval,omitempty"` //表示是否重复消息检查的时间间隔，默认1800s，最大不超过4小时
 }
 
 // AppTextMessage 文字信息
